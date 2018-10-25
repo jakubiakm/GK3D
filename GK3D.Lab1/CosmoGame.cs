@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GK3D.Lab1.Prymitives;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace GK3D.Lab1
 {
@@ -12,10 +14,19 @@ namespace GK3D.Lab1
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        List<SceneObject> sceneObjects = new List<SceneObject>();
+
+        private Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
+        private Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 10), new Vector3(0, 0, 0), Vector3.UnitY);
+        private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800 / 480f, 0.1f, 100f);
+
         public CosmoGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth *= 2;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferHeight *= 2;  // set this value to the desired height of your window            
+            graphics.IsFullScreen = false;
         }
 
         /// <summary>
@@ -26,7 +37,20 @@ namespace GK3D.Lab1
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            var satellite = new Satellite();
+            var satellite2 = new Satellite();
+            var planetoid = new Sphere(new Color(188, 143, 143), 6, 25);
+            var sphere = new Sphere(new Color(188, 143, 143), 6, 25);
+
+            satellite.Initialize(0, -5, 5, 1);
+            satellite2.Initialize(0, 10, -5, 1);
+            planetoid.Initialize(graphics.GraphicsDevice, 0, 0, 0, 0);
+            sphere.Initialize(graphics.GraphicsDevice, 0, 0, 0, 0);
+
+            sceneObjects.Add(satellite);
+            sceneObjects.Add(satellite2);
+            sceneObjects.Add(planetoid);
+            sceneObjects.Add(sphere);
 
             base.Initialize();
         }
@@ -40,7 +64,7 @@ namespace GK3D.Lab1
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            sceneObjects.ForEach(sceneObject => sceneObject.LoadModel(Content));
         }
 
         /// <summary>
@@ -49,7 +73,7 @@ namespace GK3D.Lab1
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            Content.Unload();
         }
 
         /// <summary>
@@ -62,7 +86,7 @@ namespace GK3D.Lab1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            sceneObjects.ForEach(sceneObject => sceneObject.Update(gameTime));
 
             base.Update(gameTime);
         }
@@ -75,7 +99,7 @@ namespace GK3D.Lab1
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            sceneObjects.ForEach(sceneObject => sceneObject.Draw(world, view, projection));
 
             base.Draw(gameTime);
         }
