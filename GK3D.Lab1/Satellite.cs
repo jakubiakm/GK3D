@@ -9,8 +9,9 @@ namespace GK3D.Lab1
     {
         Model Model { get; set; }
 
-        public void Initialize(float angle = 0, float x = 0, float y = 0, float z = 0)
+        public void Initialize(Color color, float angle = 0, float x = 0, float y = 0, float z = 0)
         {
+            Color = color;
             Angle = angle;
             X = x;
             Y = y;
@@ -73,6 +74,7 @@ namespace GK3D.Lab1
                     effect.World = GetWorldMatrix(world);
                     effect.View = view;
                     effect.Projection = projection;
+                    effect.DiffuseColor = Color.ToVector3();
                 }
                 mesh.Draw();
             }

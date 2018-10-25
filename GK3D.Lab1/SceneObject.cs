@@ -5,6 +5,7 @@ namespace GK3D.Lab1
 {
     public class SceneObject
     {
+        public Color Color { get; set; }
         public float Angle { get; set; }
         public float X { get; set; }
         public float Y { get; set; }
