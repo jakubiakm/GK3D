@@ -18,14 +18,13 @@ namespace GK3D.Lab1
             _tesselation = tesselation;
         }
 
-        public void Initialize(GraphicsDevice device, Color color, float angle = 0, float x = 0, float y = 0, float z = 0)
+        public void Initialize(GraphicsDevice device, Color color, float angle, Vector3 positionVector, Vector3 rotationVector)
         {
             _sphere = new SpherePrimitive(device, _diameter, _tesselation);
             Color = color;
             Angle = angle;
-            X = x;
-            Y = y;
-            Z = z;
+            PositionVector = positionVector;
+            RotationVector = rotationVector;
         }
 
         public override void Update(GameTime gameTime)

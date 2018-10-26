@@ -9,13 +9,12 @@ namespace GK3D.Lab1
     {
         Model Model { get; set; }
 
-        public void Initialize(Color color, float angle = 0, float x = 0, float y = 0, float z = 0)
+        public void Initialize(Color color, float angle, Vector3 positionVector, Vector3 rotationVector)
         {
             Color = color;
             Angle = angle;
-            X = x;
-            Y = y;
-            Z = z;  
+            PositionVector = positionVector;
+            RotationVector = rotationVector;
         }
 
         public override void LoadModel(ContentManager contentManager)

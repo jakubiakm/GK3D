@@ -18,26 +18,35 @@ namespace GK3D.Lab1
             _tesselation = tesselation;
         }
 
-        public void Initialize(GraphicsDevice device, Color color, float angle = 0, float x = 0, float y = 0, float z = 0)
+        public void Initialize(GraphicsDevice device, Color color, float angle, Vector3 positionVector, Vector3 rotationVector)
         {
-            _sphere = new SpherePrimitive(device, _diameter, _tesselation);
+            _sphere = new SpherePrimitive(device, _diameter, _tesselation, 2);
             Color = color;
             Angle = angle;
-            X = x;
-            Y = y;
-            Z = z;
+            PositionVector = positionVector;
+            RotationVector = rotationVector;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Angle += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Rotate(0, (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
         }
 
         public override void Draw(Matrix world, Matrix view, Matrix projection)
         {
             base.Draw(world, view, projection);
-            _sphere.Draw(GetWorldMatrix(world) * Matrix.CreateRotationY(Angle), view, projection, Color);
+            _sphere.Draw(GetWorldMatrix(world), view, projection, Color);
+        }
+
+        public void Rotate(float x, float y, float z)
+        {
+            RotationVector = Vector3.Add(RotationVector, new Vector3(x, y, z));
+        }
+
+        public void Move(float x, float y, float z)
+        {
+            PositionVector = Vector3.Add(PositionVector, new Vector3(x, y, z));
         }
     }
 }
