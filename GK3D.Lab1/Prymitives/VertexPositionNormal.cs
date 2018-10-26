@@ -18,7 +18,7 @@ namespace GK3D.Lab1.Prymitives
     /// Custom vertex type for vertices that have just a
     /// position and a normal, without any texture coordinates.
     /// 
-    /// This struct is borrowed from the Primitives3D sample.
+    /// This struct is borrowed from the GK3D.Lab1.Prymitives sample.
     /// </summary>
     public struct VertexPositionNormal : IVertexType
     {

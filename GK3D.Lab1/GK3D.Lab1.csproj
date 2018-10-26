@@ -58,8 +58,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CosmoGame.cs" />
+    <Compile Include="Hemisphere.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Prymitives\CubePrimitive.cs" />
+    <Compile Include="Prymitives\CylinderPrimitive.cs" />
     <Compile Include="Prymitives\GeometricPrimitive.cs" />
     <Compile Include="Prymitives\SpherePrimitive.cs" />
     <Compile Include="Prymitives\VertexPositionNormal.cs" />

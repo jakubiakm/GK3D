@@ -23,7 +23,7 @@ namespace GK3D.Lab1.Prymitives
     /// derived from this common base, and use the AddVertex and AddIndex methods
     /// to specify their geometry.
     /// 
-    /// This class is borrowed from the Primitives3D sample.
+    /// This class is borrowed from the GK3D.Lab1.Prymitives sample.
     /// </summary>
     public abstract class GeometricPrimitive : IDisposable
     {
@@ -175,7 +175,7 @@ namespace GK3D.Lab1.Prymitives
                 effectPass.Apply();
 
                 int primitiveCount = indices.Count / 3;
-
+               
                 graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0,
                                                      vertices.Count, 0, primitiveCount);
 

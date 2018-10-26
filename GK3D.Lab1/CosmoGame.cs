@@ -39,18 +39,18 @@ namespace GK3D.Lab1
         {
             var satellite = new Satellite();
             var satellite2 = new Satellite();
-            var planetoid = new Sphere(6, 25);
-            var sphere = new Sphere(6, 25);
+            var planetoid = new Sphere(2, 25);
+            var iglo = new Hemisphere(4f, 33);
 
             satellite.Initialize(Color.BlanchedAlmond, 0, -5, 5, 1);
             satellite2.Initialize(Color.BurlyWood, 0, 10, -5, 1);
-            planetoid.Initialize(graphics.GraphicsDevice, new Color(188, 143, 143), 0, 0, 0, 0);
-            sphere.Initialize(graphics.GraphicsDevice, new Color(188, 143, 143), 0, 0, 0, 0);
+            planetoid.Initialize(graphics.GraphicsDevice, new Color(188, 143, 143), 0, 3, 0, 0);
+            iglo.Initialize(graphics.GraphicsDevice, new Color(188, 143, 143), 0, 0, 0, 0);
 
             sceneObjects.Add(satellite);
             sceneObjects.Add(satellite2);
             sceneObjects.Add(planetoid);
-            sceneObjects.Add(sphere);
+            sceneObjects.Add(iglo);
 
             base.Initialize();
         }
