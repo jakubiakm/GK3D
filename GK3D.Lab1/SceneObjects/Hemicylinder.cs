@@ -5,22 +5,25 @@ using GK3D.Lab1.Prymitives;
 
 namespace GK3D.Lab1
 {
-    public class Hemisphere : SceneObject
+    public class Hemicylinder : SceneObject
     {
-        SpherePrimitive _sphere;
+        CylinderPrimitive _cylinder;
 
         float _diameter;
+        float _height;
         int _tesselation;
 
-        public Hemisphere(float diameter = 5, int tesselation = 10)
+
+        public Hemicylinder(float diameter = 5, int tesselation = 10, float height = 5)
         {
             _diameter = diameter;
             _tesselation = tesselation;
+            _height = height;
         }
 
         public void Initialize(GraphicsDevice device, Color color, float angle, Vector3 positionVector, Vector3 rotationVector)
         {
-            _sphere = new SpherePrimitive(device, _diameter, _tesselation, 2);
+            _cylinder = new CylinderPrimitive(device, _height, _diameter, _tesselation, 2);
             Color = color;
             Angle = angle;
             PositionVector = positionVector;
@@ -30,13 +33,13 @@ namespace GK3D.Lab1
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Rotate(0, (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
+            //Rotate(0, (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
         }
 
         public override void Draw(Matrix world, Matrix view, Matrix projection)
         {
             base.Draw(world, view, projection);
-            _sphere.Draw(GetWorldMatrix(world), view, projection, Color);
+            _cylinder.Draw(GetWorldMatrix(world), view, projection, Color);
         }
 
         public void Rotate(float x, float y, float z)

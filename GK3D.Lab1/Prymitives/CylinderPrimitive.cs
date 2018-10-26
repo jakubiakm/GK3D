@@ -20,11 +20,13 @@ namespace GK3D.Lab1.Prymitives
     /// </summary>
     public class CylinderPrimitive : GeometricPrimitive
     {
+        float _divider;
+
         /// <summary>
         /// Constructs a new cylinder primitive, using default settings.
         /// </summary>
         public CylinderPrimitive(GraphicsDevice graphicsDevice)
-            : this(graphicsDevice, 1, 1, 32)
+            : this(graphicsDevice, 1, 1, 32, 1)
         {
         }
 
@@ -34,10 +36,12 @@ namespace GK3D.Lab1.Prymitives
         /// with the specified size and tessellation level.
         /// </summary>
         public CylinderPrimitive(GraphicsDevice graphicsDevice,
-                                 float height, float diameter, int tessellation)
+                                 float height, float diameter, int tessellation, float divider)
         {
             if (tessellation < 3)
                 throw new ArgumentOutOfRangeException("tessellation");
+
+            _divider = divider;
 
             height /= 2;
 
@@ -104,9 +108,9 @@ namespace GK3D.Lab1.Prymitives
         /// <summary>
         /// Helper method computes a point on a circle.
         /// </summary>
-        static Vector3 GetCircleVector(int i, int tessellation)
+        Vector3 GetCircleVector(int i, int tessellation)
         {
-            float angle = i * MathHelper.TwoPi / tessellation;
+            float angle = i * MathHelper.TwoPi / tessellation / _divider;
 
             float dx = (float)Math.Cos(angle);
             float dz = (float)Math.Sin(angle);

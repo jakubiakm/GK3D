@@ -39,19 +39,26 @@ namespace GK3D.Lab1
         {
             var satellite = new Satellite();
             var satellite2 = new Satellite();
-            var planetoid = new Sphere(2, 25);
-            var iglo = new Hemisphere(4f, 33);
+            var planetoid = new Sphere(5.5f, 100);
+            var researchStationHemisphere = new Hemisphere(1, 100);
+            var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.5f);
 
-            satellite.Initialize(Color.BlanchedAlmond, 0, new Vector3(-5, 5, 1), new Vector3(0, 0, 0));
-            satellite2.Initialize(Color.BurlyWood, 0, new Vector3(10, -5, 1), new Vector3(0, 0, 0));
-            planetoid.Initialize(graphics.GraphicsDevice, new Color(188, 143, 143), 0, new Vector3(3, 0, 0), new Vector3(0, 0, 0));
-            iglo.Initialize(graphics.GraphicsDevice, new Color(188, 143, 143), 0, new Vector3(0, 0, 0), new Vector3(4, 0, 0));
+            satellite.Initialize(Color.DarkOrange, 0,
+                new Vector3(-5, 5, 1), new Vector3(0, 0, 0));
+            satellite2.Initialize(Color.BurlyWood, 0,
+                new Vector3(10, -5, 1), new Vector3(0, 0, 0));
+            planetoid.Initialize(graphics.GraphicsDevice, new Color(188, 143, 143), 0,
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0));
+            researchStationHemisphere.Initialize(graphics.GraphicsDevice, new Color(179, 204, 255), 0,
+                new Vector3(0, 2.65f, 0), new Vector3(-MathHelper.PiOver2, 0, 0));
+            researchStationHemicylinder.Initialize(graphics.GraphicsDevice, new Color(179, 204, 255), 0,
+                new Vector3(-0.65f, 2.65f, 0), new Vector3(0, MathHelper.PiOver2, MathHelper.PiOver2));
 
             sceneObjects.Add(satellite);
             sceneObjects.Add(satellite2);
             sceneObjects.Add(planetoid);
-            sceneObjects.Add(iglo);
-
+            sceneObjects.Add(researchStationHemisphere);
+            sceneObjects.Add(researchStationHemicylinder);
             base.Initialize();
         }
 
