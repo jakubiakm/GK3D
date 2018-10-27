@@ -11,7 +11,7 @@ namespace GK3D.Lab1
         // in the ProjectionMatrix property.
         GraphicsDevice graphicsDevice;
 
-        public Vector3 position = new Vector3(0f, 55f, 10f);
+        public Vector3 position = new Vector3(0f, 15f, 7f);
 
         public Vector3 rotation = new Vector3(0, 0, 0);
 

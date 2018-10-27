@@ -36,11 +36,11 @@ namespace GK3D.Lab1
             //Rotate(0, (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
         }
 
-        public override void Draw(Matrix world, Camera camera)
+        public override void Draw(Matrix world, Camera camera, Vector3 lpos1, Vector3 lpos2)
         {
             world = GetWorldMatrix(world);
-            base.Draw(world, camera);
-            _cylinder.Draw(world, Color, camera);
+            base.Draw(world, camera, lpos1, lpos2);
+            _cylinder.Draw(world, Color, camera, lpos1, lpos2);
         }
 
         public void Rotate(float x, float y, float z)

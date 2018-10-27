@@ -71,6 +71,8 @@
     <Compile Include="SceneObjects\Satellite.cs" />
     <Compile Include="SceneObjects\SceneObject.cs" />
     <Compile Include="SceneObjects\Sphere.cs" />
+    <Compile Include="SceneObjects\Bison.cs" />
+    <Compile Include="SceneObjects\Tree.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

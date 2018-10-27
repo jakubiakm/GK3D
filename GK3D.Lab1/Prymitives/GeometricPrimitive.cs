@@ -106,7 +106,7 @@ namespace GK3D.Lab1.Prymitives
             // Create a BasicEffect, which will be used to render the primitive.
             basicEffect = new BasicEffect(graphicsDevice);
 
-            basicEffect.EnableDefaultLighting();
+            //basicEffect.EnableDefaultLighting();
             basicEffect.PreferPerPixelLighting = true;
         }
 
@@ -190,7 +190,7 @@ namespace GK3D.Lab1.Prymitives
         /// for 3D model rendering, so you do not need to set these states before
         /// you call it.
         /// </summary>
-        public void Draw(Matrix world, Color color, Camera camera)
+        public void Draw(Matrix world, Color color, Camera camera, Vector3 light1Position, Vector3 light2Position)
         {
             // Set BasicEffect parameters.
             basicEffect.World = world;
@@ -199,12 +199,23 @@ namespace GK3D.Lab1.Prymitives
             basicEffect.DiffuseColor = color.ToVector3();
             basicEffect.Alpha = color.A / 255.0f;
 
-            //TODO wstawić tutjaj parametryu świat 
-            //basicEffect.DirectionalLight0.` 
-            
+            basicEffect.DirectionalLight0.Enabled = true;
+            basicEffect.DirectionalLight0.Direction = new Vector3(0.0f, -0.4f, 0);
+            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.0f, 1.0f, 0);
+            basicEffect.DirectionalLight0.Enabled = true;
 
+            basicEffect.DirectionalLight1.Enabled = true;
+            basicEffect.DirectionalLight1.SpecularColor = Color.White.ToVector3();
+            basicEffect.DirectionalLight1.Direction = -light1Position;
+            basicEffect.DirectionalLight1.Enabled = true;
+            basicEffect.SpecularPower = 100f;
+            basicEffect.SpecularColor = Color.White.ToVector3();
+            basicEffect.AmbientLightColor = new Vector3(0.0f, 0.02f, 0.0f);
+            basicEffect.LightingEnabled = true;
+            
             GraphicsDevice device = basicEffect.GraphicsDevice;
             device.DepthStencilState = DepthStencilState.Default;
+        
 
             if (color.A < 255)
             {

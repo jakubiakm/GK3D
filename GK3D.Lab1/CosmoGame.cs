@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GK3D.Lab1
 {
@@ -38,25 +39,34 @@ namespace GK3D.Lab1
         protected override void Initialize()
         {
             var satellites = new Satellite();
+            var tree = new Tree();
+            var bison = new Bison();
+
             var planetoid = new Sphere(5.5f, 100);
             var researchStationHemisphere = new Hemisphere(1, 100);
-            var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.5f);
-
-            satellites.Initialize(Color.Black, 0,
+            var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.25f);
+            
+            satellites.Initialize(Color.Yellow, 0,
                 new Vector3(-5, 5, 1), new Vector3(2, 1, 0));
             satellites.Initialize(Color.DarkSlateGray, 0,
                 new Vector3(10, -5, 1), new Vector3(0, 0, 0));
-            planetoid.Initialize(graphics.GraphicsDevice, new Color(0, 105, 148), 0,
+            planetoid.Initialize(graphics.GraphicsDevice, Color.ForestGreen, 0,
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0));
             researchStationHemisphere.Initialize(graphics.GraphicsDevice, new Color(179, 204, 255), 0,
                 new Vector3(0, 2.65f, 0), new Vector3(-MathHelper.PiOver2, 0, 0));
             researchStationHemicylinder.Initialize(graphics.GraphicsDevice, new Color(179, 204, 255), 0,
-                new Vector3(-0.55f, 2.65f, 0), new Vector3(-0.25f, MathHelper.PiOver2, MathHelper.PiOver2));
+                new Vector3(-0.4f, 2.65f, 0), new Vector3(-0.25f, MathHelper.PiOver2, MathHelper.PiOver2));
+            tree.Initialize(Color.ForestGreen, 0,
+                new Vector3(1, 2.5f, 0), new Vector3(0, 0, -MathHelper.PiOver4 / 2));
+            bison.Initialize(new Color(115, 77, 38), 0,
+                new Vector3(-1, 2.328f, 1.5f), new Vector3(-0.35f, 2.6f, MathHelper.PiOver4 / 2));
 
             sceneObjects.Add(satellites);
             sceneObjects.Add(planetoid);
             sceneObjects.Add(researchStationHemisphere);
             sceneObjects.Add(researchStationHemicylinder);
+            sceneObjects.Add(tree);
+            sceneObjects.Add(bison);
 
             camera = new Camera(graphics.GraphicsDevice);
 
@@ -108,9 +118,12 @@ namespace GK3D.Lab1
         {
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.SkyBlue);
 
-            sceneObjects.ForEach(sceneObject => sceneObject.Draw(world, camera));
+            var satelliter = (Satellite)sceneObjects.First(o => o.GetType() == typeof(Satellite));
+
+            sceneObjects.ForEach(sceneObject => sceneObject.Draw(world, camera,
+                satelliter.PositionVectors[0], satelliter.PositionVectors[1]));
 
             DrawDebugInformation();
 

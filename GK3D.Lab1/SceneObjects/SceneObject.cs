@@ -34,7 +34,7 @@ namespace GK3D.Lab1
 
         }
 
-        public virtual void Draw(Matrix world, Camera camera)
+        public virtual void Draw(Matrix world, Camera camera, Vector3 lpos1, Vector3 lpos2)
         {
 
         }
