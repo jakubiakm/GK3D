@@ -9,12 +9,13 @@ namespace GK3D.Lab1
         public float Angle { get; set; }
         public Vector3 PositionVector { get; set; }
         public Vector3 RotationVector { get; set; }
-
+        public Vector3 ScaleVector { get; set; } = Vector3.One;
 
         public Matrix GetWorldMatrix(Matrix currentWorld)
         {
             Matrix combined = currentWorld;
 
+            combined *= Matrix.CreateScale(ScaleVector.X, ScaleVector.Y, ScaleVector.Z);
             combined *= Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), RotationVector.X);
             combined *= Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), RotationVector.Y);
             combined *= Matrix.CreateFromAxisAngle(new Vector3(0, 0, 1), RotationVector.Z);
@@ -34,7 +35,7 @@ namespace GK3D.Lab1
 
         }
 
-        public virtual void Draw(Matrix world, Camera camera, Vector3 lpos1, Vector3 lpos2)
+        public virtual void Draw(Matrix world, Camera camera, Vector3 light1Position, Vector3 light2Position)
         {
 
         }

@@ -33,11 +33,11 @@ namespace GK3D.Lab1
             //Angle += (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
         
-        public override void Draw(Matrix world, Camera camera, Vector3 lpos1, Vector3 lpos2)
+        public override void Draw(Matrix world, Camera camera, Vector3 light1Position, Vector3 light2Position)
         {
             world = GetWorldMatrix(world);
-            base.Draw(world, camera, lpos1, lpos2);
-            _sphere.Draw(world, Color, camera, lpos1, lpos2);
+            base.Draw(world, camera, light1Position, light2Position);
+            _sphere.Draw(world, Color, camera, light1Position, light2Position);
         }
     }
 }

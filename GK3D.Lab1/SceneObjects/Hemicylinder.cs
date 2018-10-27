@@ -21,13 +21,14 @@ namespace GK3D.Lab1
             _height = height;
         }
 
-        public void Initialize(GraphicsDevice device, Color color, float angle, Vector3 positionVector, Vector3 rotationVector)
+        public void Initialize(GraphicsDevice device, Color color, float angle, Vector3 positionVector, Vector3 rotationVector, Vector3 scaleVector)
         {
             _cylinder = new CylinderPrimitive(device, _height, _diameter, _tesselation, 2);
             Color = color;
             Angle = angle;
             PositionVector = positionVector;
             RotationVector = rotationVector;
+            ScaleVector = scaleVector;
         }
 
         public override void Update(GameTime gameTime)
@@ -36,11 +37,11 @@ namespace GK3D.Lab1
             //Rotate(0, (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
         }
 
-        public override void Draw(Matrix world, Camera camera, Vector3 lpos1, Vector3 lpos2)
+        public override void Draw(Matrix world, Camera camera, Vector3 light1Position, Vector3 light2Position)
         {
             world = GetWorldMatrix(world);
-            base.Draw(world, camera, lpos1, lpos2);
-            _cylinder.Draw(world, Color, camera, lpos1, lpos2);
+            base.Draw(world, camera, light1Position, light2Position);
+            _cylinder.Draw(world, Color, camera, light1Position, light2Position);
         }
 
         public void Rotate(float x, float y, float z)

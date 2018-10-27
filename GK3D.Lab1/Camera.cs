@@ -49,7 +49,7 @@ namespace GK3D.Lab1
             {
                 float fieldOfView = MathHelper.PiOver4;
                 float nearClipPlane = 1;
-                float farClipPlane = 200;
+                float farClipPlane = 20000;
 
                 return Matrix.CreatePerspectiveFieldOfView(
                     fieldOfView, graphicsDevice.Viewport.AspectRatio, nearClipPlane, farClipPlane);

@@ -42,24 +42,32 @@ namespace GK3D.Lab1
             var tree = new Tree();
             var bison = new Bison();
 
+            var sun = new Sphere(100f, 50);
             var planetoid = new Sphere(5.5f, 100);
             var researchStationHemisphere = new Hemisphere(1, 100);
             var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.25f);
             
-            satellites.Initialize(Color.Yellow, 0,
-                new Vector3(-5, 5, 1), new Vector3(2, 1, 0));
-            satellites.Initialize(Color.DarkSlateGray, 0,
-                new Vector3(10, -5, 1), new Vector3(0, 0, 0));
-            planetoid.Initialize(graphics.GraphicsDevice, Color.ForestGreen, 0,
+            satellites.Initialize(new Color(86, 125, 155), 0,
+                new Vector3(-5, 5, 1), new Vector3(0, 0, -MathHelper.PiOver4),
+                new Vector3(0.1f, 0.1f, 0.1f));
+            satellites.Initialize(new Color(155, 123, 86), 0,
+                new Vector3(10, -5, 1), new Vector3(0, MathHelper.Pi, 0),
+                new Vector3(0.1f, 0.1f, 0.1f));
+            planetoid.Initialize(graphics.GraphicsDevice, new Color(0, 0.21f, 0), 0,
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0));
             researchStationHemisphere.Initialize(graphics.GraphicsDevice, new Color(179, 204, 255), 0,
                 new Vector3(0, 2.65f, 0), new Vector3(-MathHelper.PiOver2, 0, 0));
             researchStationHemicylinder.Initialize(graphics.GraphicsDevice, new Color(179, 204, 255), 0,
-                new Vector3(-0.4f, 2.65f, 0), new Vector3(-0.25f, MathHelper.PiOver2, MathHelper.PiOver2));
-            tree.Initialize(Color.ForestGreen, 0,
-                new Vector3(1, 2.5f, 0), new Vector3(0, 0, -MathHelper.PiOver4 / 2));
+                new Vector3(-0.4f, 2.65f, 0), new Vector3(-0.25f, MathHelper.PiOver2, MathHelper.PiOver2),
+                new Vector3(1, 1, 1));
+            tree.Initialize(Color.DarkGreen, 0,
+                new Vector3(1, 2.5f, 0), new Vector3(0, 0, -MathHelper.PiOver4 / 2),
+                new Vector3(0.007f, 0.007f, 0.007f));
             bison.Initialize(new Color(115, 77, 38), 0,
-                new Vector3(-1, 2.328f, 1.5f), new Vector3(-0.35f, 2.6f, MathHelper.PiOver4 / 2));
+                new Vector3(-1, 2.328f, 1.5f), new Vector3(-0.35f, 2.6f, MathHelper.PiOver4 / 2),
+                new Vector3(0.65f, 0.65f, 0.65f));
+            sun.Initialize(graphics.GraphicsDevice, Color.Yellow, 0,
+                new Vector3(0, 1000, 0), new Vector3(0, 0, 0));
 
             sceneObjects.Add(satellites);
             sceneObjects.Add(planetoid);
@@ -67,6 +75,7 @@ namespace GK3D.Lab1
             sceneObjects.Add(researchStationHemicylinder);
             sceneObjects.Add(tree);
             sceneObjects.Add(bison);
+            sceneObjects.Add(sun);
 
             camera = new Camera(graphics.GraphicsDevice);
 
@@ -118,7 +127,7 @@ namespace GK3D.Lab1
         {
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-            GraphicsDevice.Clear(Color.SkyBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             var satelliter = (Satellite)sceneObjects.First(o => o.GetType() == typeof(Satellite));
 

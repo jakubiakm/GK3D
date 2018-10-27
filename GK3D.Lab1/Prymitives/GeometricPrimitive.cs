@@ -103,7 +103,7 @@ namespace GK3D.Lab1.Prymitives
 
             indexBuffer.SetData(indices.ToArray());
 
-            // Create a BasicEffect, which will be used to render the primitive.
+            // Create a basicEffect, which will be used to render the primitive.
             basicEffect = new BasicEffect(graphicsDevice);
 
             //basicEffect.EnableDefaultLighting();
@@ -155,14 +155,14 @@ namespace GK3D.Lab1.Prymitives
 
 
         /// <summary>
-        /// Draws the primitive model, using the specified effect. Unlike the other
+        /// Draws the primitive model, using the specified basicEffect. Unlike the other
         /// Draw overload where you just specify the world/view/projection matrices
         /// and color, this method does not set any renderstates, so you must make
         /// sure all states are set to sensible values before you call it.
         /// </summary>
-        public void Draw(Effect effect)
+        public void Draw(BasicEffect basicEffect)
         {
-            GraphicsDevice graphicsDevice = effect.GraphicsDevice;
+            GraphicsDevice graphicsDevice = basicEffect.GraphicsDevice;
 
             // Set our vertex declaration, vertex buffer, and index buffer.
             graphicsDevice.SetVertexBuffer(vertexBuffer);
@@ -170,9 +170,9 @@ namespace GK3D.Lab1.Prymitives
             graphicsDevice.Indices = indexBuffer;
             
 
-            foreach (EffectPass effectPass in effect.CurrentTechnique.Passes)
+            foreach (EffectPass basicEffectPass in basicEffect.CurrentTechnique.Passes)
             {
-                effectPass.Apply();
+                basicEffectPass.Apply();
 
                 int primitiveCount = indices.Count / 3;
                
@@ -184,31 +184,36 @@ namespace GK3D.Lab1.Prymitives
 
 
         /// <summary>
-        /// Draws the primitive model, using a BasicEffect shader with default
+        /// Draws the primitive model, using a basicEffect shader with default
         /// lighting. Unlike the other Draw overload where you specify a custom
-        /// effect, this method sets important renderstates to sensible values
+        /// basicEffect, this method sets important renderstates to sensible values
         /// for 3D model rendering, so you do not need to set these states before
         /// you call it.
         /// </summary>
         public void Draw(Matrix world, Color color, Camera camera, Vector3 light1Position, Vector3 light2Position)
         {
-            // Set BasicEffect parameters.
+            // Set basicEffect parameters.
             basicEffect.World = world;
             basicEffect.View = camera.ViewMatrix;
             basicEffect.Projection = camera.ProjectionMatrix;
-            basicEffect.DiffuseColor = color.ToVector3();
+            basicEffect.EmissiveColor = color.ToVector3();
             basicEffect.Alpha = color.A / 255.0f;
 
             basicEffect.DirectionalLight0.Enabled = true;
-            basicEffect.DirectionalLight0.Direction = new Vector3(0.0f, -0.4f, 0);
-            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.0f, 1.0f, 0);
-            basicEffect.DirectionalLight0.Enabled = true;
+            basicEffect.DirectionalLight0.Direction = new Vector3(0.0f, -1000.0f, 0);
+            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.0005f, 0.0005f, 0.0005f);
 
             basicEffect.DirectionalLight1.Enabled = true;
             basicEffect.DirectionalLight1.SpecularColor = Color.White.ToVector3();
             basicEffect.DirectionalLight1.Direction = -light1Position;
-            basicEffect.DirectionalLight1.Enabled = true;
-            basicEffect.SpecularPower = 100f;
+            basicEffect.DirectionalLight1.DiffuseColor = new Vector3(0.0f, 0.025f, 0.0f);
+
+            basicEffect.DirectionalLight2.Enabled = true;
+            basicEffect.DirectionalLight2.SpecularColor = Color.White.ToVector3();
+            basicEffect.DirectionalLight2.Direction = -light2Position;
+            basicEffect.DirectionalLight2.DiffuseColor = new Vector3(0.0f, 0.015f, 0.0f);
+
+            basicEffect.SpecularPower = 500f;
             basicEffect.SpecularColor = Color.White.ToVector3();
             basicEffect.AmbientLightColor = new Vector3(0.0f, 0.02f, 0.0f);
             basicEffect.LightingEnabled = true;
@@ -228,7 +233,7 @@ namespace GK3D.Lab1.Prymitives
                 device.BlendState = BlendState.Opaque;
             }
 
-            // Draw the model, using BasicEffect.
+            // Draw the model, using basicEffect.
             Draw(basicEffect);
         }
 
