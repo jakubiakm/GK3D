@@ -1,5 +1,4 @@
-﻿using GK3D.Lab1.Prymitives;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -13,12 +12,12 @@ namespace GK3D.Lab1
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteFont font;
 
         List<SceneObject> sceneObjects = new List<SceneObject>();
 
         private Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
-        private Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 10), new Vector3(0, 0, 0), Vector3.UnitY);
-        private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800 / 480f, 0.1f, 100f);
+        Camera camera;
 
         public CosmoGame()
         {
@@ -27,6 +26,7 @@ namespace GK3D.Lab1
             graphics.PreferredBackBufferWidth *= 2;  // set this value to the desired width of your window
             graphics.PreferredBackBufferHeight *= 2;  // set this value to the desired height of your window            
             graphics.IsFullScreen = false;
+            this.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -43,22 +43,25 @@ namespace GK3D.Lab1
             var researchStationHemisphere = new Hemisphere(1, 100);
             var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.5f);
 
-            satellite.Initialize(Color.DarkOrange, 0,
-                new Vector3(-5, 5, 1), new Vector3(0, 0, 0));
-            satellite2.Initialize(Color.BurlyWood, 0,
+            satellite.Initialize(Color.Black, 0,
+                new Vector3(-5, 5, 1), new Vector3(2, 1, 0));
+            satellite2.Initialize(Color.DarkSlateGray, 0,
                 new Vector3(10, -5, 1), new Vector3(0, 0, 0));
-            planetoid.Initialize(graphics.GraphicsDevice, new Color(188, 143, 143), 0,
+            planetoid.Initialize(graphics.GraphicsDevice, new Color(0, 105, 148), 0,
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0));
             researchStationHemisphere.Initialize(graphics.GraphicsDevice, new Color(179, 204, 255), 0,
                 new Vector3(0, 2.65f, 0), new Vector3(-MathHelper.PiOver2, 0, 0));
             researchStationHemicylinder.Initialize(graphics.GraphicsDevice, new Color(179, 204, 255), 0,
-                new Vector3(-0.65f, 2.65f, 0), new Vector3(0, MathHelper.PiOver2, MathHelper.PiOver2));
+                new Vector3(-0.55f, 2.65f, 0), new Vector3(-0.25f, MathHelper.PiOver2, MathHelper.PiOver2));
 
             sceneObjects.Add(satellite);
             sceneObjects.Add(satellite2);
             sceneObjects.Add(planetoid);
             sceneObjects.Add(researchStationHemisphere);
             sceneObjects.Add(researchStationHemicylinder);
+
+            camera = new Camera(graphics.GraphicsDevice);
+
             base.Initialize();
         }
 
@@ -70,7 +73,7 @@ namespace GK3D.Lab1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            font = Content.Load<SpriteFont>("Position");
             sceneObjects.ForEach(sceneObject => sceneObject.LoadModel(Content));
         }
 
@@ -94,7 +97,8 @@ namespace GK3D.Lab1
                 Exit();
 
             sceneObjects.ForEach(sceneObject => sceneObject.Update(gameTime));
-
+            camera.Update(gameTime);
+          
             base.Update(gameTime);
         }
 
@@ -106,9 +110,21 @@ namespace GK3D.Lab1
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            sceneObjects.ForEach(sceneObject => sceneObject.Draw(world, view, projection));
+            sceneObjects.ForEach(sceneObject => sceneObject.Draw(world, camera));
+
+            DrawDebugInformation();
 
             base.Draw(gameTime);
+        }
+
+        private void DrawDebugInformation()
+        {
+            spriteBatch.Begin();
+
+            spriteBatch.DrawString(font, $"Camera position:[{camera.position.X},{camera.position.Y},{camera.position.Z}]", new Vector2(20, 5), Color.Black);
+            spriteBatch.DrawString(font, $"Camera rotation:[{camera.rotation.X},{camera.rotation.Y},{camera.rotation.Z}]", new Vector2(20, 25), Color.Black);
+
+            spriteBatch.End();
         }
     }
 }

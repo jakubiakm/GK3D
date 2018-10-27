@@ -26,53 +26,19 @@ namespace GK3D.Lab1
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Angle += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //Angle += (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
-
-        // For now we'll take these values in, eventually we'll
-        // take a Camera object
-        //public void Draw(Vector3 cameraPosition, float aspectRatio)
-        //{
-        //    foreach (var mesh in model.Meshes)
-        //    {
-        //        foreach (BasicEffect effect in mesh.Effects)
-        //        {
-        //            effect.EnableDefaultLighting();
-        //            effect.PreferPerPixelLighting = true;
-
-        //            effect.World = Matrix.Identity;
-        //            var cameraLookAtVector = Vector3.Zero;
-        //            var cameraUpVector = Vector3.UnitZ;
-
-        //            effect.View = Matrix.CreateLookAt(
-        //                cameraPosition, cameraLookAtVector, cameraUpVector);
-
-        //            float fieldOfView = Microsoft.Xna.Framework.MathHelper.PiOver4;
-        //            float nearClipPlane = 1;
-        //            float farClipPlane = 200;
-
-        //            effect.Projection = Matrix.CreatePerspectiveFieldOfView(
-        //                fieldOfView, aspectRatio, nearClipPlane, farClipPlane);
-
-
-        //        }
-
-        //        // Now that we've assigned our properties on the effects we can
-        //        // draw the entire mesh
-        //        mesh.Draw();
-        //    }
-        //}
-
-        public override void Draw(Matrix world, Matrix view, Matrix projection)
+        
+        public override void Draw(Matrix world, Camera camera)
         {
-            base.Draw(world, view, projection);
+            base.Draw(world, camera);
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.World = GetWorldMatrix(world);
-                    effect.View = view;
-                    effect.Projection = projection;
+                    effect.View = camera.ViewMatrix;
+                    effect.Projection = camera.ProjectionMatrix;
                     effect.DiffuseColor = Color.ToVector3();
                 }
                 mesh.Draw();

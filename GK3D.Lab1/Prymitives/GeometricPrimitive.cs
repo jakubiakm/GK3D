@@ -190,12 +190,12 @@ namespace GK3D.Lab1.Prymitives
         /// for 3D model rendering, so you do not need to set these states before
         /// you call it.
         /// </summary>
-        public void Draw(Matrix world, Matrix view, Matrix projection, Color color)
+        public void Draw(Matrix world, Color color, Camera camera)
         {
             // Set BasicEffect parameters.
             basicEffect.World = world;
-            basicEffect.View = view;
-            basicEffect.Projection = projection;
+            basicEffect.View = camera.ViewMatrix;
+            basicEffect.Projection = camera.ProjectionMatrix;
             basicEffect.DiffuseColor = color.ToVector3();
             basicEffect.Alpha = color.A / 255.0f;
 
