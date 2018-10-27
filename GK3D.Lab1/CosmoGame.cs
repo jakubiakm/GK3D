@@ -108,6 +108,8 @@ namespace GK3D.Lab1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             sceneObjects.ForEach(sceneObject => sceneObject.Draw(world, camera));

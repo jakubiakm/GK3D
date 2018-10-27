@@ -40,6 +40,9 @@ namespace GK3D.Lab1
                     effect.View = camera.ViewMatrix;
                     effect.Projection = camera.ProjectionMatrix;
                     effect.DiffuseColor = Color.ToVector3();
+
+                    //effect.EnableDefaultLighting();
+                    //effect.PreferPerPixelLighting = true;
                 }
                 mesh.Draw();
             }
