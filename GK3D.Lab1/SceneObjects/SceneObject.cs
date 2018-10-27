@@ -26,6 +26,7 @@ namespace GK3D.Lab1
 
         public virtual void LoadModel(ContentManager contentManager)
         {
+
         }
 
         public virtual void Update(GameTime gameTime)

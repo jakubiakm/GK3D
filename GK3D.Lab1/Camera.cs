@@ -11,7 +11,7 @@ namespace GK3D.Lab1
         // in the ProjectionMatrix property.
         GraphicsDevice graphicsDevice;
 
-        public Vector3 position = new Vector3(0, 20, 10);
+        public Vector3 position = new Vector3(0f, 55f, 10f);
 
         public Vector3 rotation = new Vector3(0, 0, 0);
 
@@ -24,16 +24,22 @@ namespace GK3D.Lab1
                 var lookAtVector = new Vector3(0, -1f, -.5f);
                 // We'll create a rotation matrix using our angle
                 var rotationMatrix =
-                    Matrix.CreateRotationX(rotation.X) *
-                    Matrix.CreateRotationX(rotation.Y) *
-                    Matrix.CreateRotationZ(rotation.Z);
+                                Matrix.CreateRotationX(rotation.X) *
+                                Matrix.CreateRotationY(rotation.Y) *
+                                Matrix.CreateRotationZ(rotation.Z);
+                                //Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), rotation.X) *
+                                //Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), rotation.Y) *
+                                //Matrix.CreateFromAxisAngle(new Vector3(0, 0, 1), rotation.Z);
                 // Then we'll modify the vector using this matrix:
                 lookAtVector = Vector3.Transform(lookAtVector, rotationMatrix);
                 lookAtVector += position;
-                var upVector = Vector3.UnitZ;
+                //var upVector = Vector3.UnitZ;
+
+                Matrix ypr = Matrix.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z);
+                Vector3 up = Vector3.Transform(Vector3.Up, ypr);
 
                 return Matrix.CreateLookAt(
-                    position, lookAtVector, upVector);
+                    position, lookAtVector, up);
             }
         }
 
@@ -41,13 +47,12 @@ namespace GK3D.Lab1
         {
             get
             {
-                float fieldOfView = Microsoft.Xna.Framework.MathHelper.PiOver4;
+                float fieldOfView = MathHelper.PiOver4;
                 float nearClipPlane = 1;
                 float farClipPlane = 200;
-                float aspectRatio = graphicsDevice.Viewport.Width / (float)graphicsDevice.Viewport.Height;
 
                 return Matrix.CreatePerspectiveFieldOfView(
-                    fieldOfView, aspectRatio, nearClipPlane, farClipPlane);
+                    fieldOfView, graphicsDevice.Viewport.AspectRatio, nearClipPlane, farClipPlane);
             }
         }
 
@@ -60,32 +65,49 @@ namespace GK3D.Lab1
         public void Update(GameTime gameTime)
         {
             var rotationMatrix =
-                    Matrix.CreateRotationX(rotation.X) *
-                    Matrix.CreateRotationX(rotation.Y) *
-                    Matrix.CreateRotationZ(rotation.Z);
+                Matrix.CreateRotationX(rotation.X) *
+                Matrix.CreateRotationY(rotation.Y) *
+                Matrix.CreateRotationZ(rotation.Z);
+                //Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), rotation.X) *
+                //Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), rotation.Y) *
+                //Matrix.CreateFromAxisAngle(new Vector3(0, 0, 1), rotation.Z);
             var prevPosition = position;
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            if (Keyboard.GetState().IsKeyDown(Keys.K))
             {
-                rotation.X += 0.01f;
+                rotation.X -= _moveSpeed *
+                    (float)gameTime.ElapsedGameTime.TotalSeconds / 8;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            if (Keyboard.GetState().IsKeyDown(Keys.I))
             {
-                rotation.X -= 0.01f;
+                rotation.X += _moveSpeed *
+                    (float)gameTime.ElapsedGameTime.TotalSeconds / 8;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            if (Keyboard.GetState().IsKeyDown(Keys.J))
             {
-                rotation.Z += 0.01f;
+                rotation.Z -= _moveSpeed *
+                    (float)gameTime.ElapsedGameTime.TotalSeconds / 8;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            if (Keyboard.GetState().IsKeyDown(Keys.L))
             {
-                rotation.Z -= 0.01f;
+                rotation.Z += _moveSpeed *
+                    (float)gameTime.ElapsedGameTime.TotalSeconds / 8;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.U))
+            {
+                rotation.Y -= _moveSpeed *
+                    (float)gameTime.ElapsedGameTime.TotalSeconds / 8;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.O))
+            {
+                rotation.Y += _moveSpeed *
+                    (float)gameTime.ElapsedGameTime.TotalSeconds / 8;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 var forwardVector = new Vector3(0, -1, 0);
 
                 forwardVector = Vector3.Transform(forwardVector, rotationMatrix);
-                
+
                 this.position += forwardVector * _moveSpeed *
                     (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
@@ -94,7 +116,7 @@ namespace GK3D.Lab1
                 var forwardVector = new Vector3(0, 1, 0);
 
                 forwardVector = Vector3.Transform(forwardVector, rotationMatrix);
-                
+
                 this.position += forwardVector * _moveSpeed *
                     (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
@@ -131,7 +153,7 @@ namespace GK3D.Lab1
                 var forwardVector = new Vector3(0, 0, -1);
 
                 forwardVector = Vector3.Transform(forwardVector, rotationMatrix);
-                
+
                 this.position += forwardVector * _moveSpeed *
                     (float)gameTime.ElapsedGameTime.TotalSeconds;
             }

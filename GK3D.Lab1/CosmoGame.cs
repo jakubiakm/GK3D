@@ -37,15 +37,14 @@ namespace GK3D.Lab1
         /// </summary>
         protected override void Initialize()
         {
-            var satellite = new Satellite();
-            var satellite2 = new Satellite();
+            var satellites = new Satellite();
             var planetoid = new Sphere(5.5f, 100);
             var researchStationHemisphere = new Hemisphere(1, 100);
             var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.5f);
 
-            satellite.Initialize(Color.Black, 0,
+            satellites.Initialize(Color.Black, 0,
                 new Vector3(-5, 5, 1), new Vector3(2, 1, 0));
-            satellite2.Initialize(Color.DarkSlateGray, 0,
+            satellites.Initialize(Color.DarkSlateGray, 0,
                 new Vector3(10, -5, 1), new Vector3(0, 0, 0));
             planetoid.Initialize(graphics.GraphicsDevice, new Color(0, 105, 148), 0,
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0));
@@ -54,8 +53,7 @@ namespace GK3D.Lab1
             researchStationHemicylinder.Initialize(graphics.GraphicsDevice, new Color(179, 204, 255), 0,
                 new Vector3(-0.55f, 2.65f, 0), new Vector3(-0.25f, MathHelper.PiOver2, MathHelper.PiOver2));
 
-            sceneObjects.Add(satellite);
-            sceneObjects.Add(satellite2);
+            sceneObjects.Add(satellites);
             sceneObjects.Add(planetoid);
             sceneObjects.Add(researchStationHemisphere);
             sceneObjects.Add(researchStationHemicylinder);
