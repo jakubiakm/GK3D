@@ -31,9 +31,9 @@ namespace GK3D.Lab1
             //(float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        public override void Draw(Matrix world, Camera camera, Vector3 light1Position, Vector3 light2Position)
+        public override void Draw(GameTime gameTime, Matrix world, Camera camera, Vector3 light1Position, Vector3 light2Position)
         {
-            base.Draw(world, camera, light1Position, light2Position);
+            base.Draw(gameTime, world, camera, light1Position, light2Position);
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 foreach (BasicEffect basicEffect in mesh.Effects)

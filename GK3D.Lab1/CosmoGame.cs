@@ -52,7 +52,7 @@ namespace GK3D.Lab1
             var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.25f);
 
             _satellite.Initialize(new Color(86, 125, 155), 0,
-                new Vector3(-5, 5, 1), new Vector3(0, 0, -MathHelper.PiOver4),
+                new Vector3(-5, 5, 3), new Vector3(0, 0, -MathHelper.PiOver4),
                 new Vector3(0.1f, 0.1f, 0.1f));
             _satellite.Initialize(new Color(155, 123, 86), 0,
                 new Vector3(10, -5, 1), new Vector3(0, MathHelper.Pi, 0),
@@ -133,7 +133,7 @@ namespace GK3D.Lab1
 
             GraphicsDevice.Clear(Color.Black);
 
-            _sceneObjects.ForEach(sceneObject => sceneObject.Draw(_world, _camera,
+            _sceneObjects.ForEach(sceneObject => sceneObject.Draw(gameTime, _world, _camera,
                 _satellite.PositionVectors[0], _satellite.PositionVectors[1]));
 
             DrawDebugInformation();

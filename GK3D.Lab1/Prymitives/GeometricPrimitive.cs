@@ -190,7 +190,7 @@ namespace GK3D.Lab1.Prymitives
         /// for 3D model rendering, so you do not need to set these states before
         /// you call it.
         /// </summary>
-        public void Draw(Matrix world, Color color, Camera camera, Vector3 light1Position, Vector3 light2Position)
+        public void Draw(Matrix world, Color color, Camera camera, Vector3 light1Position, Vector3 light2Position, float colorIntensity = 1f)
         {
             // Set basicEffect parameters.
             basicEffect.World = world;
@@ -209,11 +209,11 @@ namespace GK3D.Lab1.Prymitives
             basicEffect.DirectionalLight1.DiffuseColor = new Vector3(0.0f, 0.025f, 0.0f);
 
             basicEffect.DirectionalLight2.Enabled = true;
-            basicEffect.DirectionalLight2.SpecularColor = Color.White.ToVector3();
+            basicEffect.DirectionalLight2.SpecularColor = new Vector3(colorIntensity, colorIntensity / 2, 1);
             basicEffect.DirectionalLight2.Direction = -light2Position;
             basicEffect.DirectionalLight2.DiffuseColor = new Vector3(0.0f, 0.015f, 0.0f);
 
-            basicEffect.SpecularPower = 500f;
+            basicEffect.SpecularPower = 250f;
             basicEffect.SpecularColor = Color.White.ToVector3();
             basicEffect.AmbientLightColor = new Vector3(0.0f, 0.02f, 0.0f);
             basicEffect.LightingEnabled = true;
