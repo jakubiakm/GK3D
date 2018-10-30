@@ -183,8 +183,9 @@ namespace GK3D.Lab1
         {
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(font, $"Camera position:[{camera.position.X},{camera.position.Y},{camera.position.Z}]", new Vector2(20, 5), Color.Red);
-            spriteBatch.DrawString(font, $"Camera rotation:[{camera.rotation.X},{camera.rotation.Y},{camera.rotation.Z}]", new Vector2(20, 25), Color.Red);
+            spriteBatch.DrawString(font, $"Camera position:{camera.Position}", new Vector2(20, 5), Color.Red);
+            spriteBatch.DrawString(font, $"Camera direction:{camera.Direction}", new Vector2(20, 25), Color.Red);
+            spriteBatch.DrawString(font, $"Camera up:{camera.Up}", new Vector2(20, 45), Color.Red);
 
             spriteBatch.End();
         }

@@ -7,39 +7,21 @@ namespace GK3D.Lab1
 {
     public class Camera
     {
-        // We need this to calculate the aspectRatio
-        // in the ProjectionMatrix property.
-        GraphicsDevice graphicsDevice;
+        public Vector3 Position { get; set; } = new Vector3(0f, 15f, 7f);
+        
+        public Vector3 Direction { get; set; } = new Vector3(0, -1f, -.5f);
 
-        public Vector3 position = new Vector3(0f, 15f, 7f);
-
-        public Vector3 rotation = new Vector3(0, 0, 0);
+        public Vector3 Up { get; set; } = Vector3.UnitX;
 
         float _moveSpeed;
+
+        GraphicsDevice _graphicsDevice;
 
         public Matrix ViewMatrix
         {
             get
             {
-                var lookAtVector = new Vector3(0, -1f, -.5f);
-                // We'll create a rotation matrix using our angle
-                var rotationMatrix =
-                                Matrix.CreateRotationX(rotation.X) *
-                                Matrix.CreateRotationY(rotation.Y) *
-                                Matrix.CreateRotationZ(rotation.Z);
-                                //Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), rotation.X) *
-                                //Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), rotation.Y) *
-                                //Matrix.CreateFromAxisAngle(new Vector3(0, 0, 1), rotation.Z);
-                // Then we'll modify the vector using this matrix:
-                lookAtVector = Vector3.Transform(lookAtVector, rotationMatrix);
-                lookAtVector += position;
-                //var upVector = Vector3.UnitZ;
-
-                Matrix ypr = Matrix.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z);
-                Vector3 up = Vector3.Transform(Vector3.Up, ypr);
-
-                return Matrix.CreateLookAt(
-                    position, lookAtVector, up);
+                return Matrix.CreateLookAt(Position, Position + Direction, Up);
             }
         }
 
@@ -52,111 +34,76 @@ namespace GK3D.Lab1
                 float farClipPlane = 20000;
 
                 return Matrix.CreatePerspectiveFieldOfView(
-                    fieldOfView, graphicsDevice.Viewport.AspectRatio, nearClipPlane, farClipPlane);
+                    fieldOfView, _graphicsDevice.Viewport.AspectRatio, nearClipPlane, farClipPlane);
             }
         }
 
         public Camera(GraphicsDevice graphicsDevice, float moveSpeed = 5)
         {
             _moveSpeed = moveSpeed;
-            this.graphicsDevice = graphicsDevice;
+            _graphicsDevice = graphicsDevice;
         }
 
         public void Update(GameTime gameTime)
         {
-            var rotationMatrix =
-                Matrix.CreateRotationX(rotation.X) *
-                Matrix.CreateRotationY(rotation.Y) *
-                Matrix.CreateRotationZ(rotation.Z);
-                //Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), rotation.X) *
-                //Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), rotation.Y) *
-                //Matrix.CreateFromAxisAngle(new Vector3(0, 0, 1), rotation.Z);
-            var prevPosition = position;
-            if (Keyboard.GetState().IsKeyDown(Keys.K))
-            {
-                rotation.X -= _moveSpeed *
-                    (float)gameTime.ElapsedGameTime.TotalSeconds / 8;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.I))
-            {
-                rotation.X += _moveSpeed *
-                    (float)gameTime.ElapsedGameTime.TotalSeconds / 8;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.J))
-            {
-                rotation.Z -= _moveSpeed *
-                    (float)gameTime.ElapsedGameTime.TotalSeconds / 8;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.L))
-            {
-                rotation.Z += _moveSpeed *
-                    (float)gameTime.ElapsedGameTime.TotalSeconds / 8;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.U))
-            {
-                rotation.Y -= _moveSpeed *
-                    (float)gameTime.ElapsedGameTime.TotalSeconds / 8;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.O))
-            {
-                rotation.Y += _moveSpeed *
-                    (float)gameTime.ElapsedGameTime.TotalSeconds / 8;
-            }
+            var speed = _moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var rotationSpeedMultiplier = 30;
+            #region Change camera position
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                var forwardVector = new Vector3(0, -1, 0);
-
-                forwardVector = Vector3.Transform(forwardVector, rotationMatrix);
-
-                this.position += forwardVector * _moveSpeed *
-                    (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Position += Direction * speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                var forwardVector = new Vector3(0, 1, 0);
-
-                forwardVector = Vector3.Transform(forwardVector, rotationMatrix);
-
-                this.position += forwardVector * _moveSpeed *
-                    (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Position -= Direction * speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                var forwardVector = new Vector3(1, 0, 0);
-
-                forwardVector = Vector3.Transform(forwardVector, rotationMatrix);
-
-                this.position += forwardVector * _moveSpeed *
-                    (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Position += Vector3.Cross(Up, Direction) * speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                var forwardVector = new Vector3(-1, 0, 0);
-
-                forwardVector = Vector3.Transform(forwardVector, rotationMatrix);
-
-                this.position += forwardVector * _moveSpeed *
-                    (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+                Position -= Vector3.Cross(Up, Direction) * speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
-                var forwardVector = new Vector3(0, 0, 1);
-
-                forwardVector = Vector3.Transform(forwardVector, rotationMatrix);
-
-                this.position += forwardVector * _moveSpeed *
-                    (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Position += Up * speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.E))
             {
-                var forwardVector = new Vector3(0, 0, -1);
-
-                forwardVector = Vector3.Transform(forwardVector, rotationMatrix);
-
-                this.position += forwardVector * _moveSpeed *
-                    (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Position -= Up * speed;
             }
+            #endregion
+            #region Change camera directions
+            if (Keyboard.GetState().IsKeyDown(Keys.I))
+            {
+                Direction = Vector3.Transform(Direction, Matrix.CreateFromAxisAngle(Vector3.Cross(Up, Direction), (-MathHelper.PiOver4 / 100) * speed * rotationSpeedMultiplier));
+                Up = Vector3.Transform(Up, Matrix.CreateFromAxisAngle(Vector3.Cross(Up, Direction), (-MathHelper.PiOver4 / 100) * speed * rotationSpeedMultiplier));
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.K))
+            {
+                Direction = Vector3.Transform(Direction, Matrix.CreateFromAxisAngle(Vector3.Cross(Up, Direction), (MathHelper.PiOver4 / 100) * speed * rotationSpeedMultiplier));
+                Up = Vector3.Transform(Up, Matrix.CreateFromAxisAngle(Vector3.Cross(Up, Direction), (MathHelper.PiOver4 / 100) * speed * rotationSpeedMultiplier));
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.J))
+            {
+                Direction = Vector3.Transform(Direction, Matrix.CreateFromAxisAngle(Up, (MathHelper.PiOver4 / 150) * speed * rotationSpeedMultiplier));
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.L))
+            {
+                Direction = Vector3.Transform(Direction, Matrix.CreateFromAxisAngle(Up, (-MathHelper.PiOver4 / 150) * speed * rotationSpeedMultiplier));
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.U))
+            {
+                Direction = Vector3.Transform(Direction, Matrix.CreateFromAxisAngle(Up, (MathHelper.PiOver4 / 150) * speed * rotationSpeedMultiplier));
+                Up = Vector3.Transform(Up, Matrix.CreateFromAxisAngle(Direction, (MathHelper.PiOver4 / 150) * speed * rotationSpeedMultiplier));
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.O))
+            {
+                Direction = Vector3.Transform(Direction, Matrix.CreateFromAxisAngle(Up, (-MathHelper.PiOver4 / 150) * speed * rotationSpeedMultiplier));
+                Up = Vector3.Transform(Up, Matrix.CreateFromAxisAngle(Direction, (-MathHelper.PiOver4 / 150) * speed * rotationSpeedMultiplier));
+            }
+            #endregion
         }
     }
 }
