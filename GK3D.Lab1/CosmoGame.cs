@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -77,9 +78,48 @@ namespace GK3D.Lab1
             sceneObjects.Add(bison);
             sceneObjects.Add(sun);
 
+            AddStarsToScene();
+
             camera = new Camera(graphics.GraphicsDevice);
 
             base.Initialize();
+        }
+
+        void AddStarsToScene()
+        {
+            Random rand = new Random();
+            for(int i = 0; i != 2000; i++)
+            {
+                var xRand = rand.NextDouble() > 0.5 ? 1 : -1;
+                var yRand = rand.NextDouble() > 0.5 ? 1 : -1;
+                var zRand = rand.NextDouble() > 0.5 ? 1 : -1;
+
+                var starPosition = new Vector3(xRand * (40 * (float)rand.NextDouble()), yRand * (40 * (float)rand.NextDouble()), zRand * (40 * (float)rand.NextDouble()));
+                var changed = false;
+                while (!changed)
+                {
+                    if (rand.NextDouble() > 0.5)
+                    {
+                        starPosition.X += 50 * xRand;
+                        changed = true;
+                    }
+                    if (rand.NextDouble() > 0.5)
+                    {
+                        starPosition.Y += 50 * yRand;
+                        changed = true;
+                    }
+                    if (rand.NextDouble() > 0.5)
+                    {
+                        starPosition.Z += 50 * zRand;
+                        changed = true;
+                    }
+                }
+                var star = new Sphere(0.1f, 3);
+                star.Initialize(graphics.GraphicsDevice, Color.White, 0,
+                    starPosition, new Vector3(0, 0, 0));
+               
+                sceneObjects.Add(star);
+            }
         }
 
         /// <summary>
@@ -143,8 +183,8 @@ namespace GK3D.Lab1
         {
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(font, $"Camera position:[{camera.position.X},{camera.position.Y},{camera.position.Z}]", new Vector2(20, 5), Color.Black);
-            spriteBatch.DrawString(font, $"Camera rotation:[{camera.rotation.X},{camera.rotation.Y},{camera.rotation.Z}]", new Vector2(20, 25), Color.Black);
+            spriteBatch.DrawString(font, $"Camera position:[{camera.position.X},{camera.position.Y},{camera.position.Z}]", new Vector2(20, 5), Color.Red);
+            spriteBatch.DrawString(font, $"Camera rotation:[{camera.rotation.X},{camera.rotation.Y},{camera.rotation.Z}]", new Vector2(20, 25), Color.Red);
 
             spriteBatch.End();
         }
