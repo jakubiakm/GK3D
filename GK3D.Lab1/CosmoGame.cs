@@ -12,23 +12,24 @@ namespace GK3D.Lab1
     /// </summary>
     public class CosmoGame : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        SpriteFont font;
+        GraphicsDeviceManager _graphics;
+        SpriteBatch _spriteBatch;
+        SpriteFont _font;
 
-        List<SceneObject> sceneObjects = new List<SceneObject>();
+        List<SceneObject> _sceneObjects = new List<SceneObject>();
+        Satellite _satellite;
 
-        private Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
-        Camera camera;
+        Matrix _world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
+        Camera _camera;
 
         public CosmoGame()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferWidth *= 2;  // set this value to the desired width of your window
-            graphics.PreferredBackBufferHeight *= 2;  // set this value to the desired height of your window            
-            graphics.IsFullScreen = false;
-            this.IsMouseVisible = true;
+            _graphics.PreferredBackBufferWidth *= 2;  // set this value to the desired width of your window
+            _graphics.PreferredBackBufferHeight *= 2;  // set this value to the desired height of your window            
+            _graphics.IsFullScreen = false;
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -39,7 +40,9 @@ namespace GK3D.Lab1
         /// </summary>
         protected override void Initialize()
         {
-            var satellites = new Satellite();
+            _camera = new Camera(_graphics.GraphicsDevice);
+
+            _satellite = new Satellite();
             var tree = new Tree();
             var bison = new Bison();
 
@@ -47,18 +50,18 @@ namespace GK3D.Lab1
             var planetoid = new Sphere(5.5f, 100);
             var researchStationHemisphere = new Hemisphere(1, 100);
             var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.25f);
-            
-            satellites.Initialize(new Color(86, 125, 155), 0,
+
+            _satellite.Initialize(new Color(86, 125, 155), 0,
                 new Vector3(-5, 5, 1), new Vector3(0, 0, -MathHelper.PiOver4),
                 new Vector3(0.1f, 0.1f, 0.1f));
-            satellites.Initialize(new Color(155, 123, 86), 0,
+            _satellite.Initialize(new Color(155, 123, 86), 0,
                 new Vector3(10, -5, 1), new Vector3(0, MathHelper.Pi, 0),
                 new Vector3(0.1f, 0.1f, 0.1f));
-            planetoid.Initialize(graphics.GraphicsDevice, new Color(0, 0.21f, 0), 0,
+            planetoid.Initialize(_graphics.GraphicsDevice, new Color(0, 0.21f, 0), 0,
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0));
-            researchStationHemisphere.Initialize(graphics.GraphicsDevice, new Color(179, 204, 255), 0,
+            researchStationHemisphere.Initialize(_graphics.GraphicsDevice, new Color(179, 204, 255), 0,
                 new Vector3(0, 2.65f, 0), new Vector3(-MathHelper.PiOver2, 0, 0));
-            researchStationHemicylinder.Initialize(graphics.GraphicsDevice, new Color(179, 204, 255), 0,
+            researchStationHemicylinder.Initialize(_graphics.GraphicsDevice, new Color(179, 204, 255), 0,
                 new Vector3(-0.4f, 2.65f, 0), new Vector3(-0.25f, MathHelper.PiOver2, MathHelper.PiOver2),
                 new Vector3(1, 1, 1));
             tree.Initialize(Color.DarkGreen, 0,
@@ -67,28 +70,92 @@ namespace GK3D.Lab1
             bison.Initialize(new Color(115, 77, 38), 0,
                 new Vector3(-1, 2.328f, 1.5f), new Vector3(-0.35f, 2.6f, MathHelper.PiOver4 / 2),
                 new Vector3(0.65f, 0.65f, 0.65f));
-            sun.Initialize(graphics.GraphicsDevice, Color.Yellow, 0,
+            sun.Initialize(_graphics.GraphicsDevice, Color.Yellow, 0,
                 new Vector3(0, 1000, 0), new Vector3(0, 0, 0));
 
-            sceneObjects.Add(satellites);
-            sceneObjects.Add(planetoid);
-            sceneObjects.Add(researchStationHemisphere);
-            sceneObjects.Add(researchStationHemicylinder);
-            sceneObjects.Add(tree);
-            sceneObjects.Add(bison);
-            sceneObjects.Add(sun);
+            _sceneObjects.Add(_satellite);
+            _sceneObjects.Add(planetoid);
+            _sceneObjects.Add(researchStationHemisphere);
+            _sceneObjects.Add(researchStationHemicylinder);
+            _sceneObjects.Add(tree);
+            _sceneObjects.Add(bison);
+            _sceneObjects.Add(sun);
 
             AddStarsToScene();
 
-            camera = new Camera(graphics.GraphicsDevice);
-
             base.Initialize();
+        }
+
+        /// <summary>
+        /// LoadContent will be called once per game and is the place to load
+        /// all of your content.
+        /// </summary>
+        protected override void LoadContent()
+        {
+            // Create a new SpriteBatch, which can be used to draw textures.
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _font = Content.Load<SpriteFont>("Position");
+            _sceneObjects.ForEach(sceneObject => sceneObject.LoadModel(Content));
+        }
+
+        /// <summary>
+        /// UnloadContent will be called once per game and is the place to unload
+        /// game-specific content.
+        /// </summary>
+        protected override void UnloadContent()
+        {
+            Content.Unload();
+        }
+
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Update(GameTime gameTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
+            _sceneObjects.ForEach(sceneObject => sceneObject.Update(gameTime));
+            _camera.Update(gameTime);
+          
+            base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
+            GraphicsDevice.Clear(Color.Black);
+
+            _sceneObjects.ForEach(sceneObject => sceneObject.Draw(_world, _camera,
+                _satellite.PositionVectors[0], _satellite.PositionVectors[1]));
+
+            DrawDebugInformation();
+
+            base.Draw(gameTime);
+        }
+
+        private void DrawDebugInformation()
+        {
+            _spriteBatch.Begin();
+
+            _spriteBatch.DrawString(_font, $"Camera position:{_camera.Position}", new Vector2(20, 5), Color.Red);
+            _spriteBatch.DrawString(_font, $"Camera direction:{_camera.Direction}", new Vector2(20, 25), Color.Red);
+            _spriteBatch.DrawString(_font, $"Camera up:{_camera.Up}", new Vector2(20, 45), Color.Red);
+
+            _spriteBatch.End();
         }
 
         void AddStarsToScene()
         {
             Random rand = new Random();
-            for(int i = 0; i != 2000; i++)
+            for (int i = 0; i != 2000; i++)
             {
                 var xRand = rand.NextDouble() > 0.5 ? 1 : -1;
                 var yRand = rand.NextDouble() > 0.5 ? 1 : -1;
@@ -115,79 +182,11 @@ namespace GK3D.Lab1
                     }
                 }
                 var star = new Sphere(0.1f, 3);
-                star.Initialize(graphics.GraphicsDevice, Color.White, 0,
+                star.Initialize(_graphics.GraphicsDevice, Color.White, 0,
                     starPosition, new Vector3(0, 0, 0));
-               
-                sceneObjects.Add(star);
+
+                _sceneObjects.Add(star);
             }
-        }
-
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
-        protected override void LoadContent()
-        {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = Content.Load<SpriteFont>("Position");
-            sceneObjects.ForEach(sceneObject => sceneObject.LoadModel(Content));
-        }
-
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
-        protected override void UnloadContent()
-        {
-            Content.Unload();
-        }
-
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            sceneObjects.ForEach(sceneObject => sceneObject.Update(gameTime));
-            camera.Update(gameTime);
-          
-            base.Update(gameTime);
-        }
-
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-
-            GraphicsDevice.Clear(Color.Black);
-
-            var satelliter = (Satellite)sceneObjects.First(o => o.GetType() == typeof(Satellite));
-
-            sceneObjects.ForEach(sceneObject => sceneObject.Draw(world, camera,
-                satelliter.PositionVectors[0], satelliter.PositionVectors[1]));
-
-            DrawDebugInformation();
-
-            base.Draw(gameTime);
-        }
-
-        private void DrawDebugInformation()
-        {
-            spriteBatch.Begin();
-
-            spriteBatch.DrawString(font, $"Camera position:{camera.Position}", new Vector2(20, 5), Color.Red);
-            spriteBatch.DrawString(font, $"Camera direction:{camera.Direction}", new Vector2(20, 25), Color.Red);
-            spriteBatch.DrawString(font, $"Camera up:{camera.Up}", new Vector2(20, 45), Color.Red);
-
-            spriteBatch.End();
         }
     }
 }
