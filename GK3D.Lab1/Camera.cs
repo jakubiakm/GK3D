@@ -30,8 +30,8 @@ namespace GK3D.Lab1
             get
             {
                 float fieldOfView = MathHelper.PiOver4;
-                float nearClipPlane = 1;
-                float farClipPlane = 20000;
+                float nearClipPlane = 0.01f;
+                float farClipPlane = 1000;
 
                 return Matrix.CreatePerspectiveFieldOfView(
                     fieldOfView, _graphicsDevice.Viewport.AspectRatio, nearClipPlane, farClipPlane);
@@ -95,12 +95,10 @@ namespace GK3D.Lab1
             }
             if (Keyboard.GetState().IsKeyDown(Keys.U))
             {
-                Direction = Vector3.Transform(Direction, Matrix.CreateFromAxisAngle(Up, (MathHelper.PiOver4 / 150) * speed * rotationSpeedMultiplier));
                 Up = Vector3.Transform(Up, Matrix.CreateFromAxisAngle(Direction, (MathHelper.PiOver4 / 150) * speed * rotationSpeedMultiplier));
             }
             if (Keyboard.GetState().IsKeyDown(Keys.O))
             {
-                Direction = Vector3.Transform(Direction, Matrix.CreateFromAxisAngle(Up, (-MathHelper.PiOver4 / 150) * speed * rotationSpeedMultiplier));
                 Up = Vector3.Transform(Up, Matrix.CreateFromAxisAngle(Direction, (-MathHelper.PiOver4 / 150) * speed * rotationSpeedMultiplier));
             }
             #endregion
