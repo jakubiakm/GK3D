@@ -10,6 +10,7 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
+using GK3D.Lab1.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
@@ -199,25 +200,8 @@ namespace GK3D.Lab1.Prymitives
             basicEffect.EmissiveColor = color.ToVector3();
             basicEffect.Alpha = color.A / 255.0f;
 
-            basicEffect.DirectionalLight0.Enabled = true;
-            basicEffect.DirectionalLight0.Direction = new Vector3(0.0f, -1000.0f, 0);
-            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.0005f, 0.0005f, 0.0005f);
+            BasicEffectHelper.AddLightToBasicEffect(basicEffect, light1Position, light2Position);
 
-            basicEffect.DirectionalLight1.Enabled = true;
-            basicEffect.DirectionalLight1.SpecularColor = Color.White.ToVector3();
-            basicEffect.DirectionalLight1.Direction = -light1Position;
-            basicEffect.DirectionalLight1.DiffuseColor = new Vector3(0.0f, 0.025f, 0.0f);
-
-            basicEffect.DirectionalLight2.Enabled = true;
-            basicEffect.DirectionalLight2.SpecularColor = new Vector3(colorIntensity, colorIntensity / 2, 1);
-            basicEffect.DirectionalLight2.Direction = -light2Position;
-            basicEffect.DirectionalLight2.DiffuseColor = new Vector3(0.0f, 0.015f, 0.0f);
-
-            basicEffect.SpecularPower = 250f;
-            basicEffect.SpecularColor = Color.White.ToVector3();
-            basicEffect.AmbientLightColor = new Vector3(0.0f, 0.002f, 0.0f);
-            basicEffect.LightingEnabled = true;
-            
             GraphicsDevice device = basicEffect.GraphicsDevice;
             device.DepthStencilState = DepthStencilState.Default;
         

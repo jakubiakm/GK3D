@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
+using GK3D.Lab1.Helpers;
 
 namespace GK3D.Lab1
 {
@@ -73,19 +74,7 @@ namespace GK3D.Lab1
                         basicEffect.EmissiveColor = Colors[ind].ToVector3();
                         basicEffect.Alpha = Colors[ind].A / 255.0f;
 
-                        basicEffect.DirectionalLight0.Enabled = true;
-                        basicEffect.DirectionalLight0.Direction = new Vector3(0.0f, -1000.0f, 0);
-                        basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.0005f, 0.0005f, 0.0005f);
-
-                        basicEffect.DirectionalLight1.Enabled = true;
-                        basicEffect.DirectionalLight1.SpecularColor = Color.White.ToVector3();
-                        basicEffect.DirectionalLight1.Direction = -light1Position;
-                        basicEffect.DirectionalLight1.DiffuseColor = new Vector3(0.0f, 0.025f, 0.0f);
-
-                        basicEffect.DirectionalLight2.Enabled = true;
-                        basicEffect.DirectionalLight2.SpecularColor = Color.White.ToVector3();
-                        basicEffect.DirectionalLight2.Direction = -light2Position;
-                        basicEffect.DirectionalLight2.DiffuseColor = new Vector3(0.0f, 0.015f, 0.0f);
+                        BasicEffectHelper.AddLightToBasicEffect(basicEffect, light1Position, light2Position);
 
                         basicEffect.SpecularPower = 500f;
                         basicEffect.SpecularColor = Color.White.ToVector3();

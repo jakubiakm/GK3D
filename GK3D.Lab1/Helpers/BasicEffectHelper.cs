@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GK3D.Common
+namespace GK3D.Lab1.Helpers
 {
-    public static class BasicEffectsHelper
+    public static class BasicEffectHelper
     {
-        public static void AddLightToBasicEffect(ref BasicEffect basicEffect, Vector3 light1Position, Vector3 light2Position)
+        public static void AddLightToBasicEffect(BasicEffect basicEffect, Vector3 light1Position, Vector3 light2Position)
         {
             basicEffect.DirectionalLight0.Enabled = true;
             basicEffect.DirectionalLight0.Direction = new Vector3(0.0f, -1000.0f, 0);
@@ -30,6 +30,7 @@ namespace GK3D.Common
             basicEffect.SpecularColor = Color.White.ToVector3();
             basicEffect.AmbientLightColor = new Vector3(0.0f, 0.02f, 0.0f);
             basicEffect.LightingEnabled = true;
+            //basicEffect.EnableDefaultLighting();
         }
     }
 }
