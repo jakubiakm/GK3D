@@ -28,8 +28,6 @@ namespace GK3D.Lab1.Prymitives
     public abstract class GeometricPrimitive : IDisposable
     {
         #region Fields
-
-
         // During the procvess of constructing a primitive model, vertex
         // and index data is stored on the CPU in these managed lists.
         List<VertexPositionNormal> vertices = new List<VertexPositionNormal>();
@@ -166,18 +164,14 @@ namespace GK3D.Lab1.Prymitives
 
             // Set our vertex declaration, vertex buffer, and index buffer.
             graphicsDevice.SetVertexBuffer(vertexBuffer);
-
             graphicsDevice.Indices = indexBuffer;
-            
-
             foreach (EffectPass basicEffectPass in basicEffect.CurrentTechnique.Passes)
             {
                 basicEffectPass.Apply();
 
                 int primitiveCount = indices.Count / 3;
                
-                graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0,
-                                                     vertices.Count, 0, primitiveCount);
+                graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, primitiveCount);
 
             }
         }
@@ -190,9 +184,15 @@ namespace GK3D.Lab1.Prymitives
         /// for 3D model rendering, so you do not need to set these states before
         /// you call it.
         /// </summary>
-        public void Draw(Matrix world, Color color, Camera camera, Vector3 light1Position, Vector3 light2Position, float colorIntensity = 1f)
+        public void Draw(Matrix world, Color color, Camera camera, Vector3 light1Position, Vector3 light2Position, Texture2D texture, float colorIntensity = 1f)
         {
             // Set basicEffect parameters.
+            if(texture != null)
+            {
+                basicEffect.TextureEnabled = true;
+                basicEffect.Texture = texture;
+            }
+
             basicEffect.World = world;
             basicEffect.View = camera.ViewMatrix;
             basicEffect.Projection = camera.ProjectionMatrix;
@@ -215,7 +215,7 @@ namespace GK3D.Lab1.Prymitives
 
             basicEffect.SpecularPower = 250f;
             basicEffect.SpecularColor = Color.White.ToVector3();
-            basicEffect.AmbientLightColor = new Vector3(0.0f, 0.02f, 0.0f);
+            basicEffect.AmbientLightColor = new Vector3(0.0f, 0.002f, 0.0f);
             basicEffect.LightingEnabled = true;
             
             GraphicsDevice device = basicEffect.GraphicsDevice;
@@ -236,8 +236,6 @@ namespace GK3D.Lab1.Prymitives
             // Draw the model, using basicEffect.
             Draw(basicEffect);
         }
-
-
         #endregion
     }
 }

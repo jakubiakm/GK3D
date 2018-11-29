@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GK3D.Lab1", "GK3D.Lab1\GK3D.Lab1.csproj", "{51B27764-4F53-4329-A457-F5FDB4ADB8C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GK3D.Common", "GK3D.Common\GK3D.Common.csproj", "{A0088010-5502-495D-93FE-EBD49673CFD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{51B27764-4F53-4329-A457-F5FDB4ADB8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51B27764-4F53-4329-A457-F5FDB4ADB8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51B27764-4F53-4329-A457-F5FDB4ADB8C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0088010-5502-495D-93FE-EBD49673CFD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0088010-5502-495D-93FE-EBD49673CFD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0088010-5502-495D-93FE-EBD49673CFD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0088010-5502-495D-93FE-EBD49673CFD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

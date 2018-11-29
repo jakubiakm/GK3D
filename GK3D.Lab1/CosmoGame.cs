@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace GK3D.Lab1
@@ -15,6 +16,8 @@ namespace GK3D.Lab1
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         SpriteFont _font;
+        Texture2D _exercise1Texture;
+        Texture2D _shipTexture;
 
         List<SceneObject> _sceneObjects = new List<SceneObject>();
         Satellite _satellite;
@@ -30,7 +33,19 @@ namespace GK3D.Lab1
             _graphics.PreferredBackBufferHeight *= 2;  // set this value to the desired height of your window            
             _graphics.IsFullScreen = false;
             IsMouseVisible = true;
+            _graphics.GraphicsProfile = GraphicsProfile.HiDef;
+            _graphics.PreferMultiSampling = false;
+
         }
+
+        public Texture2D LoadPicture(string Filename)
+        {
+            FileStream setStream = File.Open(Filename, FileMode.Open);
+            Texture2D NewTexture = Texture2D.FromStream(_graphics.GraphicsDevice, setStream);
+            setStream.Dispose();
+            return NewTexture;
+        }
+
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -40,12 +55,18 @@ namespace GK3D.Lab1
         /// </summary>
         protected override void Initialize()
         {
+
+            _graphics.ApplyChanges();
             _camera = new Camera(_graphics.GraphicsDevice);
 
             _satellite = new Satellite();
             var tree = new Tree();
             var bison = new Bison();
-
+            var airboat = new Airboat();
+            _exercise1Texture = LoadPicture(@"D:\Users\syntaximus\OneDrive\Studia\Semestr 9\GK\Projekty\GK3D.Lab1\GK3D.Lab1\Content\White-Floor-Concrete-Texture.jpg");
+            _shipTexture = LoadPicture(@"D:\Users\syntaximus\OneDrive\Studia\Semestr 9\GK\Projekty\GK3D.Lab1\GK3D.Lab1\Content\Ship-texture.jpg");
+            var scene = new Cuboid(1, 20, 40);
+            var cube1 = new Cuboid(1, 1, 1);
             var sun = new Sphere(100f, 50);
             var planetoid = new Sphere(5.5f, 100);
             var researchStationHemisphere = new Hemisphere(1, 100);
@@ -53,12 +74,12 @@ namespace GK3D.Lab1
 
             _satellite.Initialize(new Color(86, 125, 155), 0,
                 new Vector3(-5, 5, 3), new Vector3(0, 0, -MathHelper.PiOver4),
-                new Vector3(0.1f, 0.1f, 0.1f));
+                new Vector3(0.1f, 0.1f, 0.1f), _exercise1Texture);
             _satellite.Initialize(new Color(155, 123, 86), 0,
                 new Vector3(10, -5, 1), new Vector3(0, MathHelper.Pi, 0),
-                new Vector3(0.1f, 0.1f, 0.1f));
+                new Vector3(0.1f, 0.1f, 0.1f), _exercise1Texture);
             planetoid.Initialize(_graphics.GraphicsDevice, new Color(0, 0.21f, 0), 0,
-                new Vector3(0, 0, 0), new Vector3(0, 0, 0));
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), _exercise1Texture);
             researchStationHemisphere.Initialize(_graphics.GraphicsDevice, new Color(179, 204, 255), 0,
                 new Vector3(0, 2.65f, 0), new Vector3(-MathHelper.PiOver2, 0, 0));
             researchStationHemicylinder.Initialize(_graphics.GraphicsDevice, new Color(179, 204, 255), 0,
@@ -69,10 +90,17 @@ namespace GK3D.Lab1
                 new Vector3(0.007f, 0.007f, 0.007f));
             bison.Initialize(new Color(115, 77, 38), 0,
                 new Vector3(-1, 2.328f, 1.5f), new Vector3(-0.35f, 2.6f, MathHelper.PiOver4 / 2),
-                new Vector3(0.65f, 0.65f, 0.65f));
+                new Vector3(0.65f, 0.65f, 0.65f),
+                _exercise1Texture);
             sun.Initialize(_graphics.GraphicsDevice, Color.Yellow, 0,
-                new Vector3(0, 1000, 0), new Vector3(0, 0, 0));
-
+                new Vector3(0, 1000, 0), new Vector3(0, 0, 0), null);
+            scene.Initialize(_graphics.GraphicsDevice, Color.SteelBlue, 0,
+                new Vector3(20, 45, 10), new Vector3(0, 0, 0), _exercise1Texture);
+            cube1.Initialize(_graphics.GraphicsDevice, Color.BlanchedAlmond, 0,
+                new Vector3(20, 47, 10), new Vector3(0, 0, 0), _exercise1Texture);
+            airboat.Initialize(Color.Wheat, 0,
+                new Vector3(0, 48.5F, -10), new Vector3(0, 2, 0),
+                new Vector3(0.005f, 0.005f, 0.005f), _shipTexture);
             _sceneObjects.Add(_satellite);
             _sceneObjects.Add(planetoid);
             _sceneObjects.Add(researchStationHemisphere);
@@ -80,9 +108,12 @@ namespace GK3D.Lab1
             _sceneObjects.Add(tree);
             _sceneObjects.Add(bison);
             _sceneObjects.Add(sun);
-
-            AddStarsToScene();
-
+            _sceneObjects.Add(scene);
+            _sceneObjects.Add(cube1);
+            _sceneObjects.Add(airboat);
+            //AddStarsToScene();
+            GraphicsDevice.PresentationParameters.MultiSampleCount = 16;
+            _graphics.ApplyChanges();
             base.Initialize();
         }
 
@@ -117,9 +148,15 @@ namespace GK3D.Lab1
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Z))
+            {
+                _graphics.PreferMultiSampling = !_graphics.PreferMultiSampling;
+                _graphics.ApplyChanges();
+
+            }
             _sceneObjects.ForEach(sceneObject => sceneObject.Update(gameTime));
             _camera.Update(gameTime);
-          
+
             base.Update(gameTime);
         }
 
@@ -183,7 +220,7 @@ namespace GK3D.Lab1
                 }
                 var star = new Sphere(0.1f, 3);
                 star.Initialize(_graphics.GraphicsDevice, Color.White, 0,
-                    starPosition, new Vector3(0, 0, 0));
+                    starPosition, new Vector3(0, 0, 0), null);
 
                 _sceneObjects.Add(star);
             }

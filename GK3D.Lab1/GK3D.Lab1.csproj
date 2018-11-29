@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="CosmoGame.cs" />
+    <Compile Include="SceneObjects\Airboat.cs" />
+    <Compile Include="SceneObjects\Cuboid.cs" />
     <Compile Include="SceneObjects\Hemicylinder.cs" />
     <Compile Include="SceneObjects\Hemisphere.cs" />
     <Compile Include="Program.cs" />

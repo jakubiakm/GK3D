@@ -22,9 +22,10 @@ namespace GK3D.Lab1
             _colorIntensity = 0;
         }
 
-        public void Initialize(GraphicsDevice device, Color color, float angle, Vector3 positionVector, Vector3 rotationVector)
+        public void Initialize(GraphicsDevice device, Color color, float angle, Vector3 positionVector, Vector3 rotationVector, Texture2D texture)
         {
             _sphere = new SpherePrimitive(device, _diameter, _tesselation);
+            Texture = texture;
             Color = color;
             Angle = angle;
             PositionVector = positionVector;
@@ -41,7 +42,7 @@ namespace GK3D.Lab1
         {
             world = GetWorldMatrix(world);
             base.Draw(gameTime, world, camera, light1Position, light2Position);
-            _sphere.Draw(world, Color, camera, light1Position, light2Position, GetColorIntensity());
+            _sphere.Draw(world, Color, camera, light1Position, light2Position, Texture, GetColorIntensity());
         }
 
         private float GetColorIntensity()

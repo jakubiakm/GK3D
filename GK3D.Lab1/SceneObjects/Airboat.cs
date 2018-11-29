@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace GK3D.Lab1
 {
-    public class Bison : SceneObject
+    public class Airboat : SceneObject
     {
         Model Model { get; set; }
 
@@ -23,7 +23,7 @@ namespace GK3D.Lab1
         public override void LoadModel(ContentManager contentManager)
         {
             base.LoadModel(contentManager);
-            Model = contentManager.Load<Model>("Bison");
+            Model = contentManager.Load<Model>("Arc170");
         }
 
         public override void Update(GameTime gameTime)
@@ -47,7 +47,7 @@ namespace GK3D.Lab1
                     basicEffect.Projection = camera.ProjectionMatrix;
                     basicEffect.EmissiveColor = Color.ToVector3();
                     basicEffect.Alpha = Color.A / 255.0f;
-
+                    
                     basicEffect.DirectionalLight0.Enabled = true;
                     basicEffect.DirectionalLight0.Direction = new Vector3(0.0f, -1000.0f, 0);
                     basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.0005f, 0.0005f, 0.0005f);
@@ -66,9 +66,10 @@ namespace GK3D.Lab1
                     basicEffect.SpecularColor = Color.White.ToVector3();
                     basicEffect.AmbientLightColor = new Vector3(0.0f, 0.02f, 0.0f);
                     basicEffect.LightingEnabled = true;
-
+                    
                     GraphicsDevice device = basicEffect.GraphicsDevice;
                     device.DepthStencilState = DepthStencilState.Default;
+
 
 
                     if (Color.A < 255)

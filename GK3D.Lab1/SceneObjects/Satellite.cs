@@ -15,15 +15,17 @@ namespace GK3D.Lab1
         public List<Vector3> PositionVectors { get; set; } = new List<Vector3>();
         public List<Vector3> RotationVectors { get; set; } = new List<Vector3>();
         public List<Vector3> ScaleVectors { get; set; } = new List<Vector3>();
+        public List<Texture2D> Textures { get; set; } = new List<Texture2D>();
         bool RightDirection = true;
 
-        public void Initialize(Color color, float angle, Vector3 positionVector, Vector3 rotationVector, Vector3 scaleVector)
+        public void Initialize(Color color, float angle, Vector3 positionVector, Vector3 rotationVector, Vector3 scaleVector, Texture2D texture = null)
         {
             Colors.Add(color);
             Angles.Add(angle);
             PositionVectors.Add(positionVector);
             RotationVectors.Add(rotationVector);
             ScaleVectors.Add(scaleVector);
+            Textures.Add(texture);
         }
 
         public override void LoadModel(ContentManager contentManager)
@@ -60,9 +62,11 @@ namespace GK3D.Lab1
             for (int ind = 0; ind < PositionVectors.Count; ind++)
                 foreach (ModelMesh mesh in Model.Meshes)
                 {
+
                     foreach (BasicEffect basicEffect in mesh.Effects)
                     {
-
+                        basicEffect.TextureEnabled = true;
+                        basicEffect.Texture = Textures[ind];
                         basicEffect.World = GetWorldMatrix(world, ind);
                         basicEffect.View = camera.ViewMatrix;
                         basicEffect.Projection = camera.ProjectionMatrix;
