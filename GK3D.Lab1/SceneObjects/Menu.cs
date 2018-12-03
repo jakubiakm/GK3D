@@ -15,12 +15,28 @@ namespace GK3D.Lab1.SceneObjects
     public class Options
     {
         public float MipMapLevelOfDetailBias { get; set; }
+
         public TextureFilter Filter { get; set; }
+
+        public bool Msaa { get; set; }
+
+        public bool LinearMagnifierFilter { get; set; }
+
+        public bool MipmapFilter { get; set; }
+
+        public float ResolutionWidth { get; set; }
+
+        public float ResolutionHeight { get; set; }
 
         public Options()
         {
             Filter = TextureFilter.Linear;
             MipMapLevelOfDetailBias = 0;
+            Msaa = false;
+            MipmapFilter = false;
+            LinearMagnifierFilter = false;
+            ResolutionWidth = 1280;
+            ResolutionHeight = 1020;
         }
 
     }
@@ -56,10 +72,10 @@ namespace GK3D.Lab1.SceneObjects
         float mHeightFilter = 0.4f;
 
         //KONFIGURACJA PROSTOKĄTA ANTYALIASINGU
-        float xPositionAntiAliasing = 0.55f;
+        float xPositionAntiAliasing = 0.75f;
         float yPositionAntiAliasing = 0.05f;
-        float mWidthAntiAliasing = 0.4f;
-        float mHeightAntiAliasing = 0.4f;
+        float mWidthAntiAliasing = 0.2f;
+        float mHeightAntiAliasing = 0.3f;
 
         //KONFIGURACJA PROSTOKĄTA ROZDZIELCZOŚCI
         float xPositionResolution = 0.35f;
@@ -76,8 +92,6 @@ namespace GK3D.Lab1.SceneObjects
         CheckBox _filterLinearMagnify;
         CheckBox _filterMinmap;
         Slider _filterMinmapBias;
-
-
 
         public Menu(List<SceneObject> sceneObjects, ContentManager content)
         {
@@ -109,6 +123,7 @@ namespace GK3D.Lab1.SceneObjects
             _filterLinearMagnify = new CheckBox("Magnifier linear filter");
             _filterMinmap = new CheckBox("Mipmap filter");
             _filterMinmapBias = new Slider(0, 100);
+            _filterMinmapBias.Value = 0;
 
             _filterPanel.AddChild(new Header("Filters"));
             _filterPanel.AddChild(new HorizontalLine());
@@ -124,6 +139,9 @@ namespace GK3D.Lab1.SceneObjects
             _antiAliasingPanel.AddChild(_antiAliasingMsaa);
 
             _resolution = new DropDown();
+            _resolution.AddItem("1440x900");
+            _resolution.AddItem("1900x1080");
+            _resolution.AddItem("1900x1200");
 
             _resolutionPanel.AddChild(new Header("Resolution"));
             _resolutionPanel.AddChild(new HorizontalLine());
@@ -186,7 +204,7 @@ namespace GK3D.Lab1.SceneObjects
 
         public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
         {
-            if(ShowMenu)
+            if (ShowMenu)
             {
                 DrawMenu(graphicsDevice, spriteBatch);
             }
