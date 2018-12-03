@@ -37,13 +37,13 @@ namespace GK3D.Lab1
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            _graphics.PreferredBackBufferWidth *= 2;  // set this value to the desired width of your window
-            _graphics.PreferredBackBufferHeight *= 2;  // set this value to the desired height of your window            
+            _graphics.PreferredBackBufferWidth = 1600;  // set this value to the desired width of your window
+            _graphics.PreferredBackBufferHeight = 960;  // set this value to the desired height of your window            
             _graphics.IsFullScreen = false;
             IsMouseVisible = false;
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
             _graphics.PreferMultiSampling = false;
-
+            //_graphics.IsFullScreen = true;
         }
 
         public Texture2D LoadPicture(string Filename)
@@ -121,7 +121,7 @@ namespace GK3D.Lab1
             //AddStarsToScene();
             GraphicsDevice.PresentationParameters.MultiSampleCount = 16;
             _graphics.ApplyChanges();
-            _menu = new Menu(_sceneObjects, Content);
+            _menu = new Menu(_sceneObjects, Content, _graphics);
             base.Initialize();
 
         }

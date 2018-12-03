@@ -24,9 +24,9 @@ namespace GK3D.Lab1.SceneObjects
 
         public bool MipmapFilter { get; set; }
 
-        public float ResolutionWidth { get; set; }
+        public int ResolutionWidth { get; set; }
 
-        public float ResolutionHeight { get; set; }
+        public int ResolutionHeight { get; set; }
 
         public Options()
         {
@@ -35,8 +35,8 @@ namespace GK3D.Lab1.SceneObjects
             Msaa = false;
             MipmapFilter = false;
             LinearMagnifierFilter = false;
-            ResolutionWidth = 1280;
-            ResolutionHeight = 1020;
+            ResolutionWidth = 1600;
+            ResolutionHeight = 960;
         }
 
     }
@@ -59,6 +59,7 @@ namespace GK3D.Lab1.SceneObjects
             }
         }
 
+        GraphicsDeviceManager _graphicsDeviceManager;
         Options _options = new Options();
         KeyboardState _currentKeyboardState;
         KeyboardState _previousKeyboardState;
@@ -93,7 +94,7 @@ namespace GK3D.Lab1.SceneObjects
         CheckBox _filterMinmap;
         Slider _filterMinmapBias;
 
-        public Menu(List<SceneObject> sceneObjects, ContentManager content)
+        public Menu(List<SceneObject> sceneObjects, ContentManager content, GraphicsDeviceManager graphicsDeviceManager)
         {
             _sceneObjects = sceneObjects;
             Options = new Options
@@ -101,15 +102,13 @@ namespace GK3D.Lab1.SceneObjects
                 Filter = TextureFilter.Linear,
                 MipMapLevelOfDetailBias = 0f
             };
-
+            _graphicsDeviceManager = graphicsDeviceManager;
             InitializeMenu(content);
         }
 
         private void InitializeMenu(ContentManager content)
         {
-            // GeonBit.UI: Init the UI manager using the "hd" built-in theme
             UserInterface.Initialize(content, BuiltinThemes.hd);
-
 
             _filterPanel = new Panel(new Vector2(400, 300), PanelSkin.Default, Anchor.TopLeft);
             _antiAliasingPanel = new Panel(new Vector2(400, 300), PanelSkin.Default, Anchor.TopLeft);
@@ -118,7 +117,6 @@ namespace GK3D.Lab1.SceneObjects
             UserInterface.Active.AddEntity(_filterPanel);
             UserInterface.Active.AddEntity(_antiAliasingPanel);
             UserInterface.Active.AddEntity(_resolutionPanel);
-
 
             _filterLinearMagnify = new CheckBox("Magnifier linear filter");
             _filterMinmap = new CheckBox("Mipmap filter");
@@ -141,12 +139,79 @@ namespace GK3D.Lab1.SceneObjects
             _resolution = new DropDown();
             _resolution.AddItem("1440x900");
             _resolution.AddItem("1900x1080");
-            _resolution.AddItem("1900x1200");
+            _resolution.AddItem("1600x960");
 
             _resolutionPanel.AddChild(new Header("Resolution"));
             _resolutionPanel.AddChild(new HorizontalLine());
             _resolutionPanel.AddChild(_resolution);
 
+            _filterLinearMagnify.OnValueChange = (Entity e) => UpdateOptions();
+            _filterMinmap.OnValueChange = (Entity e) => UpdateOptions();
+            _filterMinmapBias.OnValueChange = (Entity e) => UpdateOptions();
+            _resolution.OnValueChange = (Entity e) => UpdateOptions();
+            _antiAliasingMsaa.OnValueChange = (Entity e) => UpdateOptions();
+            UpdateOptions();
+        }
+
+        private void UpdateOptions()
+        {
+            TextureFilter filter = TextureFilter.Linear;
+            float mipMapLevelOfDetailBias = _filterMinmapBias.Value / 25f;
+            bool msaa = false;
+            bool mipmapFilter = false;
+            bool linearMagnifierFilter = false;
+            int resolutionWidth = 1600;
+            int resolutionHeight = 960;
+            switch (_resolution.SelectedIndex)
+            {
+                case 0:
+                    resolutionHeight = 900;
+                    resolutionWidth = 1440;
+                    break;
+                case 1:
+                    resolutionHeight = 1080;
+                    resolutionWidth = 1900;
+                    break;
+                case 2:
+                    resolutionHeight = 960;
+                    resolutionWidth = 1600;
+                    break;
+            }
+
+            if (_graphicsDeviceManager.PreferredBackBufferWidth != resolutionWidth
+               || _graphicsDeviceManager.PreferredBackBufferHeight != resolutionHeight)
+            {
+                _graphicsDeviceManager.PreferredBackBufferWidth = resolutionWidth;
+                _graphicsDeviceManager.PreferredBackBufferHeight = resolutionHeight;
+                _graphicsDeviceManager.ApplyChanges();
+            }
+            if (_filterLinearMagnify.Checked && _filterMinmap.Checked)
+            {
+                filter = TextureFilter.MinPointMagLinearMipLinear;
+            }
+            if (!_filterLinearMagnify.Checked && _filterMinmap.Checked)
+            {
+                filter = TextureFilter.MinLinearMagPointMipLinear;
+            }
+            if (_filterLinearMagnify.Checked && !_filterMinmap.Checked)
+            {
+                filter = TextureFilter.MinPointMagLinearMipPoint;
+            }
+            if (!_filterLinearMagnify.Checked && !_filterMinmap.Checked)
+            {
+                filter = TextureFilter.MinLinearMagPointMipPoint;
+            }
+            Options = new Options()
+            {
+                Filter = filter,
+                LinearMagnifierFilter = linearMagnifierFilter,
+                MipmapFilter = mipmapFilter,
+                MipMapLevelOfDetailBias = mipMapLevelOfDetailBias,
+                Msaa = msaa,
+                ResolutionHeight = resolutionHeight,
+                ResolutionWidth = resolutionWidth
+
+            };
         }
 
         public override void Update(GameTime gameTime)
@@ -155,48 +220,6 @@ namespace GK3D.Lab1.SceneObjects
             if (_currentKeyboardState.IsKeyUp(Keys.Space) && _previousKeyboardState.IsKeyDown(Keys.Space))
             {
                 ShowMenu = !ShowMenu;
-            }
-            if (_currentKeyboardState.IsKeyUp(Keys.F) && _previousKeyboardState.IsKeyDown(Keys.F))
-            {
-                switch (Options.MipMapLevelOfDetailBias)
-                {
-                    case 0:
-                        Options = new Options
-                        {
-                            MipMapLevelOfDetailBias = 0.25f,
-                            Filter = TextureFilter.MinPointMagLinearMipLinear
-                        };
-                        break;
-                    case 0.25f:
-                        Options = new Options
-                        {
-                            MipMapLevelOfDetailBias = 0.5f,
-                            Filter = TextureFilter.MinLinearMagPointMipLinear
-                        };
-                        break;
-                    case 0.5f:
-                        Options = new Options
-                        {
-                            MipMapLevelOfDetailBias = 0.75f,
-                            Filter = TextureFilter.MinPointMagLinearMipLinear
-                        };
-                        break;
-                    case 0.75f:
-                        Options = new Options
-                        {
-                            MipMapLevelOfDetailBias = 1,
-                            Filter = TextureFilter.MinLinearMagPointMipPoint
-                        };
-                        break;
-                    case 1:
-                        Options = new Options
-                        {
-                            MipMapLevelOfDetailBias = 0,
-                            Filter = TextureFilter.MinPointMagLinearMipPoint
-                        };
-                        break;
-
-                }
             }
             _previousKeyboardState = _currentKeyboardState;
             base.Update(gameTime);
