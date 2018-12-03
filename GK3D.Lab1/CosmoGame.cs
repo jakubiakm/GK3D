@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GeonBit.UI;
+using GeonBit.UI.Entities;
 
 namespace GK3D.Lab1
 {
@@ -53,7 +55,7 @@ namespace GK3D.Lab1
             _graphics.PreferredBackBufferWidth *= 2;  // set this value to the desired width of your window
             _graphics.PreferredBackBufferHeight *= 2;  // set this value to the desired height of your window            
             _graphics.IsFullScreen = false;
-            IsMouseVisible = true;
+            IsMouseVisible = false;
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
             _graphics.PreferMultiSampling = false;
 
@@ -76,6 +78,8 @@ namespace GK3D.Lab1
         /// </summary>
         protected override void Initialize()
         {
+            // GeonBit.UI: Init the UI manager using the "hd" built-in theme
+            UserInterface.Initialize(Content, BuiltinThemes.hd);
 
             _graphics.ApplyChanges();
             _camera = new Camera(_graphics.GraphicsDevice);
@@ -171,6 +175,8 @@ namespace GK3D.Lab1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            UserInterface.Active.Update(gameTime);
+
             _currentKeyboardState = Keyboard.GetState();
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -245,13 +251,13 @@ namespace GK3D.Lab1
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
             GraphicsDevice.Clear(Color.Black);
-
             _sceneObjects.ForEach(sceneObject => sceneObject.Draw(gameTime, _world, _camera,
                 _satellite.PositionVectors[0], _satellite.PositionVectors[1]));
             DrawDebugInformation();
             if (ShowMenu)
                 DrawMenu();
-            
+            UserInterface.Active.Draw(_spriteBatch);
+
             base.Draw(gameTime);
         }
 
