@@ -1,4 +1,5 @@
-﻿using GK3D.Lab1.Menu;
+﻿
+using GK3D.Lab1.SceneObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;

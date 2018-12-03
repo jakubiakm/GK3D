@@ -60,7 +60,6 @@
     <Compile Include="Camera.cs" />
     <Compile Include="CosmoGame.cs" />
     <Compile Include="Helpers\BasicEffectHelper.cs" />
-    <Compile Include="Menu\Options.cs" />
     <Compile Include="SceneObjects\Airboat.cs" />
     <Compile Include="SceneObjects\Cuboid.cs" />
     <Compile Include="SceneObjects\Hemicylinder.cs" />
@@ -72,6 +71,7 @@
     <Compile Include="Prymitives\GeometricPrimitive.cs" />
     <Compile Include="Prymitives\SpherePrimitive.cs" />
     <Compile Include="Prymitives\VertexPositionNormal.cs" />
+    <Compile Include="SceneObjects\Menu.cs" />
     <Compile Include="SceneObjects\Satellite.cs" />
     <Compile Include="SceneObjects\SceneObject.cs" />
     <Compile Include="SceneObjects\Sphere.cs" />

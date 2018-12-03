@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using GK3D.Lab1.Helpers;
-using GK3D.Lab1.Menu;
+using GK3D.Lab1.SceneObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
