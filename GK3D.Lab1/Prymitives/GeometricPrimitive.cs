@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using GK3D.Lab1.Helpers;
+using GK3D.Lab1.Menu;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
@@ -185,37 +186,13 @@ namespace GK3D.Lab1.Prymitives
         /// for 3D model rendering, so you do not need to set these states before
         /// you call it.
         /// </summary>
-        public void Draw(Matrix world, Color color, Camera camera, Vector3 light1Position, Vector3 light2Position, Texture2D texture, float colorIntensity = 1f)
+        public void Draw(Matrix world, Color color, Camera camera, Vector3 light1Position, Vector3 light2Position, Texture2D texture, Options options, float colorIntensity = 1f)
         {
-            // Set basicEffect parameters.
-            if(texture != null)
-            {
-                basicEffect.TextureEnabled = true;
-                basicEffect.Texture = texture;
-            }
-
             basicEffect.World = world;
             basicEffect.View = camera.ViewMatrix;
             basicEffect.Projection = camera.ProjectionMatrix;
-            basicEffect.EmissiveColor = color.ToVector3();
-            basicEffect.Alpha = color.A / 255.0f;
 
-            BasicEffectHelper.AddLightToBasicEffect(basicEffect, light1Position, light2Position);
-
-            GraphicsDevice device = basicEffect.GraphicsDevice;
-            device.DepthStencilState = DepthStencilState.Default;
-        
-
-            if (color.A < 255)
-            {
-                // Set renderstates for alpha blended rendering.
-                device.BlendState = BlendState.AlphaBlend;
-            }
-            else
-            {
-                // Set renderstates for opaque rendering.
-                device.BlendState = BlendState.Opaque;
-            }
+            BasicEffectHelper.SetNormalBasicEffect(basicEffect, light1Position, light2Position, color, null, options);
 
             // Draw the model, using basicEffect.
             Draw(basicEffect);

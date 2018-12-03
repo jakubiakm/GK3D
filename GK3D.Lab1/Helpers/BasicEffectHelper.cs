@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GK3D.Lab1.Menu;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,42 @@ namespace GK3D.Lab1.Helpers
             basicEffect.AmbientLightColor = new Vector3(0.0f, 0.02f, 0.0f);
             basicEffect.LightingEnabled = true;
             //basicEffect.EnableDefaultLighting();
+        }
+
+        public static void SetNormalBasicEffect(BasicEffect basicEffect, Vector3 light1Position, Vector3 light2Position, Color color, Texture2D texture, Options options)
+        {
+            if (texture != null)
+            {
+                basicEffect.Texture = texture;
+                basicEffect.TextureEnabled = true;
+            }
+
+            basicEffect.EmissiveColor = color.ToVector3();
+            basicEffect.Alpha = color.A / 255.0f;
+
+            AddLightToBasicEffect(basicEffect, light1Position, light2Position);
+
+            GraphicsDevice device = basicEffect.GraphicsDevice;
+            device.DepthStencilState = DepthStencilState.Default;
+
+            SamplerState sampler = new SamplerState
+            {
+                MipMapLevelOfDetailBias = options.MipMapLevelOfDetailBias,
+                Filter = options.Filter
+            };
+            if (device.SamplerStates[0].Filter != sampler.Filter)
+                device.SamplerStates[0] = sampler;
+            
+            //if (color.A < 255)
+            //{
+            //    // Set renderstates for alpha blended rendering.
+            //    device.BlendState = BlendState.AlphaBlend;
+            //}
+            //else
+            //{
+            //    // Set renderstates for opaque rendering.
+            //    device.BlendState = BlendState.Opaque;
+            //}
         }
     }
 }

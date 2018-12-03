@@ -60,6 +60,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="CosmoGame.cs" />
     <Compile Include="Helpers\BasicEffectHelper.cs" />
+    <Compile Include="Menu\Options.cs" />
     <Compile Include="SceneObjects\Airboat.cs" />
     <Compile Include="SceneObjects\Cuboid.cs" />
     <Compile Include="SceneObjects\Hemicylinder.cs" />

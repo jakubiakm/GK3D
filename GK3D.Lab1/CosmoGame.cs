@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GK3D.Lab1.Menu;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -13,17 +14,37 @@ namespace GK3D.Lab1
     /// </summary>
     public class CosmoGame : Game
     {
+        bool ShowMenu { get; set; }
+
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         SpriteFont _font;
         Texture2D _exercise1Texture;
         Texture2D _shipTexture;
+        KeyboardState _currentKeyboardState;
+        KeyboardState _previousKeyboardState;
 
         List<SceneObject> _sceneObjects = new List<SceneObject>();
         Satellite _satellite;
 
         Matrix _world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
         Camera _camera;
+
+        Options Options
+        {
+            get
+            {
+                return _options;
+            }
+            set
+            {
+                foreach (var scebeObject in _sceneObjects)
+                    scebeObject.Options = value;
+                _options = value;
+            }
+        }
+
+        Options _options;
 
         public CosmoGame()
         {
@@ -115,6 +136,11 @@ namespace GK3D.Lab1
             GraphicsDevice.PresentationParameters.MultiSampleCount = 16;
             _graphics.ApplyChanges();
             base.Initialize();
+            Options = new Options
+            {
+                Filter = TextureFilter.Linear,
+                MipMapLevelOfDetailBias = 0f
+            };
         }
 
         /// <summary>
@@ -145,18 +171,68 @@ namespace GK3D.Lab1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            _currentKeyboardState = Keyboard.GetState();
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Z))
+            if (_currentKeyboardState.IsKeyUp(Keys.Space) && _previousKeyboardState.IsKeyDown(Keys.Space))
             {
+                ShowMenu = !ShowMenu;
+            }
+                if (_currentKeyboardState.IsKeyUp(Keys.Z) && _previousKeyboardState.IsKeyDown(Keys.Z))
+            {
+                _graphics.PreferMultiSampling = !_graphics.PreferMultiSampling;
+                _graphics.ApplyChanges();
+                //_graphics.ToggleFullScreen();
+
+            }
+            if (_currentKeyboardState.IsKeyUp(Keys.F) && _previousKeyboardState.IsKeyDown(Keys.F))
+            {
+                switch (Options.MipMapLevelOfDetailBias)
+                {
+                    case 0:
+                        Options = new Options
+                        {
+                            MipMapLevelOfDetailBias = 0.25f,
+                            Filter = TextureFilter.MinPointMagLinearMipLinear
+                        };
+                        break;
+                    case 0.25f:
+                        Options = new Options
+                        {
+                            MipMapLevelOfDetailBias = 0.5f,
+                            Filter = TextureFilter.MinLinearMagPointMipLinear
+                        };
+                        break;
+                    case 0.5f:
+                        Options = new Options
+                        {
+                            MipMapLevelOfDetailBias = 0.75f,
+                            Filter = TextureFilter.MinPointMagLinearMipLinear
+                        };
+                        break;
+                    case 0.75f:
+                        Options = new Options
+                        {
+                            MipMapLevelOfDetailBias = 1,
+                            Filter = TextureFilter.MinLinearMagPointMipPoint
+                        };
+                        break;
+                    case 1:
+                        Options = new Options
+                        {
+                            MipMapLevelOfDetailBias = 0,
+                            Filter = TextureFilter.MinPointMagLinearMipPoint
+                        };
+                        break;
+
+                }
                 _graphics.PreferMultiSampling = !_graphics.PreferMultiSampling;
                 _graphics.ApplyChanges();
 
             }
             _sceneObjects.ForEach(sceneObject => sceneObject.Update(gameTime));
             _camera.Update(gameTime);
-
+            _previousKeyboardState = _currentKeyboardState;
             base.Update(gameTime);
         }
 
@@ -172,9 +248,10 @@ namespace GK3D.Lab1
 
             _sceneObjects.ForEach(sceneObject => sceneObject.Draw(gameTime, _world, _camera,
                 _satellite.PositionVectors[0], _satellite.PositionVectors[1]));
-
             DrawDebugInformation();
-
+            if (ShowMenu)
+                DrawMenu();
+            
             base.Draw(gameTime);
         }
 
@@ -187,6 +264,35 @@ namespace GK3D.Lab1
             _spriteBatch.DrawString(_font, $"Camera up:{_camera.Up}", new Vector2(20, 45), Color.Red);
 
             _spriteBatch.End();
+        }
+
+        private void DrawMenu()
+        {
+            float xPosition = 0.1f; //0..1
+            float yPosition = 0.1f; //0..1
+            float mWidth = 0.8f; //0..1
+            float mHeight = 0.8f; //0..1
+
+            int height = (int)(GraphicsDevice.Viewport.Height * mHeight);
+            int width = (int)(GraphicsDevice.Viewport.Width * mWidth);
+
+            int x = (int)(GraphicsDevice.Viewport.Width * xPosition);
+            int y = (int)(GraphicsDevice.Viewport.Height * yPosition);
+
+            _spriteBatch.Begin();
+            Texture2D rect = new Texture2D(GraphicsDevice, width, height);
+
+            Color[] data = new Color[height * width];
+            for (int i = 0; i < data.Length; ++i)
+            {
+                data[i] = new Color(Color.BurlyWood, 0.5f);
+            }
+            rect.SetData(data);
+
+            Vector2 coor = new Vector2(x, y);
+            _spriteBatch.Draw(rect, coor, Color.White);
+            _spriteBatch.End();
+
         }
 
         void AddStarsToScene()

@@ -41,7 +41,7 @@ namespace GK3D.Lab1
         {
             world = GetWorldMatrix(world);
             base.Draw(gameTime, world, camera, light1Position, light2Position);
-            _cuboid.Draw(world, Color, camera, light1Position, light2Position, Texture);
+            _cuboid.Draw(world, Color, camera, light1Position, light2Position, Texture, Options);
         }
     }
 }

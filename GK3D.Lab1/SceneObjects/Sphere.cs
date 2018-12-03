@@ -42,7 +42,7 @@ namespace GK3D.Lab1
         {
             world = GetWorldMatrix(world);
             base.Draw(gameTime, world, camera, light1Position, light2Position);
-            _sphere.Draw(world, Color, camera, light1Position, light2Position, Texture, GetColorIntensity());
+            _sphere.Draw(world, Color, camera, light1Position, light2Position, Texture, Options, GetColorIntensity());
         }
 
         private float GetColorIntensity()

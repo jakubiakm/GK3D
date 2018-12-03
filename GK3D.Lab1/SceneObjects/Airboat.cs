@@ -39,37 +39,11 @@ namespace GK3D.Lab1
             {
                 foreach (BasicEffect basicEffect in mesh.Effects)
                 {
-                    basicEffect.Texture = Texture;
-                    basicEffect.TextureEnabled = true;
-
                     basicEffect.World = GetWorldMatrix(world);
                     basicEffect.View = camera.ViewMatrix;
                     basicEffect.Projection = camera.ProjectionMatrix;
-                    basicEffect.EmissiveColor = Color.ToVector3();
-                    basicEffect.Alpha = Color.A / 255.0f;
 
-                    BasicEffectHelper.AddLightToBasicEffect(basicEffect, light1Position, light2Position);
-
-                    GraphicsDevice device = basicEffect.GraphicsDevice;
-                    device.DepthStencilState = DepthStencilState.Default;
-
-                    SamplerState sampler = new SamplerState
-                    {
-                        MipMapLevelOfDetailBias = 0f,
-                        Filter = TextureFilter.MinPointMagLinearMipLinear
-                    };
-
-                    if (Color.A < 255)
-                    {
-                        // Set renderstates for alpha blended rendering.
-                        device.BlendState = BlendState.AlphaBlend;
-                    }
-                    else
-                    {
-                        // Set renderstates for opaque rendering.
-                        device.BlendState = BlendState.Opaque;
-                    }
-
+                    BasicEffectHelper.SetNormalBasicEffect(basicEffect, light1Position, light2Position, Color, Texture, Options);
                 }
                 mesh.Draw();
             }
