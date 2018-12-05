@@ -32,7 +32,7 @@ namespace GK3D.Lab1.SceneObjects
         {
             Filter = TextureFilter.Linear;
             MipMapLevelOfDetailBias = 0;
-            Msaa = false;
+            Msaa = true;
             MipmapFilter = false;
             LinearMagnifierFilter = false;
             ResolutionWidth = 1600;
@@ -73,13 +73,13 @@ namespace GK3D.Lab1.SceneObjects
         float mHeightFilter = 0.4f;
 
         //KONFIGURACJA PROSTOKĄTA ANTYALIASINGU
-        float xPositionAntiAliasing = 0.75f;
+        float xPositionAntiAliasing = 0.70f;
         float yPositionAntiAliasing = 0.05f;
-        float mWidthAntiAliasing = 0.2f;
+        float mWidthAntiAliasing = 0.25f;
         float mHeightAntiAliasing = 0.3f;
 
         //KONFIGURACJA PROSTOKĄTA ROZDZIELCZOŚCI
-        float xPositionResolution = 0.35f;
+        float xPositionResolution = 0.55f;
         float yPositionResolution = 0.55f;
         float mWidthResolution = 0.4f;
         float mHeightResolution = 0.4f;
@@ -157,11 +157,21 @@ namespace GK3D.Lab1.SceneObjects
         {
             TextureFilter filter = TextureFilter.Linear;
             float mipMapLevelOfDetailBias = _filterMinmapBias.Value / 25f;
-            bool msaa = false;
+            bool msaa = _antiAliasingMsaa.Checked;
             bool mipmapFilter = false;
             bool linearMagnifierFilter = false;
             int resolutionWidth = 1600;
             int resolutionHeight = 960;
+            if(Options.Msaa != msaa)
+            {
+                _graphicsDeviceManager.PreferMultiSampling = msaa;
+                var rasterizerState = new RasterizerState
+                {
+                    MultiSampleAntiAlias = msaa
+                };
+                _graphicsDeviceManager.GraphicsDevice.RasterizerState = rasterizerState;
+                _graphicsDeviceManager.ApplyChanges();
+            }
             switch (_resolution.SelectedIndex)
             {
                 case 0:
@@ -246,9 +256,33 @@ namespace GK3D.Lab1.SceneObjects
             Texture2D rect = new Texture2D(graphicsDevice, width, height);
 
             Color[] data = new Color[height * width];
-            for (int i = 0; i < data.Length; ++i)
+            for (int i = 0; i < width; i++)
             {
-                data[i] = new Color(Color.BurlyWood, 0.5f);
+                for (int j = 0; j < height; j++)
+                {
+                    int size = 20;
+                    if (i < size && j < size)
+                    {
+                        if (Math.Sqrt((size - i) * (size - i) + (size - j) * (size - j)) > size)
+                            continue;
+                    }
+                    if (i > width - size && j > height - size)
+                    {
+                        if (Math.Sqrt((width - size - i) * (width - size - i) + (height - size - j) * (height - size - j)) > size)
+                            continue;
+                    }
+                    if (i < size && j > height - size)
+                    {
+                        if (Math.Sqrt((size - i) * (size - i) + (height - size - j) * (height - size - j)) > size)
+                            continue;
+                    }
+                    if (i > width - size && j < size)
+                    {
+                        if (Math.Sqrt((width - size - i) * (width - size - i) + (size - j) * (size - j)) > size)
+                            continue;
+                    }
+                    data[i + width * j] = new Color(Color.BurlyWood, 0.5f);
+                }
             }
             rect.SetData(data);
 
@@ -265,9 +299,33 @@ namespace GK3D.Lab1.SceneObjects
             rect = new Texture2D(graphicsDevice, width, height);
 
             data = new Color[height * width];
-            for (int i = 0; i < data.Length; ++i)
+            for (int i = 0; i < width; i++)
             {
-                data[i] = new Color(Color.BurlyWood, 0.5f);
+                for (int j = 0; j < height; j++)
+                {
+                    int size = 20;
+                    if (i < size && j < size)
+                    {
+                        if (Math.Sqrt((size - i) * (size - i) + (size - j) * (size - j)) > size)
+                            continue;
+                    }
+                    if (i > width - size && j > height - size)
+                    {
+                        if (Math.Sqrt((width - size - i) * (width - size - i) + (height - size - j) * (height - size - j)) > size)
+                            continue;
+                    }
+                    if (i < size && j > height - size)
+                    {
+                        if (Math.Sqrt((size - i) * (size - i) + (height - size - j) * (height - size - j)) > size)
+                            continue;
+                    }
+                    if (i > width - size && j < size)
+                    {
+                        if (Math.Sqrt((width - size - i) * (width - size - i) + (size - j) * (size - j)) > size)
+                            continue;
+                    }
+                    data[i + width * j] = new Color(Color.BurlyWood, 0.5f);
+                }
             }
             rect.SetData(data);
 
@@ -284,9 +342,33 @@ namespace GK3D.Lab1.SceneObjects
             rect = new Texture2D(graphicsDevice, width, height);
 
             data = new Color[height * width];
-            for (int i = 0; i < data.Length; ++i)
+            for (int i = 0; i < width; i++)
             {
-                data[i] = new Color(Color.BurlyWood, 0.5f);
+                for (int j = 0; j < height; j++)
+                {
+                    int size = 20;
+                    if (i < size && j < size)
+                    {
+                        if(Math.Sqrt((size - i) * (size - i) + (size - j) * (size - j)) > size)
+                            continue;
+                    }
+                    if(i > width - size && j > height - size)
+                    {
+                        if (Math.Sqrt((width - size - i) * (width - size - i) + (height - size - j) * (height - size - j)) > size)
+                            continue;
+                    }
+                    if(i < size && j > height - size)
+                    {
+                        if (Math.Sqrt((size - i) * (size - i) + (height - size - j) * (height - size - j)) > size)
+                            continue;
+                    }
+                    if(i > width - size && j < size)
+                    {
+                        if (Math.Sqrt((width - size - i) * (width - size - i) + (size - j) * (size - j)) > size)
+                            continue;
+                    }
+                    data[i + width * j] = new Color(Color.BurlyWood, 0.5f);
+                }
             }
             rect.SetData(data);
 

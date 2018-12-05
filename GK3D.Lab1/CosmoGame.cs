@@ -42,16 +42,9 @@ namespace GK3D.Lab1
             _graphics.IsFullScreen = false;
             IsMouseVisible = false;
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
-            _graphics.PreferMultiSampling = false;
+            _graphics.PreferMultiSampling = true;
+            _graphics.ApplyChanges();
             //_graphics.IsFullScreen = true;
-        }
-
-        public Texture2D LoadPicture(string Filename)
-        {
-            FileStream setStream = File.Open(Filename, FileMode.Open);
-            Texture2D NewTexture = Texture2D.FromStream(_graphics.GraphicsDevice, setStream);
-            setStream.Dispose();
-            return NewTexture;
         }
 
 
@@ -70,8 +63,8 @@ namespace GK3D.Lab1
             var tree = new Tree();
             var bison = new Bison();
             var airboat = new Airboat();
-            _exercise1Texture = LoadPicture(@"D:\Users\syntaximus\OneDrive\Studia\Semestr 9\GK\Projekty\GK3D.Lab1\GK3D.Lab1\Content\White-Floor-Concrete-Texture.jpg");
-            _shipTexture = LoadPicture(@"D:\Users\syntaximus\OneDrive\Studia\Semestr 9\GK\Projekty\GK3D.Lab1\GK3D.Lab1\Content\Ship-texture.jpg");
+            _exercise1Texture = Content.Load<Texture2D>("White-Floor-Concrete-Texture");
+            _shipTexture = Content.Load<Texture2D>("Ship-texture");
             var scene = new Cuboid(1, 20, 40);
             var cube1 = new Cuboid(1, 1, 1);
             var sun = new Sphere(100f, 50);
@@ -119,7 +112,7 @@ namespace GK3D.Lab1
             _sceneObjects.Add(cube1);
             _sceneObjects.Add(airboat);
             //AddStarsToScene();
-            GraphicsDevice.PresentationParameters.MultiSampleCount = 16;
+            GraphicsDevice.PresentationParameters.MultiSampleCount = 8;
             _graphics.ApplyChanges();
             _menu = new Menu(_sceneObjects, Content, _graphics);
             base.Initialize();
@@ -186,6 +179,7 @@ namespace GK3D.Lab1
             GraphicsDevice.Clear(Color.Black);
             _sceneObjects.ForEach(sceneObject => sceneObject.Draw(gameTime, _world, _camera,
                 _satellite.PositionVectors[0], _satellite.PositionVectors[1]));
+
             //DrawDebugInformation();
             _menu.Draw(GraphicsDevice, _spriteBatch);
             
@@ -198,7 +192,7 @@ namespace GK3D.Lab1
 
             _spriteBatch.DrawString(_font, $"Camera position:{_camera.Position}", new Vector2(20, 5), Color.Red);
             _spriteBatch.DrawString(_font, $"Camera direction:{_camera.Direction}", new Vector2(20, 25), Color.Red);
-            _spriteBatch.DrawString(_font, $"Camera up:{_camera.Up}", new Vector2(20, 45), Color.Red);
+            _spriteBatch.DrawString(_font, $"Ca mera up:{_camera.Up}", new Vector2(20, 45), Color.Red);
 
             _spriteBatch.End();
         }

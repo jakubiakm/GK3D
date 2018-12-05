@@ -107,7 +107,7 @@ namespace GK3D.Lab1.Prymitives
             basicEffect = new BasicEffect(graphicsDevice);
 
             //basicEffect.EnableDefaultLighting();
-            basicEffect.PreferPerPixelLighting = true;
+            basicEffect.PreferPerPixelLighting = false;
         }
 
 
