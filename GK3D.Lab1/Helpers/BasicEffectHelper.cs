@@ -47,32 +47,22 @@ namespace GK3D.Lab1.Helpers
 
             basicEffect.EmissiveColor = color.ToVector3();
             basicEffect.Alpha = color.A / 255.0f;
-            
+
             AddLightToBasicEffect(basicEffect, light1Position, light2Position);
 
             GraphicsDevice device = basicEffect.GraphicsDevice;
-            
+
             SamplerState sampler = new SamplerState
             {
                 MipMapLevelOfDetailBias = options.MipMapLevelOfDetailBias,
-                Filter = options.Filter
+                Filter = options.Filter,
+                MaxMipLevel = 4
             };
             for (int i = 0; i != 32; i++)
             {
                 if (device.SamplerStates[i].Filter != sampler.Filter)
                     device.SamplerStates[i] = sampler;
             }
-
-            //if (color.A < 255)
-            //{
-            //    // Set renderstates for alpha blended rendering.
-            //    device.BlendState = BlendState.AlphaBlend;
-            //}
-            //else
-            //{
-            //    // Set renderstates for opaque rendering.
-            //    device.BlendState = BlendState.Opaque;
-            //}
         }
     }
 }

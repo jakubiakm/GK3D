@@ -131,6 +131,7 @@ namespace GK3D.Lab1.SceneObjects
             _filterPanel.AddChild(_filterMinmapBias);
 
             _antiAliasingMsaa = new CheckBox("MSAA");
+            _antiAliasingMsaa.Checked = true;
 
             _antiAliasingPanel.AddChild(new Header("Anti aliasing"));
             _antiAliasingPanel.AddChild(new HorizontalLine());
@@ -172,6 +173,7 @@ namespace GK3D.Lab1.SceneObjects
                 _graphicsDeviceManager.GraphicsDevice.RasterizerState = rasterizerState;
                 _graphicsDeviceManager.ApplyChanges();
             }
+
             switch (_resolution.SelectedIndex)
             {
                 case 0:

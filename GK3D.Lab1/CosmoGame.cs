@@ -43,6 +43,7 @@ namespace GK3D.Lab1
             IsMouseVisible = false;
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
             _graphics.PreferMultiSampling = true;
+
             _graphics.ApplyChanges();
             //_graphics.IsFullScreen = true;
         }
@@ -56,7 +57,6 @@ namespace GK3D.Lab1
         /// </summary>
         protected override void Initialize()
         {
-            _graphics.ApplyChanges();
             _camera = new Camera(_graphics.GraphicsDevice);
 
             _satellite = new Satellite();
@@ -71,6 +71,7 @@ namespace GK3D.Lab1
             var planetoid = new Sphere(5.5f, 100);
             var researchStationHemisphere = new Hemisphere(1, 100);
             var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.25f);
+
 
             _satellite.Initialize(new Color(86, 125, 155), 0,
                 new Vector3(-5, 5, 3), new Vector3(0, 0, -MathHelper.PiOver4),
@@ -112,10 +113,10 @@ namespace GK3D.Lab1
             _sceneObjects.Add(cube1);
             _sceneObjects.Add(airboat);
             //AddStarsToScene();
-            GraphicsDevice.PresentationParameters.MultiSampleCount = 8;
-            _graphics.ApplyChanges();
             _menu = new Menu(_sceneObjects, Content, _graphics);
             base.Initialize();
+            GraphicsDevice.PresentationParameters.MultiSampleCount = 8;
+            _graphics.ApplyChanges();
 
         }
 
@@ -153,14 +154,6 @@ namespace GK3D.Lab1
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (_currentKeyboardState.IsKeyUp(Keys.Z) && _previousKeyboardState.IsKeyDown(Keys.Z))
-            {
-                _graphics.PreferMultiSampling = !_graphics.PreferMultiSampling;
-                _graphics.ApplyChanges();
-                //_graphics.ToggleFullScreen();
-
-            }
-
             _sceneObjects.ForEach(sceneObject => sceneObject.Update(gameTime));
             _camera.Update(gameTime);
             _menu.Update(gameTime);
@@ -175,7 +168,6 @@ namespace GK3D.Lab1
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-
             GraphicsDevice.Clear(Color.Black);
             _sceneObjects.ForEach(sceneObject => sceneObject.Draw(gameTime, _world, _camera,
                 _satellite.PositionVectors[0], _satellite.PositionVectors[1]));
