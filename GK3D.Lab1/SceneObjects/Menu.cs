@@ -166,11 +166,6 @@ namespace GK3D.Lab1.SceneObjects
             if(Options.Msaa != msaa)
             {
                 _graphicsDeviceManager.PreferMultiSampling = msaa;
-                var rasterizerState = new RasterizerState
-                {
-                    MultiSampleAntiAlias = msaa
-                };
-                _graphicsDeviceManager.GraphicsDevice.RasterizerState = rasterizerState;
                 _graphicsDeviceManager.ApplyChanges();
             }
 
