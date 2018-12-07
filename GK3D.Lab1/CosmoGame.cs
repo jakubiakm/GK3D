@@ -65,8 +65,7 @@ namespace GK3D.Lab1
             var airboat = new Airboat();
             _exercise1Texture = Content.Load<Texture2D>("White-Floor-Concrete-Texture");
             _shipTexture = Content.Load<Texture2D>("Ship-texture");
-            var scene = new Cuboid(1, 20, 40);
-            var cube1 = new Cuboid(1, 1, 1);
+            var scene = new Cuboid();
             var sun = new Sphere(100f, 50);
             var planetoid = new Sphere(5.5f, 100);
             var researchStationHemisphere = new Hemisphere(1, 100);
@@ -95,10 +94,10 @@ namespace GK3D.Lab1
                 _exercise1Texture);
             sun.Initialize(_graphics.GraphicsDevice, Color.Yellow, 0,
                 new Vector3(0, 1000, 0), new Vector3(0, 0, 0), null);
-            scene.Initialize(_graphics.GraphicsDevice, Color.SteelBlue, 0,
-                new Vector3(20, 45, 10), new Vector3(0, 0, 0), _exercise1Texture);
-            cube1.Initialize(_graphics.GraphicsDevice, Color.BlanchedAlmond, 0,
-                new Vector3(20, 47, 10), new Vector3(0, 0, 0), _exercise1Texture);
+            scene.Initialize(Color.SteelBlue, 0,
+                new Vector3(0, 47.5F, -10), new Vector3(0, 2, 0),
+                new Vector3(50, 1, 25),
+                _exercise1Texture);
             airboat.Initialize(Color.Wheat, 0,
                 new Vector3(0, 48.5F, -10), new Vector3(0, 2, 0),
                 new Vector3(0.005f, 0.005f, 0.005f), _shipTexture);
@@ -110,7 +109,6 @@ namespace GK3D.Lab1
             _sceneObjects.Add(bison);
             _sceneObjects.Add(sun);
             _sceneObjects.Add(scene);
-            _sceneObjects.Add(cube1);
             _sceneObjects.Add(airboat);
             //AddStarsToScene();
             _menu = new Menu(_sceneObjects, Content, _graphics);

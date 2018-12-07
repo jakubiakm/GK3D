@@ -30,7 +30,7 @@ namespace GK3D.Lab1.SceneObjects
 
         public Options()
         {
-            Filter = TextureFilter.Linear;
+            Filter = TextureFilter.Point;
             MipMapLevelOfDetailBias = 0;
             Msaa = true;
             MipmapFilter = false;
@@ -43,7 +43,7 @@ namespace GK3D.Lab1.SceneObjects
 
     public class Menu : SceneObject
     {
-        public bool ShowMenu { get; set; } = false;
+        public bool ShowMenu { get; set; } = true;
 
         public new Options Options
         {
@@ -99,7 +99,7 @@ namespace GK3D.Lab1.SceneObjects
             _sceneObjects = sceneObjects;
             Options = new Options
             {
-                Filter = TextureFilter.Linear,
+                Filter = TextureFilter.Point,
                 MipMapLevelOfDetailBias = 0f
             };
             _graphicsDeviceManager = graphicsDeviceManager;
@@ -156,7 +156,7 @@ namespace GK3D.Lab1.SceneObjects
 
         private void UpdateOptions()
         {
-            TextureFilter filter = TextureFilter.Linear;
+            TextureFilter filter = TextureFilter.Point;
             float mipMapLevelOfDetailBias = _filterMinmapBias.Value / 25f;
             bool msaa = _antiAliasingMsaa.Checked;
             bool mipmapFilter = false;
@@ -198,7 +198,7 @@ namespace GK3D.Lab1.SceneObjects
             }
             if (!_filterLinearMagnify.Checked && _filterMinmap.Checked)
             {
-                filter = TextureFilter.MinLinearMagPointMipLinear;
+                filter = TextureFilter.PointMipLinear;
             }
             if (_filterLinearMagnify.Checked && !_filterMinmap.Checked)
             {
@@ -206,7 +206,7 @@ namespace GK3D.Lab1.SceneObjects
             }
             if (!_filterLinearMagnify.Checked && !_filterMinmap.Checked)
             {
-                filter = TextureFilter.MinLinearMagPointMipPoint;
+                filter = TextureFilter.Point;
             }
             Options = new Options()
             {

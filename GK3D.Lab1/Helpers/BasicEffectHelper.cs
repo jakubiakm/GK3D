@@ -56,8 +56,9 @@ namespace GK3D.Lab1.Helpers
             {
                 MipMapLevelOfDetailBias = options.MipMapLevelOfDetailBias,
                 Filter = options.Filter,
-                MaxMipLevel = 4
+                MaxMipLevel = 32
             };
+
             for (int i = 0; i != 32; i++)
             {
                 if (device.SamplerStates[i].Filter != sampler.Filter)

@@ -2,46 +2,52 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using GK3D.Lab1.Prymitives;
+using GK3D.Lab1.Helpers;
 
 namespace GK3D.Lab1
 {
     public class Cuboid : SceneObject
     {
-        CubePrimitive _cuboid;
+        Model Model { get; set; }
+        
 
-        float _width;
-        float _height;
-        float _depth;
-
-        public Cuboid(float width, float height, float depth)
+        public void Initialize(Color color, float angle, Vector3 positionVector, Vector3 rotationVector, Vector3 scaleVector, Texture2D texture)
         {
-            _width = width;
-            _height = height;
-            _depth = depth;
-            ScaleVector = new Vector3(height, width, depth);
-        }
-
-        public void Initialize(GraphicsDevice device, Color color, float angle, Vector3 positionVector, Vector3 rotationVector, Texture2D texture)
-        {
-            _cuboid = new CubePrimitive(device, 2f);
             Color = color;
             Angle = angle;
             PositionVector = positionVector;
             RotationVector = rotationVector;
+            ScaleVector = scaleVector;
             Texture = texture;
+        }
+
+        public override void LoadModel(ContentManager contentManager)
+        {
+            base.LoadModel(contentManager);
+            Model = contentManager.Load<Model>("cube");
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            //Angle += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //(float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public override void Draw(GameTime gameTime, Matrix world, Camera camera, Vector3 light1Position, Vector3 light2Position)
         {
-            world = GetWorldMatrix(world);
             base.Draw(gameTime, world, camera, light1Position, light2Position);
-            _cuboid.Draw(world, Color, camera, light1Position, light2Position, Texture, Options);
+            foreach (ModelMesh mesh in Model.Meshes)
+            {
+                foreach (BasicEffect basicEffect in mesh.Effects)
+                {
+                    basicEffect.World = GetWorldMatrix(world);
+                    basicEffect.View = camera.ViewMatrix;
+                    basicEffect.Projection = camera.ProjectionMatrix;
+
+                    BasicEffectHelper.SetNormalBasicEffect(basicEffect, light1Position, light2Position, Color, Texture, Options);
+                }
+                mesh.Draw();
+            }
         }
     }
 }
