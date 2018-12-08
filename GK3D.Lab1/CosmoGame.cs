@@ -72,7 +72,7 @@ namespace GK3D.Lab1
             var skyboxEffect = Content.Load<Effect>("SkyboxEffect");
             var scene = new Cuboid();
             var sun = new Sphere(100f, 50);
-            var planetoid = new Sphere(5.5f, 100);
+            var planetoid = new Sphere(5.5f, 25);
             var researchStationHemisphere = new Hemisphere(1, 100);
             var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.25f);
             var skybox = new Skybox();
@@ -84,7 +84,7 @@ namespace GK3D.Lab1
                 new Vector3(10, -5, 1), new Vector3(0, MathHelper.Pi, 0),
                 new Vector3(0.1f, 0.1f, 0.1f), _exercise1Texture);
             planetoid.Initialize(_graphics.GraphicsDevice, new Color(0, 0.21f, 0), 0,
-                new Vector3(0, 0, 0), new Vector3(0, 0, 0), _exercise1Texture);
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), _exercise1Texture, true);
             researchStationHemisphere.Initialize(_graphics.GraphicsDevice, new Color(179, 204, 255), 0,
                 new Vector3(0, 2.65f, 0), new Vector3(-MathHelper.PiOver2, 0, 0));
             researchStationHemicylinder.Initialize(_graphics.GraphicsDevice, new Color(179, 204, 255), 0,
@@ -188,7 +188,13 @@ namespace GK3D.Lab1
                     GraphicsDevice.RasterizerState = prev;
                 }
                 else
+                {
+                    var prev = GraphicsDevice.RasterizerState;
+                    var x = new RasterizerState();
+                    x.FillMode = FillMode.WireFrame;
+                    //  GraphicsDevice.RasterizerState = x;
                     sceneObject.Draw(gameTime, _world, _camera, _satellite.PositionVectors[0], _satellite.PositionVectors[1]);
+                }
             });
 
             //DrawDebugInformation();

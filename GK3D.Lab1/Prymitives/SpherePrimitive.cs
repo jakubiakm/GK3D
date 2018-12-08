@@ -37,8 +37,12 @@ namespace GK3D.Lab1.Prymitives
         /// Constructs a new sphere primitive,
         /// with the specified size and tessellation level.
         /// </summary>
-        public SpherePrimitive(GraphicsDevice graphicsDevice, float diameter, int tessellation, float divider = 1)
+        public SpherePrimitive(GraphicsDevice graphicsDevice, float diameter, int tessellation, float divider = 1, bool purlinEffect = false)
         {
+            Random rand = new Random();
+
+            base.perlinMode = purlinEffect;
+
             _divider = divider;
 
             if (tessellation < 3)
@@ -63,14 +67,31 @@ namespace GK3D.Lab1.Prymitives
                 // Create a single ring of vertices at this latitude.
                 for (int j = 0; j < horizontalSegments; j++)
                 {
-                    float longitude = j * MathHelper.TwoPi / horizontalSegments / _divider;
+                    
+                    float longitude =  j * MathHelper.TwoPi / horizontalSegments / _divider;
 
                     float dx = (float)Math.Cos(longitude) * dxz;
                     float dz = (float)Math.Sin(longitude) * dxz;
 
                     Vector3 normal = new Vector3(dx, dy, dz);
 
+                    
+
                     AddVertex(normal * radius, normal);
+
+                    //switch (new Tuple<int, int>(i, j))
+                    //{
+                    //    case Tuple<int, int> t when t.Item1 == 0 && t.Item2 == 1:
+                    //        AddVertex(normal * radius, normal * 1.1f);
+                    //        break;
+                    //    case Tuple<int, int> t when t.Item1 == 1 && t.Item2 == 1:
+                    //        AddVertex(normal * radius, normal * 1.2f);
+                    //        break;
+
+                    //    default:
+                    //        AddVertex(normal * radius, normal);
+                    //        break;
+                    //}
                 }
             }
 

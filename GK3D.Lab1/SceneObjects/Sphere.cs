@@ -13,7 +13,7 @@ namespace GK3D.Lab1
         int _tesselation;
         bool _addColorIntensity;
         int _colorIntensity;
-
+        
         public Sphere(float diameter = 5, int tesselation = 10)
         {
             _diameter = diameter;
@@ -22,9 +22,9 @@ namespace GK3D.Lab1
             _colorIntensity = 0;
         }
 
-        public void Initialize(GraphicsDevice device, Color color, float angle, Vector3 positionVector, Vector3 rotationVector, Texture2D texture)
+        public void Initialize(GraphicsDevice device, Color color, float angle, Vector3 positionVector, Vector3 rotationVector, Texture2D texture, bool perlinEffect = false)
         {
-            _sphere = new SpherePrimitive(device, _diameter, _tesselation);
+            _sphere = new SpherePrimitive(device, _diameter, _tesselation, 1, perlinEffect);
             Texture = texture;
             Color = color;
             Angle = angle;

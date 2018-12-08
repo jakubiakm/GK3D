@@ -34,7 +34,7 @@ namespace GK3D.Lab1.Prymitives
         // and index data is stored on the CPU in these managed lists.
         List<VertexPositionNormal> vertices = new List<VertexPositionNormal>();
         List<ushort> indices = new List<ushort>();
-
+        public bool perlinMode = false;
 
         // Once all the geometry has been specified, the InitializePrimitive
         // method copies the vertex and index data into these buffers, which
@@ -88,6 +88,20 @@ namespace GK3D.Lab1.Prymitives
         /// for efficient rendering.
         protected void InitializePrimitive(GraphicsDevice graphicsDevice)
         {
+            var rand = new Random();
+
+            //for (int i = 0; i != vertices.Count; i++)
+            //    vertices[i] = new VertexPositionNormal(new Vector3((rand.Next(-10, 10) * 0.02f) + vertices[i].Position.X, (rand.Next(-10, 10) * 0.02f) + vertices[i].Position.Y, (rand.Next(-10, 10) * 0.02f) + vertices[i].Position.Z), vertices[i].Normal);
+            NoiseMaker maker = new NoiseMaker();
+
+            if (perlinMode)
+                for (int i = 0; i != vertices.Count; i++)
+                {
+                    float noise = NoiseMaker.Noise(vertices[i].Position.X, vertices[i].Position.Y, vertices[i].Position.Z);
+                    //vertices[i] = new VertexPositionNormal(new Vector3(noise + vertices[i].Position.X, noise + vertices[i].Position.Y, noise + vertices[i].Position.Z), vertices[i].Normal);
+                    vertices[i] = new VertexPositionNormal(vertices[i].Position * (1 + (rand.NextDouble() > 0.5 ? 1 : -1) * noise * 0.2f), vertices[i].Normal);
+                }
+
             // Create a vertex declaration, describing the format of our vertex data.
 
             // Create a vertex buffer, and copy our vertex data into it.
@@ -172,7 +186,7 @@ namespace GK3D.Lab1.Prymitives
                 basicEffectPass.Apply();
 
                 int primitiveCount = indices.Count / 3;
-               
+
                 graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, primitiveCount);
 
             }

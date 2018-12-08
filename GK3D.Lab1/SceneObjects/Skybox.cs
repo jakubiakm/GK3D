@@ -39,7 +39,6 @@ namespace GK3D.Lab1.SceneObjects
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            //(float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public override void Draw(GameTime gameTime, Matrix world, Camera camera, Vector3 light1Position, Vector3 light2Position)
@@ -63,10 +62,7 @@ namespace GK3D.Lab1.SceneObjects
                         part.Effect.Parameters["CameraPosition"].SetValue(camera.Position);
                         part.Effect.Parameters["World"].SetValue(
                             Matrix.CreateScale(size) * Matrix.CreateTranslation(camera.Position));
-                        //part.Effect.Parameters["View"].SetValue(view);
-                        //part.Effect.Parameters["Projection"].SetValue(projection);
-                        //part.Effect.Parameters["SkyBoxTexture"].SetValue(skyBoxTexture);
-                        //part.Effect.Parameters["CameraPosition"].SetValue(cameraPosition);
+
                     }
 
                     // Draw the mesh with the skybox effect

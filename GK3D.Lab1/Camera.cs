@@ -7,9 +7,13 @@ namespace GK3D.Lab1
 {
     public class Camera
     {
-        public Vector3 Position { get; set; } = new Vector3(-9.7f, 52f, 2); //new Vector3(0f, 15f, 7f);
+        public Vector3 Position { get; set; } = new Vector3(0f, 15f, 7f);
 
-        public Vector3 Direction { get; set; } = new Vector3(0.9f, -0.18f, -0.9f); //new Vector3(0, -1f, -.5f);
+        //public Vector3 Position { get; set; } = new Vector3(-9.7f, 52f, 2); //new Vector3(0f, 15f, 7f);
+
+        public Vector3 Direction { get; set; } = new Vector3(0, -1f, -.5f);
+
+        //public Vector3 Direction { get; set; } = new Vector3(0.9f, -0.18f, -0.9f); //new Vector3(0, -1f, -.5f);
 
         public Vector3 Up { get; set; } = new Vector3(0.2f, 1.1f, 0); //Vector3.UnitX;
 
