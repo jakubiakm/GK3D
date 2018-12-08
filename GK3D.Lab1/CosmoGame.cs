@@ -21,6 +21,8 @@ namespace GK3D.Lab1
         SpriteFont _font;
         Texture2D _exercise1Texture;
         Texture2D _shipTexture;
+        Texture2D _skyboxTexture;
+        TextureCube _emptySpaceTexture;
         KeyboardState _currentKeyboardState;
         KeyboardState _previousKeyboardState;
 
@@ -65,12 +67,15 @@ namespace GK3D.Lab1
             var airboat = new Airboat();
             _exercise1Texture = Content.Load<Texture2D>("White-Floor-Concrete-Texture");
             _shipTexture = Content.Load<Texture2D>("Ship-texture");
+            _skyboxTexture = Content.Load<Texture2D>("skybox");
+            _emptySpaceTexture = Content.Load<TextureCube>("EmptySpace");
+            var skyboxEffect = Content.Load<Effect>("SkyboxEffect");
             var scene = new Cuboid();
             var sun = new Sphere(100f, 50);
             var planetoid = new Sphere(5.5f, 100);
             var researchStationHemisphere = new Hemisphere(1, 100);
             var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.25f);
-
+            var skybox = new Skybox();
 
             _satellite.Initialize(new Color(86, 125, 155), 0,
                 new Vector3(-5, 5, 3), new Vector3(0, 0, -MathHelper.PiOver4),
@@ -101,6 +106,8 @@ namespace GK3D.Lab1
             airboat.Initialize(Color.Wheat, 0,
                 new Vector3(0, 48.5F, -10), new Vector3(0, 2, 0),
                 new Vector3(0.005f, 0.005f, 0.005f), _shipTexture);
+            skybox.Initialize(_emptySpaceTexture, skyboxEffect);
+
             _sceneObjects.Add(_satellite);
             _sceneObjects.Add(planetoid);
             _sceneObjects.Add(researchStationHemisphere);
@@ -110,6 +117,7 @@ namespace GK3D.Lab1
             _sceneObjects.Add(sun);
             _sceneObjects.Add(scene);
             _sceneObjects.Add(airboat);
+            _sceneObjects.Add(skybox);
             //AddStarsToScene();
             _menu = new Menu(_sceneObjects, Content, _graphics);
             base.Initialize();
@@ -166,13 +174,26 @@ namespace GK3D.Lab1
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
             GraphicsDevice.Clear(Color.Black);
-            _sceneObjects.ForEach(sceneObject => sceneObject.Draw(gameTime, _world, _camera,
-                _satellite.PositionVectors[0], _satellite.PositionVectors[1]));
+            _sceneObjects.ForEach(sceneObject =>
+            {
+                if (sceneObject is Skybox)
+                {
+                    var prev = GraphicsDevice.RasterizerState;
+                    var x = new RasterizerState();
+                    x.CullMode = CullMode.CullClockwiseFace;
+                    GraphicsDevice.RasterizerState = x;
+                    sceneObject.Draw(gameTime, _world, _camera, _satellite.PositionVectors[0], _satellite.PositionVectors[1]);
+                    GraphicsDevice.RasterizerState = prev;
+                }
+                else
+                    sceneObject.Draw(gameTime, _world, _camera, _satellite.PositionVectors[0], _satellite.PositionVectors[1]);
+            });
 
             //DrawDebugInformation();
             _menu.Draw(GraphicsDevice, _spriteBatch);
-            
+
             base.Draw(gameTime);
         }
 

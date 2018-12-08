@@ -43,7 +43,7 @@ namespace GK3D.Lab1.SceneObjects
 
     public class Menu : SceneObject
     {
-        public bool ShowMenu { get; set; } = true;
+        public bool ShowMenu { get; set; } = false;
 
         public new Options Options
         {

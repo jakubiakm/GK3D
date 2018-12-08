@@ -74,6 +74,7 @@
     <Compile Include="SceneObjects\Menu.cs" />
     <Compile Include="SceneObjects\Satellite.cs" />
     <Compile Include="SceneObjects\SceneObject.cs" />
+    <Compile Include="SceneObjects\Skybox.cs" />
     <Compile Include="SceneObjects\Sphere.cs" />
     <Compile Include="SceneObjects\Bison.cs" />
     <Compile Include="SceneObjects\Tree.cs" />

@@ -58,7 +58,6 @@ namespace GK3D.Lab1.Helpers
                 Filter = options.Filter,
                 MaxMipLevel = 32
             };
-
             for (int i = 0; i != 32; i++)
             {
                 if (device.SamplerStates[i].Filter != sampler.Filter)
