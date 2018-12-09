@@ -9,6 +9,7 @@ using GeonBit.UI;
 using GeonBit.UI.Entities;
 using GK3D.Lab1.SceneObjects;
 using GK3D.Lab1.Helpers;
+using GK3D.Lab1.Particles;
 
 namespace GK3D.Lab1
 {
@@ -17,6 +18,8 @@ namespace GK3D.Lab1
     /// </summary>
     public class CosmoGame : Game
     {
+        ParticleEmitter _particleEmitter;
+
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         SpriteFont _font;
@@ -24,6 +27,8 @@ namespace GK3D.Lab1
         Texture2D _shipTexture;
         Texture2D _skyboxTexture;
         Texture2D _stone;
+        Texture2D _particleAnimationTexture;
+
         TextureCube _emptySpaceTexture;
         KeyboardState _currentKeyboardState;
         KeyboardState _previousKeyboardState;
@@ -49,7 +54,7 @@ namespace GK3D.Lab1
             IsMouseVisible = false;
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
             _graphics.PreferMultiSampling = true;
-
+            _particleEmitter = new ParticleEmitter(10);
             _graphics.ApplyChanges();
             //_graphics.IsFullScreen = true;
         }
@@ -65,7 +70,7 @@ namespace GK3D.Lab1
         {
             _camera = new Camera(_graphics.GraphicsDevice);
 
-            _satellite = new Satellite();
+            //_satellite = new Satellite();
             var tree = new Tree();
             var bison = new Bison();
             var airboat = new Airboat();
@@ -73,7 +78,9 @@ namespace GK3D.Lab1
             _shipTexture = Content.Load<Texture2D>("Ship-texture");
             _skyboxTexture = Content.Load<Texture2D>("skybox");
             _emptySpaceTexture = Content.Load<TextureCube>("EmptySpace");
-            _stone = Content.Load<Texture2D>("stone"); 
+            _stone = Content.Load<Texture2D>("stone");
+            _particleAnimationTexture = Content.Load<Texture2D>("particleanimation");
+            _particleEmitter.Initialize(GraphicsDevice, _particleAnimationTexture);
             var skyboxEffect = Content.Load<Effect>("SkyboxEffect");
             var scene = new Cuboid();
             var sun = new Sphere(100f, 50);
@@ -82,12 +89,12 @@ namespace GK3D.Lab1
             var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.25f);
             var skybox = new Skybox();
 
-            _satellite.Initialize(new Color(86, 125, 155), 0,
-                new Vector3(-5, 5, 3), new Vector3(0, 0, -MathHelper.PiOver4),
-                new Vector3(0.1f, 0.1f, 0.1f), _exercise1Texture);
-            _satellite.Initialize(new Color(155, 123, 86), 0,
-                new Vector3(10, -5, 1), new Vector3(0, MathHelper.Pi, 0),
-                new Vector3(0.1f, 0.1f, 0.1f), _exercise1Texture);
+            //_satellite.Initialize(new Color(86, 125, 155), 0,
+            //    new Vector3(-5, 5, 3), new Vector3(0, 0, -MathHelper.PiOver4),
+            //    new Vector3(0.1f, 0.1f, 0.1f), _exercise1Texture);
+            ////_satellite.Initialize(new Color(155, 123, 86), 0,
+            //    new Vector3(10, -5, 1), new Vector3(0, MathHelper.Pi, 0),
+            //    new Vector3(0.1f, 0.1f, 0.1f), _exercise1Texture);
             planetoid.Initialize(_graphics.GraphicsDevice, new Color(0, 0.21f, 0), 0,
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0), _exercise1Texture, true);
             researchStationHemisphere.Initialize(_graphics.GraphicsDevice, new Color(179, 204, 255), 0,
@@ -113,7 +120,7 @@ namespace GK3D.Lab1
                 new Vector3(0.005f, 0.005f, 0.005f), _shipTexture);
             skybox.Initialize(_emptySpaceTexture, skyboxEffect);
 
-            _sceneObjects.Add(_satellite);
+            //_sceneObjects.Add(_satellite);
             _sceneObjects.Add(planetoid);
             _sceneObjects.Add(researchStationHemisphere);
             _sceneObjects.Add(researchStationHemicylinder);
@@ -135,13 +142,13 @@ namespace GK3D.Lab1
             int numberOfBillboards = 10;
             Random rand = new Random();
             BillBoardPositions = new Vector3[numberOfBillboards];
-            for(int i = 0; i != numberOfBillboards; i++)
+            for (int i = 0; i != numberOfBillboards; i++)
             {
                 BillBoardPositions[i] = new Vector3(5 + (float)rand.NextDouble() * 10, (float)rand.NextDouble() * 10, (float)rand.NextDouble() * 10);
             }
 
         }
-        
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -180,7 +187,9 @@ namespace GK3D.Lab1
             _camera.Update(gameTime);
             _menu.Update(gameTime);
             _previousKeyboardState = _currentKeyboardState;
+            _particleEmitter.Update();
             base.Update(gameTime);
+
         }
 
         /// <summary>
@@ -200,7 +209,7 @@ namespace GK3D.Lab1
                     var x = new RasterizerState();
                     x.CullMode = CullMode.CullClockwiseFace;
                     GraphicsDevice.RasterizerState = x;
-                    sceneObject.Draw(gameTime, _world, _camera, _satellite.PositionVectors[0], _satellite.PositionVectors[1]);
+                    sceneObject.Draw(gameTime, _world, _camera, Vector3.Zero, Vector3.Zero);
                     GraphicsDevice.RasterizerState = prev;
                 }
                 else
@@ -209,10 +218,11 @@ namespace GK3D.Lab1
                     var x = new RasterizerState();
                     x.FillMode = FillMode.WireFrame;
                     //GraphicsDevice.RasterizerState = x;
-                    sceneObject.Draw(gameTime, _world, _camera, _satellite.PositionVectors[0], _satellite.PositionVectors[1]);
+                    sceneObject.Draw(gameTime, _world, _camera, Vector3.Zero, Vector3.Zero);
                 }
             });
             DrawBillboards();
+            _particleEmitter.Draw(GraphicsDevice, _camera, _spriteBatch);
             //DrawDebugInformation();
             _menu.Draw(GraphicsDevice, _spriteBatch);
 
@@ -251,7 +261,7 @@ namespace GK3D.Lab1
                 basicEffect.View = _camera.ViewMatrix;
                 basicEffect.Projection = _camera.ProjectionMatrix;
                 basicEffect.TextureEnabled = true;
-                basicEffect.Alpha = 0.5f;
+                basicEffect.Alpha = 1f;
                 _spriteBatch.Begin(0, BlendState.AlphaBlend, null, DepthStencilState.DepthRead, RasterizerState.CullNone, basicEffect);
                 Vector2 coor = new Vector2(0, 0);
                 _spriteBatch.Draw(_stone, coor, Color.Blue);

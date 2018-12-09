@@ -61,6 +61,8 @@
     <Compile Include="CosmoGame.cs" />
     <Compile Include="Helpers\BasicEffectHelper.cs" />
     <Compile Include="Helpers\PerlinNoise.cs" />
+    <Compile Include="Particles\ParticleAttractor.cs" />
+    <Compile Include="Particles\ParticleEmitter.cs" />
     <Compile Include="SceneObjects\Airboat.cs" />
     <Compile Include="SceneObjects\Cuboid.cs" />
     <Compile Include="SceneObjects\Hemicylinder.cs" />
