@@ -52,9 +52,9 @@ namespace GK3D.Lab1
             _graphics.PreferredBackBufferHeight = 960;  // set this value to the desired height of your window            
             _graphics.IsFullScreen = false;
             IsMouseVisible = false;
-            _graphics.GraphicsProfile = GraphicsProfile.HiDef;
+            _graphics.GraphicsProfile = GraphicsProfile.Reach;
             _graphics.PreferMultiSampling = true;
-            _particleEmitter = new ParticleEmitter(10);
+            _particleEmitter = new ParticleEmitter(25);
             _graphics.ApplyChanges();
             //_graphics.IsFullScreen = true;
         }
@@ -80,7 +80,7 @@ namespace GK3D.Lab1
             _emptySpaceTexture = Content.Load<TextureCube>("EmptySpace");
             _stone = Content.Load<Texture2D>("stone");
             _particleAnimationTexture = Content.Load<Texture2D>("particleanimation");
-            _particleEmitter.Initialize(GraphicsDevice, _particleAnimationTexture);
+            _particleEmitter.Initialize(GraphicsDevice, _particleAnimationTexture, new Vector3(0, 3.05f, 0));
             var skyboxEffect = Content.Load<Effect>("SkyboxEffect");
             var scene = new Cuboid();
             var sun = new Sphere(100f, 50);
@@ -116,8 +116,8 @@ namespace GK3D.Lab1
                 new Vector3(50, 1, 25),
                 _exercise1Texture);
             airboat.Initialize(Color.Wheat, 0,
-                new Vector3(0, 48.5F, -10), new Vector3(0, 2, 0),
-                new Vector3(0.005f, 0.005f, 0.005f), _shipTexture);
+                new Vector3(-1, -5.328f, 1.5f), new Vector3(0, 2, 0),
+                new Vector3(0.003f, 0.003f, 0.003f), _shipTexture);
             skybox.Initialize(_emptySpaceTexture, skyboxEffect);
 
             //_sceneObjects.Add(_satellite);
@@ -261,7 +261,7 @@ namespace GK3D.Lab1
                 basicEffect.View = _camera.ViewMatrix;
                 basicEffect.Projection = _camera.ProjectionMatrix;
                 basicEffect.TextureEnabled = true;
-                basicEffect.Alpha = 1f;
+                basicEffect.Alpha = 0.5f;
                 _spriteBatch.Begin(0, BlendState.AlphaBlend, null, DepthStencilState.DepthRead, RasterizerState.CullNone, basicEffect);
                 Vector2 coor = new Vector2(0, 0);
                 _spriteBatch.Draw(_stone, coor, Color.Blue);
