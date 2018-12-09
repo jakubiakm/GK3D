@@ -70,7 +70,7 @@ namespace GK3D.Lab1
         {
             _camera = new Camera(_graphics.GraphicsDevice);
 
-            //_satellite = new Satellite();
+            _satellite = new Satellite();
             var tree = new Tree();
             var bison = new Bison();
             var airboat = new Airboat();
@@ -89,12 +89,12 @@ namespace GK3D.Lab1
             var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.25f);
             var skybox = new Skybox();
 
-            //_satellite.Initialize(new Color(86, 125, 155), 0,
-            //    new Vector3(-5, 5, 3), new Vector3(0, 0, -MathHelper.PiOver4),
-            //    new Vector3(0.1f, 0.1f, 0.1f), _exercise1Texture);
-            ////_satellite.Initialize(new Color(155, 123, 86), 0,
-            //    new Vector3(10, -5, 1), new Vector3(0, MathHelper.Pi, 0),
-            //    new Vector3(0.1f, 0.1f, 0.1f), _exercise1Texture);
+            _satellite.Initialize(new Color(86, 125, 155), 0,
+                new Vector3(-5, 5, 3), new Vector3(0, 0, -MathHelper.PiOver4),
+                new Vector3(0.1f, 0.1f, 0.1f), _exercise1Texture);
+            _satellite.Initialize(new Color(155, 123, 86), 0,
+            new Vector3(10, -5, 1), new Vector3(0, MathHelper.Pi, 0),
+                new Vector3(0.1f, 0.1f, 0.1f), _exercise1Texture);
             planetoid.Initialize(_graphics.GraphicsDevice, new Color(0, 0.21f, 0), 0,
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0), _exercise1Texture, true);
             researchStationHemisphere.Initialize(_graphics.GraphicsDevice, new Color(179, 204, 255), 0,
@@ -116,11 +116,11 @@ namespace GK3D.Lab1
                 new Vector3(50, 1, 25),
                 _exercise1Texture);
             airboat.Initialize(Color.Wheat, 0,
-                new Vector3(-1, -5.328f, 1.5f), new Vector3(0, 2, 0),
+                new Vector3(-1, -7.328f, 1.5f), new Vector3(0, 2, 0),
                 new Vector3(0.003f, 0.003f, 0.003f), _shipTexture);
             skybox.Initialize(_emptySpaceTexture, skyboxEffect);
 
-            //_sceneObjects.Add(_satellite);
+            _sceneObjects.Add(_satellite);
             _sceneObjects.Add(planetoid);
             _sceneObjects.Add(researchStationHemisphere);
             _sceneObjects.Add(researchStationHemicylinder);
@@ -209,7 +209,7 @@ namespace GK3D.Lab1
                     var x = new RasterizerState();
                     x.CullMode = CullMode.CullClockwiseFace;
                     GraphicsDevice.RasterizerState = x;
-                    sceneObject.Draw(gameTime, _world, _camera, Vector3.Zero, Vector3.Zero);
+                    sceneObject.Draw(gameTime, _world, _camera, _satellite.PositionVectors[0], _satellite.PositionVectors[1]);
                     GraphicsDevice.RasterizerState = prev;
                 }
                 else
@@ -218,7 +218,7 @@ namespace GK3D.Lab1
                     var x = new RasterizerState();
                     x.FillMode = FillMode.WireFrame;
                     //GraphicsDevice.RasterizerState = x;
-                    sceneObject.Draw(gameTime, _world, _camera, Vector3.Zero, Vector3.Zero);
+                    sceneObject.Draw(gameTime, _world, _camera, _satellite.PositionVectors[0], _satellite.PositionVectors[1]);
                 }
             });
             DrawBillboards();
@@ -242,11 +242,6 @@ namespace GK3D.Lab1
 
         void DrawBillboards()
         {
-            //_spriteBatch.Begin();
-
-            //_spriteBatch.Draw(_stone, new Rectangle(0, 0, 800, 480), Color.White);
-
-            //_spriteBatch.End();
             Random random = new Random();
             for (int i = 0; i != BillBoardPositions.Length; i++)
             {
