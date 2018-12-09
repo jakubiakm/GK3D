@@ -8,6 +8,7 @@ using System.Linq;
 using GeonBit.UI;
 using GeonBit.UI.Entities;
 using GK3D.Lab1.SceneObjects;
+using GK3D.Lab1.Helpers;
 
 namespace GK3D.Lab1
 {
@@ -22,6 +23,7 @@ namespace GK3D.Lab1
         Texture2D _exercise1Texture;
         Texture2D _shipTexture;
         Texture2D _skyboxTexture;
+        Texture2D _stone;
         TextureCube _emptySpaceTexture;
         KeyboardState _currentKeyboardState;
         KeyboardState _previousKeyboardState;
@@ -33,6 +35,8 @@ namespace GK3D.Lab1
         Camera _camera;
 
         Menu _menu;
+
+        Vector3[] BillBoardPositions;
 
 
         public CosmoGame()
@@ -69,6 +73,7 @@ namespace GK3D.Lab1
             _shipTexture = Content.Load<Texture2D>("Ship-texture");
             _skyboxTexture = Content.Load<Texture2D>("skybox");
             _emptySpaceTexture = Content.Load<TextureCube>("EmptySpace");
+            _stone = Content.Load<Texture2D>("stone"); 
             var skyboxEffect = Content.Load<Effect>("SkyboxEffect");
             var scene = new Cuboid();
             var sun = new Sphere(100f, 50);
@@ -124,8 +129,19 @@ namespace GK3D.Lab1
             GraphicsDevice.PresentationParameters.MultiSampleCount = 8;
             _graphics.ApplyChanges();
 
-        }
 
+            //generowanie rozmieszczenia billboardów
+
+            int numberOfBillboards = 10;
+            Random rand = new Random();
+            BillBoardPositions = new Vector3[numberOfBillboards];
+            for(int i = 0; i != numberOfBillboards; i++)
+            {
+                BillBoardPositions[i] = new Vector3(5 + (float)rand.NextDouble() * 10, (float)rand.NextDouble() * 10, (float)rand.NextDouble() * 10);
+            }
+
+        }
+        
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -192,11 +208,11 @@ namespace GK3D.Lab1
                     var prev = GraphicsDevice.RasterizerState;
                     var x = new RasterizerState();
                     x.FillMode = FillMode.WireFrame;
-                    //  GraphicsDevice.RasterizerState = x;
+                    //GraphicsDevice.RasterizerState = x;
                     sceneObject.Draw(gameTime, _world, _camera, _satellite.PositionVectors[0], _satellite.PositionVectors[1]);
                 }
             });
-
+            DrawBillboards();
             //DrawDebugInformation();
             _menu.Draw(GraphicsDevice, _spriteBatch);
 
@@ -214,6 +230,34 @@ namespace GK3D.Lab1
             _spriteBatch.End();
         }
 
+        void DrawBillboards()
+        {
+            //_spriteBatch.Begin();
+
+            //_spriteBatch.Draw(_stone, new Rectangle(0, 0, 800, 480), Color.White);
+
+            //_spriteBatch.End();
+            Random random = new Random();
+            for (int i = 0; i != BillBoardPositions.Length; i++)
+            {
+                int width = 10, height = 10;
+                Texture2D rect = new Texture2D(_graphics.GraphicsDevice, width, height);
+
+                BasicEffect basicEffect = new BasicEffect(GraphicsDevice);
+                Matrix combined = Matrix.Invert(_camera.ViewMatrix);
+                combined *= Matrix.CreateScale(0.0005f);
+                combined.Translation = BillBoardPositions[i];
+                basicEffect.World = combined;
+                basicEffect.View = _camera.ViewMatrix;
+                basicEffect.Projection = _camera.ProjectionMatrix;
+                basicEffect.TextureEnabled = true;
+                basicEffect.Alpha = 0.5f;
+                _spriteBatch.Begin(0, BlendState.AlphaBlend, null, DepthStencilState.DepthRead, RasterizerState.CullNone, basicEffect);
+                Vector2 coor = new Vector2(0, 0);
+                _spriteBatch.Draw(_stone, coor, Color.Blue);
+                _spriteBatch.End();
+            }
+        }
 
         void AddStarsToScene()
         {

@@ -99,7 +99,7 @@ namespace GK3D.Lab1.Prymitives
                 {
                     float noise = NoiseMaker.Noise(vertices[i].Position.X, vertices[i].Position.Y, vertices[i].Position.Z);
                     //vertices[i] = new VertexPositionNormal(new Vector3(noise + vertices[i].Position.X, noise + vertices[i].Position.Y, noise + vertices[i].Position.Z), vertices[i].Normal);
-                    vertices[i] = new VertexPositionNormal(vertices[i].Position * (1 + (rand.NextDouble() > 0.5 ? 1 : -1) * noise * 0.2f), vertices[i].Normal);
+                    vertices[i] = new VertexPositionNormal(vertices[i].Position * (1 + noise * 0.15f * (rand.NextDouble() > 0.5 ? 1 : -1)), vertices[i].Normal);
                 }
 
             // Create a vertex declaration, describing the format of our vertex data.
