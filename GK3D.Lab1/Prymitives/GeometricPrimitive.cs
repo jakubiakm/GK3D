@@ -98,8 +98,16 @@ namespace GK3D.Lab1.Prymitives
                 for (int i = 0; i != vertices.Count; i++)
                 {
                     float noise = NoiseMaker.Noise(vertices[i].Position.X, vertices[i].Position.Y, vertices[i].Position.Z);
-                    //vertices[i] = new VertexPositionNormal(new Vector3(noise + vertices[i].Position.X, noise + vertices[i].Position.Y, noise + vertices[i].Position.Z), vertices[i].Normal);
-                    vertices[i] = new VertexPositionNormal(vertices[i].Position * (1 + noise * 0.15f * (rand.NextDouble() > 0.5 ? 1 : -1)), vertices[i].Normal);
+                    //dodanie do pozycji
+                    //vertices[i] = new VertexPositionNormal(vertices[i].Position * (1 + noise * 0.25f * (rand.NextDouble() > 0.5 ? 1 : -1)), vertices[i].Normal);
+
+                    //wzdłóż wektora normalnego o losowym kierunku
+                    //Vector3 scaledVec = (rand.NextDouble() > 0.5 ? 1 : -1) * noise * vertices[i].Normal;
+                    //vertices[i] = new VertexPositionNormal(vertices[i].Position + scaledVec, vertices[i].Normal);
+
+                    //wzdłóż wektora normalnego o losowych kierunkach
+                    Vector3 scaledVec = noise * vertices[i].Normal;
+                    vertices[i] = new VertexPositionNormal(new Vector3(vertices[i].Position.X + scaledVec.X * (rand.NextDouble() > 0.5 ? 1 : -1), vertices[i].Position.Y + scaledVec.Y * (rand.NextDouble() > 0.5 ? 1 : -1), vertices[i].Position.Z + scaledVec.Z * (rand.NextDouble() > 0.5 ? 1 : -1)), vertices[i].Normal);
                 }
 
             // Create a vertex declaration, describing the format of our vertex data.
@@ -206,7 +214,7 @@ namespace GK3D.Lab1.Prymitives
             basicEffect.View = camera.ViewMatrix;
             basicEffect.Projection = camera.ProjectionMatrix;
 
-            BasicEffectHelper.SetNormalBasicEffect(basicEffect, light1Position, light2Position, color, null, options);
+            BasicEffectHelper.SetNormalBasicEffect(basicEffect, light1Position, light2Position, color, texture, options);
 
             // Draw the model, using basicEffect.
             Draw(basicEffect);

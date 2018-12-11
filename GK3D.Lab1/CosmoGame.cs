@@ -52,11 +52,12 @@ namespace GK3D.Lab1
             _graphics.PreferredBackBufferHeight = 960;  // set this value to the desired height of your window            
             _graphics.IsFullScreen = false;
             IsMouseVisible = false;
-            _graphics.GraphicsProfile = GraphicsProfile.Reach;
+            _graphics.GraphicsProfile = GraphicsProfile.HiDef;
             _graphics.PreferMultiSampling = true;
             _particleEmitter = new ParticleEmitter(25);
             _graphics.ApplyChanges();
-            //_graphics.IsFullScreen = true;
+
+            _graphics.IsFullScreen = true;
         }
 
 
@@ -96,9 +97,9 @@ namespace GK3D.Lab1
             new Vector3(10, -5, 1), new Vector3(0, MathHelper.Pi, 0),
                 new Vector3(0.1f, 0.1f, 0.1f), _exercise1Texture);
             planetoid.Initialize(_graphics.GraphicsDevice, new Color(0, 0.21f, 0), 0,
-                new Vector3(0, 0, 0), new Vector3(0, 0, 0), _exercise1Texture, true);
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), null, true);
             researchStationHemisphere.Initialize(_graphics.GraphicsDevice, new Color(179, 204, 255), 0,
-                new Vector3(0, 2.65f, 0), new Vector3(-MathHelper.PiOver2, 0, 0));
+                new Vector3(0, 2.65f, 0), new Vector3(-MathHelper.PiOver2, 0, 0), _exercise1Texture, _exercise1Texture);
             researchStationHemicylinder.Initialize(_graphics.GraphicsDevice, new Color(179, 204, 255), 0,
                 new Vector3(-0.4f, 2.65f, 0), new Vector3(-0.25f, MathHelper.PiOver2, MathHelper.PiOver2),
                 new Vector3(1, 1, 1));
@@ -134,9 +135,9 @@ namespace GK3D.Lab1
             _menu = new Menu(_sceneObjects, Content, _graphics);
             base.Initialize();
             GraphicsDevice.PresentationParameters.MultiSampleCount = 8;
+
             _graphics.ApplyChanges();
-
-
+            
             //generowanie rozmieszczenia billboardów
 
             int numberOfBillboards = 10;
@@ -214,11 +215,15 @@ namespace GK3D.Lab1
                 }
                 else
                 {
-                    var prev = GraphicsDevice.RasterizerState;
-                    var x = new RasterizerState();
-                    x.FillMode = FillMode.WireFrame;
-                    //GraphicsDevice.RasterizerState = x;
                     sceneObject.Draw(gameTime, _world, _camera, _satellite.PositionVectors[0], _satellite.PositionVectors[1]);
+                    var prev = GraphicsDevice.RasterizerState;
+                    var state = new RasterizerState()
+                    {
+                        FillMode = FillMode.WireFrame
+                    };
+                    //GraphicsDevice.RasterizerState = state;
+                    sceneObject.Draw(gameTime, _world, _camera, _satellite.PositionVectors[0], _satellite.PositionVectors[1]);
+                    //GraphicsDevice.RasterizerState = prev;
                 }
             });
             DrawBillboards();
@@ -228,7 +233,6 @@ namespace GK3D.Lab1
 
             base.Draw(gameTime);
         }
-
         private void DrawDebugInformation()
         {
             _spriteBatch.Begin();

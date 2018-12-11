@@ -51,7 +51,7 @@ namespace GK3D.Lab1.Helpers
             AddLightToBasicEffect(basicEffect, light1Position, light2Position);
 
             GraphicsDevice device = basicEffect.GraphicsDevice;
-
+            
             SamplerState sampler = new SamplerState
             {
                 MipMapLevelOfDetailBias = options.MipMapLevelOfDetailBias,

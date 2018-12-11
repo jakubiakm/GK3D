@@ -49,9 +49,6 @@ namespace GK3D.Lab1.Particles
             Attractors.ForEach(
                 attractor =>
                 {
-                    int width = 10, height = 10;
-                    Texture2D rect = new Texture2D(device, width, height);
-
                     BasicEffect basicEffect = new BasicEffect(device);
                     Matrix combined = Matrix.Invert(camera.ViewMatrix);
                     combined *= Matrix.CreateScale(0.005f);
@@ -60,8 +57,8 @@ namespace GK3D.Lab1.Particles
                     basicEffect.View = camera.ViewMatrix;
                     basicEffect.Projection = camera.ProjectionMatrix;
                     basicEffect.TextureEnabled = true;
-                    basicEffect.Alpha = 1f;
-                    spriteBatch.Begin(0, BlendState.AlphaBlend, null, DepthStencilState.DepthRead, RasterizerState.CullNone, basicEffect);
+                    basicEffect.Alpha = 0.5f;
+                    spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, DepthStencilState.DepthRead, RasterizerState.CullNone, basicEffect);
                     Vector2 coor = new Vector2(0, 0);
                     spriteBatch.Draw(GetInterpolatedTexture(attractor.TextureIndex, attractor.Time, device), coor, Color.Blue);
                     spriteBatch.End();
