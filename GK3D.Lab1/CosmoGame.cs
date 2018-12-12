@@ -8,6 +8,7 @@ using System.Linq;
 using GK3D.Lab1.SceneObjects;
 using GK3D.Lab1.Helpers;
 using GK3D.Lab1.Particles;
+using GK3D.Lab1.Menu;
 
 namespace GK3D.Lab1
 {
@@ -37,7 +38,7 @@ namespace GK3D.Lab1
         Matrix _world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
         Camera _camera;
 
-        Menu _menu;
+        Menu.Menu _menu;
 
         Vector3[] BillBoardPositions;
 
@@ -46,8 +47,8 @@ namespace GK3D.Lab1
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            _graphics.PreferredBackBufferWidth = 1600;  // set this value to the desired width of your window
-            _graphics.PreferredBackBufferHeight = 960;  // set this value to the desired height of your window            
+            _graphics.PreferredBackBufferWidth = 1000;  // set this value to the desired width of your window
+            _graphics.PreferredBackBufferHeight = 600;  // set this value to the desired height of your window            
             _graphics.IsFullScreen = false;
             IsMouseVisible = false;
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
@@ -130,7 +131,7 @@ namespace GK3D.Lab1
             _sceneObjects.Add(airboat);
             _sceneObjects.Add(skybox);
             //AddStarsToScene();
-            _menu = new Menu(_sceneObjects, Content, _graphics);
+            _menu = new Menu.Menu(_sceneObjects, Content, _graphics);
             base.Initialize();
             
             //generowanie rozmieszczenia billboardów

@@ -60,7 +60,13 @@
     <Compile Include="Camera.cs" />
     <Compile Include="CosmoGame.cs" />
     <Compile Include="Helpers\BasicEffectHelper.cs" />
+    <Compile Include="Helpers\DrawRectangleHelper.cs" />
     <Compile Include="Helpers\PerlinNoise.cs" />
+    <Compile Include="Menu\CheckBox.cs" />
+    <Compile Include="Menu\DropDown.cs" />
+    <Compile Include="Menu\IMenuObject.cs" />
+    <Compile Include="Menu\Panel.cs" />
+    <Compile Include="Menu\Slider.cs" />
     <Compile Include="Particles\ParticleAttractor.cs" />
     <Compile Include="Particles\ParticleEmitter.cs" />
     <Compile Include="SceneObjects\Airboat.cs" />
@@ -74,7 +80,7 @@
     <Compile Include="Prymitives\GeometricPrimitive.cs" />
     <Compile Include="Prymitives\SpherePrimitive.cs" />
     <Compile Include="Prymitives\VertexPositionNormal.cs" />
-    <Compile Include="SceneObjects\Menu.cs" />
+    <Compile Include="Menu\Menu.cs" />
     <Compile Include="SceneObjects\Satellite.cs" />
     <Compile Include="SceneObjects\SceneObject.cs" />
     <Compile Include="SceneObjects\Skybox.cs" />
@@ -148,6 +154,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
