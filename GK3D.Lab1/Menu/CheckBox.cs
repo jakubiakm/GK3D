@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GK3D.Lab1.Helpers;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GK3D.Lab1.Menu
 {
@@ -11,6 +14,16 @@ namespace GK3D.Lab1.Menu
         public string Content { get; set; }
 
         public bool Checked { get; set; }
+
+        public int X { get; set; }
+
+        public int Y { get; set; }
+
+        public int Width { get; set; }
+
+        public int Height { get; set; }
+
+        SpriteFont _font;
 
         public event EventHandler OnValueChanged;
 
@@ -23,8 +36,28 @@ namespace GK3D.Lab1.Menu
             }
         }
 
-        public CheckBox(string content)
+        public void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice, int x, int y, int width, int height)
         {
+            if (Checked)
+            {
+
+                DrawRectangleHelper.DrawRoundedRectangle(spriteBatch, graphicsDevice, x, y, height, height, new Color(Color.White, 0.5f));
+                DrawRectangleHelper.DrawRoundedRectangle(spriteBatch, graphicsDevice, x + 5, y + 5, height - 10, height - 10, new Color(Color.Green, 0.5f));
+            }
+            else
+            {
+                DrawRectangleHelper.DrawRoundedRectangle(spriteBatch, graphicsDevice, x, y, height, height, new Color(Color.White, 0.5f));
+            }
+            spriteBatch.DrawString(_font, $"{Content}", new Vector2(x + height + 20, y + height / 4), Color.Red);
+        }
+
+        public void Update()
+        {
+        }
+
+        public CheckBox(string content, SpriteFont font)
+        {
+            _font = font;
             Content = content;
             Checked = false;
         }

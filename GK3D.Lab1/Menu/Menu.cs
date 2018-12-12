@@ -93,7 +93,7 @@ namespace GK3D.Lab1.Menu
         CheckBox _filterMinmap;
         Slider _filterMinmapBias;
 
-        public Menu(List<SceneObject> sceneObjects, ContentManager content, GraphicsDeviceManager graphicsDeviceManager)
+        public Menu(List<SceneObject> sceneObjects, ContentManager content, GraphicsDeviceManager graphicsDeviceManager, SpriteFont font)
         {
             _sceneObjects = sceneObjects;
             Options = new Options
@@ -102,29 +102,29 @@ namespace GK3D.Lab1.Menu
                 MipMapLevelOfDetailBias = 0f
             };
             _graphicsDeviceManager = graphicsDeviceManager;
-            InitializeMenu(content);
+            InitializeMenu(content, font);
         }
 
-        private void InitializeMenu(ContentManager content)
+        private void InitializeMenu(ContentManager content, SpriteFont font)
         {
             _filterPanel = new Panel(0, 0, 400, 300, new Color(Color.BurlyWood, 0.5f));
             _antiAliasingPanel = new Panel(0, 0, 400, 300, new Color(Color.BurlyWood, 0.5f));
             _resolutionPanel = new Panel(0, 0, 400, 300, new Color(Color.BurlyWood, 0.5f));
 
-            _filterLinearMagnify = new CheckBox("Magnifier linear filter");
-            _filterMinmap = new CheckBox("Mipmap filter");
-            _filterMinmapBias = new Slider("Level of details bias", 0, 0, 100);
+            _filterLinearMagnify = new CheckBox("Magnifier linear filter", font);
+            _filterMinmap = new CheckBox("Mipmap filter", font);
+            _filterMinmapBias = new Slider("Level of details bias", 0, 0, 100, font);
 
             _filterPanel.AddChild(_filterLinearMagnify);
             _filterPanel.AddChild(_filterMinmap);
             _filterPanel.AddChild(_filterMinmapBias);
 
-            _antiAliasingMsaa = new CheckBox("MSAA");
+            _antiAliasingMsaa = new CheckBox("MSAA", font);
             _antiAliasingMsaa.Checked = true;
 
             _antiAliasingPanel.AddChild(_antiAliasingMsaa);
 
-            _resolution = new DropDown("Resolution");
+            _resolution = new DropDown("Resolution", font);
             _resolution.AddItem("1440x900");
             _resolution.AddItem("1900x1080");
             _resolution.AddItem("1600x960");
@@ -212,6 +212,9 @@ namespace GK3D.Lab1.Menu
             {
                 ShowMenu = !ShowMenu;
             }
+            _antiAliasingPanel.Update();
+            _filterPanel.Update();
+            _resolutionPanel.Update();
             _previousKeyboardState = _currentKeyboardState;
             base.Update(gameTime);
         }
@@ -226,7 +229,7 @@ namespace GK3D.Lab1.Menu
 
         private void DrawMenu(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             _filterPanel.Height = (int)(graphicsDevice.Viewport.Height * mHeightFilter);
             _filterPanel.Width = (int)(graphicsDevice.Viewport.Width * mWidthFilter);
             _filterPanel.X = (int)(graphicsDevice.Viewport.Width * xPositionFilter);

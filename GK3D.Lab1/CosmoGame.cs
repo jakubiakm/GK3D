@@ -50,7 +50,7 @@ namespace GK3D.Lab1
             _graphics.PreferredBackBufferWidth = 1000;  // set this value to the desired width of your window
             _graphics.PreferredBackBufferHeight = 600;  // set this value to the desired height of your window            
             _graphics.IsFullScreen = false;
-            IsMouseVisible = false;
+            IsMouseVisible = true;
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
             _graphics.PreferMultiSampling = true;
             _particleEmitter = new ParticleEmitter(25);
@@ -131,7 +131,6 @@ namespace GK3D.Lab1
             _sceneObjects.Add(airboat);
             _sceneObjects.Add(skybox);
             //AddStarsToScene();
-            _menu = new Menu.Menu(_sceneObjects, Content, _graphics);
             base.Initialize();
             
             //generowanie rozmieszczenia billboardów
@@ -155,6 +154,7 @@ namespace GK3D.Lab1
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _font = Content.Load<SpriteFont>("Position");
+            _menu = new Menu.Menu(_sceneObjects, Content, _graphics, _font);
             _sceneObjects.ForEach(sceneObject => sceneObject.LoadModel(Content));
         }
 
