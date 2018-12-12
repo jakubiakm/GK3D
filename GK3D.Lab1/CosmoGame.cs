@@ -57,7 +57,7 @@ namespace GK3D.Lab1
             _particleEmitter = new ParticleEmitter(25);
             _graphics.ApplyChanges();
 
-            _graphics.IsFullScreen = true;
+            //_graphics.IsFullScreen = true;
         }
 
 
@@ -134,9 +134,6 @@ namespace GK3D.Lab1
             //AddStarsToScene();
             _menu = new Menu(_sceneObjects, Content, _graphics);
             base.Initialize();
-            GraphicsDevice.PresentationParameters.MultiSampleCount = 8;
-
-            _graphics.ApplyChanges();
             
             //generowanie rozmieszczenia billboardów
 
@@ -249,9 +246,6 @@ namespace GK3D.Lab1
             Random random = new Random();
             for (int i = 0; i != BillBoardPositions.Length; i++)
             {
-                int width = 10, height = 10;
-                Texture2D rect = new Texture2D(_graphics.GraphicsDevice, width, height);
-
                 BasicEffect basicEffect = new BasicEffect(GraphicsDevice);
                 Matrix combined = Matrix.Invert(_camera.ViewMatrix);
                 combined *= Matrix.CreateScale(0.0005f);

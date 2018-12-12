@@ -98,6 +98,7 @@ namespace GK3D.Lab1.Prymitives
                 for (int i = 0; i != vertices.Count; i++)
                 {
                     float noise = NoiseMaker.Noise(vertices[i].Position.X, vertices[i].Position.Y, vertices[i].Position.Z);
+                    
                     //dodanie do pozycji
                     //vertices[i] = new VertexPositionNormal(vertices[i].Position * (1 + noise * 0.25f * (rand.NextDouble() > 0.5 ? 1 : -1)), vertices[i].Normal);
 
