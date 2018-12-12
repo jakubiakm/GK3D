@@ -1,6 +1,4 @@
-﻿using GeonBit.UI;
-using GeonBit.UI.Entities;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -84,15 +82,15 @@ namespace GK3D.Lab1.SceneObjects
         float mWidthResolution = 0.4f;
         float mHeightResolution = 0.4f;
 
-        Panel _filterPanel;
-        Panel _antiAliasingPanel;
-        Panel _resolutionPanel;
+        //Panel _filterPanel;
+        //Panel _antiAliasingPanel;
+        //Panel _resolutionPanel;
 
-        CheckBox _antiAliasingMsaa;
-        DropDown _resolution;
-        CheckBox _filterLinearMagnify;
-        CheckBox _filterMinmap;
-        Slider _filterMinmapBias;
+        //CheckBox _antiAliasingMsaa;
+        //DropDown _resolution;
+        //CheckBox _filterLinearMagnify;
+        //CheckBox _filterMinmap;
+        //Slider _filterMinmapBias;
 
         public Menu(List<SceneObject> sceneObjects, ContentManager content, GraphicsDeviceManager graphicsDeviceManager)
         {
@@ -108,68 +106,68 @@ namespace GK3D.Lab1.SceneObjects
 
         private void InitializeMenu(ContentManager content)
         {
-            UserInterface.Initialize(content, BuiltinThemes.hd);
+            //UserInterface.Initialize(content, BuiltinThemes.hd);
 
-            _filterPanel = new Panel(new Vector2(400, 300), PanelSkin.Default, Anchor.TopLeft);
-            _antiAliasingPanel = new Panel(new Vector2(400, 300), PanelSkin.Default, Anchor.TopLeft);
-            _resolutionPanel = new Panel(new Vector2(400, 300), PanelSkin.Default, Anchor.TopLeft);
+            //_filterPanel = new Panel(new Vector2(400, 300), PanelSkin.Default, Anchor.TopLeft);
+            //_antiAliasingPanel = new Panel(new Vector2(400, 300), PanelSkin.Default, Anchor.TopLeft);
+            //_resolutionPanel = new Panel(new Vector2(400, 300), PanelSkin.Default, Anchor.TopLeft);
 
-            UserInterface.Active.AddEntity(_filterPanel);
-            UserInterface.Active.AddEntity(_antiAliasingPanel);
-            UserInterface.Active.AddEntity(_resolutionPanel);
+            //UserInterface.Active.AddEntity(_filterPanel);
+            //UserInterface.Active.AddEntity(_antiAliasingPanel);
+            //UserInterface.Active.AddEntity(_resolutionPanel);
 
-            _filterLinearMagnify = new CheckBox("Magnifier linear filter");
-            _filterMinmap = new CheckBox("Mipmap filter");
-            _filterMinmapBias = new Slider(0, 100);
-            _filterMinmapBias.Value = 0;
+            //_filterLinearMagnify = new CheckBox("Magnifier linear filter");
+            //_filterMinmap = new CheckBox("Mipmap filter");
+            //_filterMinmapBias = new Slider(0, 100);
+            //_filterMinmapBias.Value = 0;
 
-            _filterPanel.AddChild(new Header("Filters"));
-            _filterPanel.AddChild(new HorizontalLine());
-            _filterPanel.AddChild(_filterLinearMagnify);
-            _filterPanel.AddChild(_filterMinmap);
-            _filterPanel.AddChild(new Label("Level of details bias"));
-            _filterPanel.AddChild(_filterMinmapBias);
+            //_filterPanel.AddChild(new Header("Filters"));
+            //_filterPanel.AddChild(new HorizontalLine());
+            //_filterPanel.AddChild(_filterLinearMagnify);
+            //_filterPanel.AddChild(_filterMinmap);
+            //_filterPanel.AddChild(new Label("Level of details bias"));
+            //_filterPanel.AddChild(_filterMinmapBias);
 
-            _antiAliasingMsaa = new CheckBox("MSAA");
-            _antiAliasingMsaa.Checked = true;
+            //_antiAliasingMsaa = new CheckBox("MSAA");
+            //_antiAliasingMsaa.Checked = true;
 
-            _antiAliasingPanel.AddChild(new Header("Anti aliasing"));
-            _antiAliasingPanel.AddChild(new HorizontalLine());
-            _antiAliasingPanel.AddChild(_antiAliasingMsaa);
+            //_antiAliasingPanel.AddChild(new Header("Anti aliasing"));
+            //_antiAliasingPanel.AddChild(new HorizontalLine());
+            //_antiAliasingPanel.AddChild(_antiAliasingMsaa);
 
-            _resolution = new DropDown();
-            _resolution.AddItem("1440x900");
-            _resolution.AddItem("1900x1080");
-            _resolution.AddItem("1600x960");
+            //_resolution = new DropDown();
+            //_resolution.AddItem("1440x900");
+            //_resolution.AddItem("1900x1080");
+            //_resolution.AddItem("1600x960");
 
-            _resolutionPanel.AddChild(new Header("Resolution"));
-            _resolutionPanel.AddChild(new HorizontalLine());
-            _resolutionPanel.AddChild(_resolution);
+            //_resolutionPanel.AddChild(new Header("Resolution"));
+            //_resolutionPanel.AddChild(new HorizontalLine());
+            //_resolutionPanel.AddChild(_resolution);
 
-            _filterLinearMagnify.OnValueChange = (Entity e) => UpdateOptions();
-            _filterMinmap.OnValueChange = (Entity e) => UpdateOptions();
-            _filterMinmapBias.OnValueChange = (Entity e) => UpdateOptions();
-            _resolution.OnValueChange = (Entity e) => UpdateOptions();
-            _antiAliasingMsaa.OnValueChange = (Entity e) => UpdateOptions();
+            //_filterLinearMagnify.OnValueChange = (Entity e) => UpdateOptions();
+            //_filterMinmap.OnValueChange = (Entity e) => UpdateOptions();
+            //_filterMinmapBias.OnValueChange = (Entity e) => UpdateOptions();
+            //_resolution.OnValueChange = (Entity e) => UpdateOptions();
+            //_antiAliasingMsaa.OnValueChange = (Entity e) => UpdateOptions();
             UpdateOptions();
         }
 
         private void UpdateOptions()
         {
             TextureFilter filter = TextureFilter.Point;
-            float mipMapLevelOfDetailBias = _filterMinmapBias.Value / 25f;
-            bool msaa = _antiAliasingMsaa.Checked;
+            //float mipMapLevelOfDetailBias = _filterMinmapBias.Value / 25f;
+            //bool msaa = _antiAliasingMsaa.Checked;
             bool mipmapFilter = false;
             bool linearMagnifierFilter = false;
             int resolutionWidth = 1600;
             int resolutionHeight = 960;
-            if(Options.Msaa != msaa)
+            if(Options.Msaa != false)//msaa)
             {
-                _graphicsDeviceManager.PreferMultiSampling = msaa;
+                _graphicsDeviceManager.PreferMultiSampling = false;// msaa;
                 _graphicsDeviceManager.ApplyChanges();
             }
 
-            switch (_resolution.SelectedIndex)
+            switch (1)//_resolution.SelectedIndex)
             {
                 case 0:
                     resolutionHeight = 900;
@@ -192,29 +190,29 @@ namespace GK3D.Lab1.SceneObjects
                 _graphicsDeviceManager.PreferredBackBufferHeight = resolutionHeight;
                 _graphicsDeviceManager.ApplyChanges();
             }
-            if (_filterLinearMagnify.Checked && _filterMinmap.Checked)
-            {
+            //if (_filterLinearMagnify.Checked && _filterMinmap.Checked)
+            //{
                 filter = TextureFilter.MinPointMagLinearMipLinear;
-            }
-            if (!_filterLinearMagnify.Checked && _filterMinmap.Checked)
-            {
+            //}
+            //if (!_filterLinearMagnify.Checked && _filterMinmap.Checked)
+            //{
                 filter = TextureFilter.PointMipLinear;
-            }
-            if (_filterLinearMagnify.Checked && !_filterMinmap.Checked)
-            {
+            //}
+            //if (_filterLinearMagnify.Checked && !_filterMinmap.Checked)
+            //{
                 filter = TextureFilter.MinPointMagLinearMipPoint;
-            }
-            if (!_filterLinearMagnify.Checked && !_filterMinmap.Checked)
-            {
+            //}
+            //if (!_filterLinearMagnify.Checked && !_filterMinmap.Checked)
+            //{
                 filter = TextureFilter.Point;
-            }
+            //}
             Options = new Options()
             {
                 Filter = filter,
                 LinearMagnifierFilter = linearMagnifierFilter,
                 MipmapFilter = mipmapFilter,
-                MipMapLevelOfDetailBias = mipMapLevelOfDetailBias,
-                Msaa = msaa,
+                MipMapLevelOfDetailBias = 4, //mipMapLevelOfDetailBias,
+                Msaa = false,// msaa,
                 ResolutionHeight = resolutionHeight,
                 ResolutionWidth = resolutionWidth
 
@@ -247,8 +245,8 @@ namespace GK3D.Lab1.SceneObjects
             int width = (int)(graphicsDevice.Viewport.Width * mWidthFilter);
             int x = (int)(graphicsDevice.Viewport.Width * xPositionFilter);
             int y = (int)(graphicsDevice.Viewport.Height * yPositionFilter);
-            _filterPanel.Size = new Vector2(width / 1.5f, height / 1.5f);
-            _filterPanel.Offset = new Vector2(x + width / 6, y + height / 6);
+            //_filterPanel.Size = new Vector2(width / 1.5f, height / 1.5f);
+            //_filterPanel.Offset = new Vector2(x + width / 6, y + height / 6);
 
             Texture2D rect = new Texture2D(graphicsDevice, width, height);
 
@@ -290,8 +288,8 @@ namespace GK3D.Lab1.SceneObjects
             width = (int)(graphicsDevice.Viewport.Width * mWidthAntiAliasing);
             x = (int)(graphicsDevice.Viewport.Width * xPositionAntiAliasing);
             y = (int)(graphicsDevice.Viewport.Height * yPositionAntiAliasing);
-            _antiAliasingPanel.Size = new Vector2(width / 1.5f, height / 1.5f);
-            _antiAliasingPanel.Offset = new Vector2(x + width / 6, y + height / 6);
+            //_antiAliasingPanel.Size = new Vector2(width / 1.5f, height / 1.5f);
+            //_antiAliasingPanel.Offset = new Vector2(x + width / 6, y + height / 6);
 
             rect = new Texture2D(graphicsDevice, width, height);
 
@@ -333,8 +331,8 @@ namespace GK3D.Lab1.SceneObjects
             width = (int)(graphicsDevice.Viewport.Width * mWidthResolution);
             x = (int)(graphicsDevice.Viewport.Width * xPositionResolution);
             y = (int)(graphicsDevice.Viewport.Height * yPositionResolution);
-            _resolutionPanel.Size = new Vector2(width / 1.5f, height / 1.5f);
-            _resolutionPanel.Offset = new Vector2(x + width / 6, y + height / 6);
+            //_resolutionPanel.Size = new Vector2(width / 1.5f, height / 1.5f);
+            //_resolutionPanel.Offset = new Vector2(x + width / 6, y + height / 6);
 
             rect = new Texture2D(graphicsDevice, width, height);
 
@@ -373,7 +371,7 @@ namespace GK3D.Lab1.SceneObjects
             spriteBatch.Draw(rect, coor, Color.White);
             spriteBatch.End();
 
-            UserInterface.Active.Draw(spriteBatch);
+            //UserInterface.Active.Draw(spriteBatch);
         }
     }
 }

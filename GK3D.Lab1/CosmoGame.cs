@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GeonBit.UI;
-using GeonBit.UI.Entities;
 using GK3D.Lab1.SceneObjects;
 using GK3D.Lab1.Helpers;
 using GK3D.Lab1.Particles;
@@ -175,7 +173,7 @@ namespace GK3D.Lab1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            UserInterface.Active.Update(gameTime);
+            //UserInterface.Active.Update(gameTime);
 
             _currentKeyboardState = Keyboard.GetState();
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
