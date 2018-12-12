@@ -40,7 +40,7 @@ namespace GK3D.Lab1.Menu
             DrawRectangleHelper.DrawRoundedRectangle(spriteBatch, graphicsDevice, X, Y, Width, Height, Color);
             for (int i = 0; i != Objects.Count; i++)
             {
-                Objects[i].Draw(spriteBatch, graphicsDevice, X + 10, Y + 60 * (i + 1), 100, 40);
+                Objects[i].Draw(spriteBatch, graphicsDevice, X + 10, Y + 60 * (i + 1), 300, 40);
             }
         }
 

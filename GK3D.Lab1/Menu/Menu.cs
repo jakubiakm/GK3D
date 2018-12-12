@@ -229,7 +229,7 @@ namespace GK3D.Lab1.Menu
 
         private void DrawMenu(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            spriteBatch.Begin();
             _filterPanel.Height = (int)(graphicsDevice.Viewport.Height * mHeightFilter);
             _filterPanel.Width = (int)(graphicsDevice.Viewport.Width * mWidthFilter);
             _filterPanel.X = (int)(graphicsDevice.Viewport.Width * xPositionFilter);

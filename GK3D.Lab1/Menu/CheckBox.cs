@@ -38,15 +38,18 @@ namespace GK3D.Lab1.Menu
 
         public void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice, int x, int y, int width, int height)
         {
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
             if (Checked)
             {
-
-                DrawRectangleHelper.DrawRoundedRectangle(spriteBatch, graphicsDevice, x, y, height, height, new Color(Color.White, 0.5f));
+                DrawRectangleHelper.DrawRoundedRectangle(spriteBatch, graphicsDevice, x, y, height, height, new Color(0, 0, 0, 22));
                 DrawRectangleHelper.DrawRoundedRectangle(spriteBatch, graphicsDevice, x + 5, y + 5, height - 10, height - 10, new Color(Color.Green, 0.5f));
             }
             else
             {
-                DrawRectangleHelper.DrawRoundedRectangle(spriteBatch, graphicsDevice, x, y, height, height, new Color(Color.White, 0.5f));
+                DrawRectangleHelper.DrawRoundedRectangle(spriteBatch, graphicsDevice, x, y, height, height, new Color(0, 0, 0, 22));
             }
             spriteBatch.DrawString(_font, $"{Content}", new Vector2(x + height + 20, y + height / 4), Color.Red);
         }
