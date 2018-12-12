@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 using GK3D.Lab1.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace GK3D.Lab1.Menu
 {
     class Slider : IMenuObject
     {
+        ButtonState LastLeftMouseButtonState = ButtonState.Released;
+
+        public bool Dragged { get; set; }
+
         public int X { get; set; }
 
         public int Y { get; set; }
@@ -56,6 +61,29 @@ namespace GK3D.Lab1.Menu
 
         public void Update()
         {
+            Point pos = Mouse.GetState().Position;
+            if (Mouse.GetState().LeftButton == ButtonState.Released)
+            {
+                Dragged = false;
+            }
+            if (LastLeftMouseButtonState == ButtonState.Released && Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                if (pos.X >= X && pos.X <= X + Width && pos.Y >= Y && pos.Y <= Y + Height)
+                {
+                    Dragged = true;
+                    ValueChanged(null);
+                }
+            }
+            if (Dragged)
+            {
+                int val = (int)((Max - Min) * ((float)(pos.X - X) / Width));
+                if (val <= Max && val >= Min)
+                {
+                    Value = (int)((Max - Min) * ((float)(pos.X - X) / Width));
+                    ValueChanged(null);
+                }
+            }
+            LastLeftMouseButtonState = Mouse.GetState().LeftButton;
         }
 
         public Slider(string content, int value, int min, int max, SpriteFont font)

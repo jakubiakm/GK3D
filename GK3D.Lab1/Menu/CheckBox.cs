@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using GK3D.Lab1.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace GK3D.Lab1.Menu
 {
     class CheckBox : IMenuObject
     {
+        ButtonState LastLeftMouseButtonState = ButtonState.Released;
+
         public string Content { get; set; }
 
         public bool Checked { get; set; }
@@ -56,6 +59,16 @@ namespace GK3D.Lab1.Menu
 
         public void Update()
         {
+            if(LastLeftMouseButtonState == ButtonState.Released && Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                Point pos = Mouse.GetState().Position;
+                if(pos.X >= X && pos.X <= X + Width && pos.Y >= Y && pos.Y <= Y + Height)
+                {
+                    Checked = !Checked;
+                    ValueChanged(null);
+                }
+            }
+            LastLeftMouseButtonState = Mouse.GetState().LeftButton;
         }
 
         public CheckBox(string content, SpriteFont font)

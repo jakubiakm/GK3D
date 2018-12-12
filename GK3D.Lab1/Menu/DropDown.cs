@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using GK3D.Lab1.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace GK3D.Lab1.Menu
 {
     class DropDown : IMenuObject
     {
+        ButtonState LastLeftMouseButtonState = ButtonState.Released;
+
         public int X { get; set; }
 
         public int Y { get; set; }
@@ -74,6 +77,28 @@ namespace GK3D.Lab1.Menu
 
         public void Update()
         {
+            if (LastLeftMouseButtonState == ButtonState.Released && Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                Point pos = Mouse.GetState().Position;
+                if(IsDropped)
+                {
+                    for (int i = 0; i != Items.Count; i++)
+                    {
+                        if (pos.X >= X && pos.X <= X + Width && pos.Y >= Y + 20 + Height * (i + 1) && pos.Y <= Y + 20 + Height * (i + 2))
+                        {
+                            IsDropped = false;
+                            SelectedIndex = i;
+                            ValueChanged(null);
+                        }
+                    }
+                }
+                if (pos.X >= X && pos.X <= X + Width && pos.Y >= Y + 20 && pos.Y <= Y + 20 + Height)
+                {
+                    IsDropped = !IsDropped;
+                    ValueChanged(null);
+                }
+            }
+            LastLeftMouseButtonState = Mouse.GetState().LeftButton;
         }
     }
 }

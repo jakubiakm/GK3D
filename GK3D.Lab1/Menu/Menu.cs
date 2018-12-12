@@ -68,20 +68,20 @@ namespace GK3D.Lab1.Menu
         //KONFIGURACJA PROSTOKĄTA FILTRÓW
         float xPositionFilter = 0.05f;
         float yPositionFilter = 0.05f;
-        float mWidthFilter = 0.4f;
-        float mHeightFilter = 0.4f;
+        float mWidthFilter = 0.25f;
+        float mHeightFilter = 0.3f;
 
         //KONFIGURACJA PROSTOKĄTA ANTYALIASINGU
         float xPositionAntiAliasing = 0.70f;
         float yPositionAntiAliasing = 0.05f;
-        float mWidthAntiAliasing = 0.25f;
-        float mHeightAntiAliasing = 0.3f;
+        float mWidthAntiAliasing = 0.1f;
+        float mHeightAntiAliasing = 0.2f;
 
         //KONFIGURACJA PROSTOKĄTA ROZDZIELCZOŚCI
         float xPositionResolution = 0.55f;
         float yPositionResolution = 0.55f;
-        float mWidthResolution = 0.4f;
-        float mHeightResolution = 0.4f;
+        float mWidthResolution = 0.3f;
+        float mHeightResolution = 0.2f;
 
         Panel _filterPanel;
         Panel _antiAliasingPanel;

@@ -83,9 +83,9 @@ namespace GK3D.Lab1
             _particleEmitter.Initialize(GraphicsDevice, _particleAnimationTexture, new Vector3(0, 3.05f, 0));
             var skyboxEffect = Content.Load<Effect>("SkyboxEffect");
             var scene = new Cuboid();
-            var sun = new Sphere(100f, 50);
-            var planetoid = new Sphere(5.5f, 25);
-            var researchStationHemisphere = new Hemisphere(1, 100);
+            var sun = new Sphere(100f, 10);
+            var planetoid = new Sphere(5.5f, 40);
+            var researchStationHemisphere = new Hemisphere(1, 10);
             var researchStationHemicylinder = new Hemicylinder(0.5f, 100, 0.25f);
             var skybox = new Skybox();
 
@@ -98,7 +98,7 @@ namespace GK3D.Lab1
             planetoid.Initialize(_graphics.GraphicsDevice, new Color(0, 0.21f, 0), 0,
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0), null, true);
             researchStationHemisphere.Initialize(_graphics.GraphicsDevice, new Color(179, 204, 255), 0,
-                new Vector3(0, 2.65f, 0), new Vector3(-MathHelper.PiOver2, 0, 0), _exercise1Texture, _exercise1Texture);
+                new Vector3(0, 2.65f, 0), new Vector3(-MathHelper.PiOver2, 0, 0), null, null);
             researchStationHemicylinder.Initialize(_graphics.GraphicsDevice, new Color(179, 204, 255), 0,
                 new Vector3(-0.4f, 2.65f, 0), new Vector3(-0.25f, MathHelper.PiOver2, MathHelper.PiOver2),
                 new Vector3(1, 1, 1));
