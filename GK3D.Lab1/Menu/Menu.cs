@@ -72,14 +72,14 @@ namespace GK3D.Lab1.Menu
         float mHeightFilter = 0.3f;
 
         //KONFIGURACJA PROSTOKĄTA ANTYALIASINGU
-        float xPositionAntiAliasing = 0.70f;
+        float xPositionAntiAliasing = 0.80f;
         float yPositionAntiAliasing = 0.05f;
         float mWidthAntiAliasing = 0.1f;
         float mHeightAntiAliasing = 0.2f;
 
         //KONFIGURACJA PROSTOKĄTA ROZDZIELCZOŚCI
-        float xPositionResolution = 0.55f;
-        float yPositionResolution = 0.55f;
+        float xPositionResolution = 0.65f;
+        float yPositionResolution = 0.75f;
         float mWidthResolution = 0.3f;
         float mHeightResolution = 0.2f;
 
@@ -212,9 +212,12 @@ namespace GK3D.Lab1.Menu
             {
                 ShowMenu = !ShowMenu;
             }
-            _antiAliasingPanel.Update();
-            _filterPanel.Update();
-            _resolutionPanel.Update();
+            if (ShowMenu)
+            {
+                _antiAliasingPanel.Update();
+                _filterPanel.Update();
+                _resolutionPanel.Update();
+            }
             _previousKeyboardState = _currentKeyboardState;
             base.Update(gameTime);
         }
