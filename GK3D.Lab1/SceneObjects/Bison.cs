@@ -11,6 +11,8 @@ namespace GK3D.Lab1
     {
         Model Model { get; set; }
 
+        Effect BisonEffect { get; set; }
+
         public void Initialize(Color color, float angle, Vector3 positionVector, Vector3 rotationVector, Vector3 scaleVector, Texture2D texture)
         {
             Color = color;
@@ -25,6 +27,7 @@ namespace GK3D.Lab1
         {
             base.LoadModel(contentManager);
             Model = contentManager.Load<Model>("Bison");
+            BisonEffect = contentManager.Load<Effect>("effect");
         }
 
         public override void Update(GameTime gameTime)
@@ -33,20 +36,20 @@ namespace GK3D.Lab1
             //(float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        public override void Draw(GameTime gameTime, Matrix world, Camera camera, Vector3 light1Position, Vector3 light2Position)
+        public override void Draw(GameTime gameTime, Matrix world, Camera camera)
         {
-            base.Draw(gameTime, world, camera, light1Position, light2Position);
+            base.Draw(gameTime, world, camera);
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                foreach (BasicEffect basicEffect in mesh.Effects)
+                foreach (var part in mesh.MeshParts)
                 {
-                    basicEffect.World = GetWorldMatrix(world);
-                    basicEffect.View = camera.ViewMatrix;
-                    basicEffect.Projection = camera.ProjectionMatrix;
-
-                    BasicEffectHelper.SetNormalBasicEffect(basicEffect, light1Position, light2Position, Color, Texture, Options);
-
+                    part.Effect = BisonEffect;
+                    part.Effect.Parameters["View"].SetValue(camera.ViewMatrix);
+                    part.Effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    part.Effect.Parameters["World"].SetValue(GetWorldMatrix(world));
+                    //BasicEffectHelper.SetNormalBasicEffect(basicEffect, Color, Texture);
                 }
+
                 mesh.Draw();
             }
         }

@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using GK3D.Lab1.Helpers;
-using GK3D.Lab1.Menu;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
@@ -90,26 +90,6 @@ namespace GK3D.Lab1.Prymitives
         {
             var rand = new Random();
 
-            //for (int i = 0; i != vertices.Count; i++)
-            //    vertices[i] = new VertexPositionNormal(new Vector3((rand.Next(-10, 10) * 0.02f) + vertices[i].Position.X, (rand.Next(-10, 10) * 0.02f) + vertices[i].Position.Y, (rand.Next(-10, 10) * 0.02f) + vertices[i].Position.Z), vertices[i].Normal);
-            NoiseMaker maker = new NoiseMaker();
-
-            if (perlinMode)
-                for (int i = 0; i != vertices.Count; i++)
-                {
-                    float noise = NoiseMaker.Noise(vertices[i].Position.X, vertices[i].Position.Y, vertices[i].Position.Z);
-
-                    //dodanie do pozycji
-                    //vertices[i] = new VertexPositionNormal(vertices[i].Position * (1 + noise * 0.25f * (rand.NextDouble() > 0.5 ? 1 : -1)), vertices[i].Normal);
-
-                    //wzdłóż wektora normalnego o losowym kierunku
-                    Vector3 scaledVec = 0.5f * (rand.NextDouble() > 0.5 ? 1 : -1) * noise * vertices[i].Normal;
-                    vertices[i] = new VertexPositionNormal(vertices[i].Position + scaledVec, vertices[i].Normal);
-
-                    //wzdłóż wektora normalnego o losowych kierunkach
-                    //Vector3 scaledVec = noise * vertices[i].Normal;
-                    //vertices[i] = new VertexPositionNormal(new Vector3(vertices[i].Position.X + scaledVec.X * (rand.NextDouble() > 0.5 ? 1 : -1), vertices[i].Position.Y + scaledVec.Y * (rand.NextDouble() > 0.5 ? 1 : -1), vertices[i].Position.Z + scaledVec.Z * (rand.NextDouble() > 0.5 ? 1 : -1)), vertices[i].Normal);
-                }
 
             // Create a vertex declaration, describing the format of our vertex data.
 
@@ -209,13 +189,13 @@ namespace GK3D.Lab1.Prymitives
         /// for 3D model rendering, so you do not need to set these states before
         /// you call it.
         /// </summary>
-        public void Draw(Matrix world, Color color, Camera camera, Vector3 light1Position, Vector3 light2Position, Texture2D texture, Options options, float colorIntensity = 1f)
+        public void Draw(Matrix world, Color color, Camera camera, Texture2D texture, float colorIntensity = 1f)
         {
             basicEffect.World = world;
             basicEffect.View = camera.ViewMatrix;
             basicEffect.Projection = camera.ProjectionMatrix;
 
-            BasicEffectHelper.SetNormalBasicEffect(basicEffect, light1Position, light2Position, color, texture, options);
+            BasicEffectHelper.SetNormalBasicEffect(basicEffect, color, texture);
 
             // Draw the model, using basicEffect.
             Draw(basicEffect);

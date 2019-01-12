@@ -1,3 +1,4 @@
+
 #----------------------------- Global Properties ----------------------------#
 
 /outputDir:bin/$(Platform)
@@ -6,6 +7,9 @@
 /config:
 /profile:HiDef
 /compress:False
+
+#-------------------------------- References --------------------------------#
+
 
 #---------------------------------- Content ---------------------------------#
 
@@ -84,6 +88,12 @@
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /build:cube.obj
+
+#begin effect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:effect.fx
 
 #begin EmptySpace.dds
 /importer:TextureImporter

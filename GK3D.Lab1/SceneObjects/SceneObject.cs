@@ -1,5 +1,5 @@
 ﻿
-using GK3D.Lab1.Menu;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,7 +14,6 @@ namespace GK3D.Lab1
         public Vector3 RotationVector { get; set; }
         public Vector3 ScaleVector { get; set; } = Vector3.One;
         public Texture2D Texture { get; set; }
-        public Options Options { get; set; }
 
         public Matrix GetWorldMatrix(Matrix currentWorld)
         {
@@ -40,7 +39,7 @@ namespace GK3D.Lab1
 
         }
 
-        public virtual void Draw(GameTime gameTime, Matrix world, Camera camera, Vector3 light1Position, Vector3 light2Position)
+        public virtual void Draw(GameTime gameTime, Matrix world, Camera camera)
         {
 
         }
