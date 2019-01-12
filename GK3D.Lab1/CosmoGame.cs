@@ -55,11 +55,11 @@ namespace GK3D.Lab1
             var bison = new Bison();
             var cuboid = new Cuboid();
 
-            cuboid.Initialize(new Color(12, 77, 38), 0,
+            cuboid.Initialize(Color.SkyBlue, 0,
                 new Vector3(-1, 2.328f, 1.5f), new Vector3(-0.35f, 2.6f, MathHelper.PiOver4 / 2),
                 new Vector3(3.65f, 0.65f, 2.65f), null);
 
-            bison.Initialize(new Color(115, 77, 38), 0,
+            bison.Initialize(Color.Red, 0,
                 new Vector3(1, 2f, 1.5f), new Vector3(-0.35f, 2.6f, MathHelper.PiOver4 / 2),
                 new Vector3(0.65f, 0.65f, 0.65f), null);
 

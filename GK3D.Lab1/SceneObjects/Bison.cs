@@ -47,7 +47,12 @@ namespace GK3D.Lab1
                     part.Effect.Parameters["View"].SetValue(camera.ViewMatrix);
                     part.Effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     part.Effect.Parameters["World"].SetValue(GetWorldMatrix(world));
-                    //BasicEffectHelper.SetNormalBasicEffect(basicEffect, Color, Texture);
+                    //part.Effect.Parameters["AmbientColor"].SetValue(Color.Green.ToVector4());
+                    //part.Effect.Parameters["AmbientIntensity"].SetValue(0.1f);
+                    part.Effect.Parameters["DiffuseColor"].SetValue(Color.ToVector4());
+
+                    Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * GetWorldMatrix(world)));
+                    part.Effect.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);
                 }
 
                 mesh.Draw();
