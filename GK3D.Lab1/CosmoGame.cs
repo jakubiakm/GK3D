@@ -56,7 +56,7 @@ namespace GK3D.Lab1
             var cuboid = new Cuboid();
 
             cuboid.Initialize(Color.SkyBlue, 0,
-                new Vector3(-1, 2.328f, 1.5f), new Vector3(-0.35f, 2.6f, MathHelper.PiOver4 / 2),
+                new Vector3(0, 0, 0), new Vector3(-0.35f, 2.6f, MathHelper.PiOver4 / 2),
                 new Vector3(3.65f, 0.65f, 2.65f), null);
 
             bison.Initialize(Color.Red, 0,
@@ -66,6 +66,7 @@ namespace GK3D.Lab1
 
             _sceneObjects.Add(bison);
             _sceneObjects.Add(cuboid);
+
             base.Initialize();
 
         }
@@ -135,7 +136,7 @@ namespace GK3D.Lab1
 
             _spriteBatch.DrawString(_font, $"Camera position:{_camera.Position}", new Vector2(20, 5), Color.Red);
             _spriteBatch.DrawString(_font, $"Camera direction:{_camera.Direction}", new Vector2(20, 25), Color.Red);
-            _spriteBatch.DrawString(_font, $"Ca mera up:{_camera.Up}", new Vector2(20, 45), Color.Red);
+            _spriteBatch.DrawString(_font, $"Camera up:{_camera.Up}", new Vector2(20, 45), Color.Red);
 
             _spriteBatch.End();
         }
